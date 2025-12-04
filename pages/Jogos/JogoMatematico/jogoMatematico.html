@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lermo</title>
+    <title>IA do DevSchool Hub</title>
     <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
-    <link rel="stylesheet" href="estiloTermoo.css">
+    <link rel="stylesheet" href="estiloJogoMatematico.css">
 </head>
 <body>
     <div class="layout">
 
+        <!-- SIDEBAR MINIMALISTA -->
         <aside class="sidebar">
             <div class="logo"></div>
 
@@ -55,25 +56,42 @@
         </aside>
 
         <div class="main-area">
-            <header class="header">
-                <div class="game-header"> 
-                    <h1 class="titulo">LERMO</h1>
-                    <button id="reset-btn" class="reset-btn">↻</button>
-                </div>
-            </header>
+            <main class="content">
+               <h1 class="tituloDoJoguin">Jogo Matematico</h1>
+                    <div id="math-game" style="margin-top: 30px; text-align:center;">
 
-            <main class="game-container">
-                <div id="game-board" class="game-board"></div>
-
-                <div id="game-message" class="message-container hidden"></div>
-                
-                <div id="keyboard" class="keyboard"></div>
-
-                <button id="play-again-btn" class="play-again-btn hidden">JOGAR NOVAMENTE</button>
-                <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
-            </main>
-        </div>
+    <!-- Escolher dificuldade -->
+    <div class="difficulty-box">
+        <button class="diff-btn" data-diff="easy">Fácil</button>
+        <button class="diff-btn" data-diff="medium">Médio</button>
+        <button class="diff-btn" data-diff="hard">Difícil</button>
     </div>
+
+    <!-- Escolher operação -->
+    <div class="operations-box">
+        <button class="op-btn" data-op="+">+</button>
+        <button class="op-btn" data-op="-">-</button>
+        <button class="op-btn" data-op="*">×</button>
+        <button class="op-btn" data-op="/">÷</button>
+    </div>
+
+    <h2 id="operation-title"></h2>
+    <h2 id="difficulty-title"></h2>
+
+    <div style="font-size: 2em; margin: 20px;" id="question">Escolha a operação ↑</div>
+
+    <input id="answer" type="number" placeholder="Digite a resposta"
+        style="padding:10px; font-size:1.2em; width:200px;">
+
+    <div style="margin-top: 10px; font-size: 1.3em;">
+        ⏳ <span id="timer">0</span>s
+    </div>
+
+    <h3>Pontos: <span id="score">0</span></h3>
+</div>
+    </div>
+
+    <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
 </body>
-<script src="JSdoTermo.js"></script>
+<script src="JSdoJOGOdaMath.js"></script>
 </html>
