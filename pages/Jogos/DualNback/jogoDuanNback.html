@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA do DevSchool Hub</title>
     <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
-    <link rel="stylesheet" href="estiloJogodaMemoriaVisual.css">
+    <link rel="stylesheet" href="estiloJogoDualBack.css">
 </head>
 <body>
     <div class="layout">
@@ -57,11 +57,54 @@
 
         <div class="main-area">
             <main class="content">
-               <h1 class="tituloDoJoguin">Tempo De reação</h1>
-            </main>
+
+<h1 class="tituloDoJoguin">Dual N-Back</h1>
+
+<div id="game-container">
+
+    <div id="grid">
+        <div class="cell" data-pos="0"></div>
+        <div class="cell" data-pos="1"></div>
+        <div class="cell" data-pos="2"></div>
+        <div class="cell" data-pos="3"></div>
+        <div class="cell" data-pos="4"></div>
+        <div class="cell" data-pos="5"></div>
+        <div class="cell" data-pos="6"></div>
+        <div class="cell" data-pos="7"></div>
+        <div class="cell" data-pos="8"></div>
+    </div>
+
+    <div id="controls">
+        <button id="start-btn">Iniciar</button>
+        <button id="match-color">Cor Igual</button>
+        <button id="match-emoji">Emoji Igual</button>
+    </div>
+
+    <div id="status">
+
+        <p>
+            Nível N:
+            <select id="n-back">
+                <option value="2">2-Back</option>
+                <option value="3">3-Back</option>
+                <option value="4">4-Back</option>
+            </select>
+            <p>Nível N: <strong id="n-level"></strong></p>
+        </p>
+
+        <p>Pontos: <span id="score">0</span></p>
+
+    </div>
+    
+
+</div>
+
+
+        <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+</main>
         </div>
 
     </div>
 </body>
-<script src="JSdoJOGOdaMemoria.js"></script>
+<script src="JSdoJOGODualBack.js"></script>
 </html>

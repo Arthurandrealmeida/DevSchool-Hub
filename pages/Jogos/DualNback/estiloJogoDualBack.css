@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 80px; /* bem menor */
+    height: 100vh;
+    background: #ffffff;
+    padding: 15px 10px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* caixas do menu */
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    margin-bottom:80px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.menu ul li a {
+    display: flex;
+    justify-content: center;
+}
+
+/* ícones */
+.icon {
+    width: 32px;
+    height: 32px;
+    transition: 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.15);
+}
+
+/* ====== MAIN ====== */
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+.tituloDoJoguin {
+    color:#333;
+    font-size: 1.5em;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#game-container {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 25px;
+margin-top: 30px;
+}
+
+
+/* GRID */
+#grid {
+display: grid;
+grid-template-columns: repeat(3, 120px);
+grid-template-rows: repeat(3, 120px);
+gap: 12px;
+}
+
+
+.cell {
+background: #ffffff;
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 45px;
+color: #333;
+border: 2px solid #ccc;
+transition: 0.2s;
+}
+
+
+/* BOTÕES */
+#controls {
+display: flex;
+gap: 12px;
+}
+
+
+#controls button {
+background: #ffffff;
+color: #333;
+border: 1px solid #999;
+padding: 10px 20px;
+font-size: 14px;
+border-radius: 6px;
+cursor: pointer;
+font-family: 'Press Start 2P', cursive;
+transition: 0.2s;
+}
+
+
+#controls button:hover {
+background: #e4e4e4;
+}
+
+
+/* STATUS */
+#status p {
+margin: 5px 0;
+font-size: 14px;
+color: #333;
+font-family: 'Press Start 2P', cursive;
+text-align: center;
+}
+
+.cell.showing {
+    transform: scale(1.12);
+    transition: transform 0.15s;
+}
+
+#grid {
+    transform: scale(0.95);
+    transition: .4s ease-out;
+}
+
+#grid.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.btn-voltar {
+    position: fixed;     /* fixa na tela */
+    top: 15px;           /* distância do topo */
+    left: 105px;          /* distância da esquerda */
+    z-index: 9999;       /* fica acima de tudo */
+    padding: 6px 12px;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: #e2e2e2;
+    transform: translateX(-3px);
+}
