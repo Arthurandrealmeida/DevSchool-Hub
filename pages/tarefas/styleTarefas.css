@@ -1,0 +1,356 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #ffffff;
+    padding: 20px 15px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #3f8cff, #c568ff);
+    display: flex;              
+    justify-content: center;    
+    align-items: center;       
+}
+
+.texto-logo {                
+    color: rgb(0, 255, 76);               
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu ul li {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #000000;
+    transition: 0.4s;
+}
+
+.menu ul li:hover {
+    background: #f3f5ff;
+}
+
+h5 {
+    font-size: medium;
+}
+
+#imagem-icones {
+    width: 20px;
+}
+
+.icone-do-Dashboard {
+    width: 25px;
+}
+
+
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.topbar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 55px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+.escolha {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    font-size: larger;
+    color: #6b6a6a;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+/* ======== ÁREA DE TAREFAS ======== */
+
+.tarefas-container {
+    padding: 20px 10px;
+}
+
+.tarefas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.titulo-tarefas {
+    font-size: 28px;
+    margin: 0;
+    color: #1d1f23;
+}
+
+.subtitulo-tarefas {
+    margin-top: 5px;
+    color: #777;
+}
+
+/* Botão nova tarefa */
+.btn-nova-tarefa {
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    padding: 12px 20px;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-nova-tarefa span {
+    font-size: 22px;
+}
+
+/* Colunas */
+.colunas-tarefas {
+    display: flex;
+    gap: 40px;
+}
+
+.coluna-tarefa {
+    width: 50%;
+}
+
+.titulo-coluna {
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+.titulo-coluna span {
+    color: #777;
+    
+}
+
+/* Cards */
+.tarefa-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0px 3px 12px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.lado-esq {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bolinha {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+}
+
+.check {
+    width: 15px;
+    height: 15px;
+    background: #4ade80;
+    border-radius: 50%;
+}
+
+.tarefa-nome {
+    font-weight: 600;
+    color: #1d1f23;
+}
+
+
+.tag {
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: white;
+}
+
+
+
+.concluida .tarefa-nome {
+    text-decoration: line-through;
+    color: #777;
+}
+
+.icone-delete {
+    width: 22px;
+    cursor: pointer;
+}
+
+nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ===== MODAL BONITO ===== */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.25s ease;
+    z-index: 999;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background: white;
+    width: 420px;
+    padding: 30px 25px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 20px rgba(0,0,0,0.15);
+    animation: popup 0.25s ease;
+}
+
+.modal-content h2 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+    color: #1d1f23;
+}
+
+/* Campo */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+}
+
+.form-field label {
+    font-size: 15px;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+.form-field input {
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    outline: none;
+    transition: .2s;
+}
+
+.form-field input:focus {
+    border-color: #6366f1;
+    box-shadow: 0px 0px 5px rgba(99,102,241,0.4);
+}
+
+/* Botões */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn-cancelar {
+    padding: 10px 18px;
+    background: #e5e7eb;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-cancelar:hover {
+    background: #d1d5db;
+}
+
+.btn-criar {
+    padding: 10px 18px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-criar:hover {
+    opacity: 0.9;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes popup {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

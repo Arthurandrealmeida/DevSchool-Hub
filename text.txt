@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA do DevSchool Hub</title>
+    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloJogodaMemoriaVisual.css">
+</head>
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR MINIMALISTA -->
+        <aside class="sidebar">
+            <div class="logo"></div>
+
+            <nav class="menu">
+                <ul>
+                    <li>
+                        <a href="/index.html">
+                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/Anotação.html">
+                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/jogos.html">
+                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/lettcode.html">
+                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/tarefas.html">
+                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/chatbot.html">
+                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-area">
+            <main class="content">
+               <h1 class="tituloDoJoguin">Tempo De reação</h1>
+            </main>
+        </div>
+
+    </div>
+</body>
+<script src="JSdoJOGOdaMemoria.js"></script>
+</html>
+
+
+css
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 80px; /* bem menor */
+    height: 100vh;
+    background: #ffffff;
+    padding: 15px 10px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* caixas do menu */
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    margin-bottom:80px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.menu ul li a {
+    display: flex;
+    justify-content: center;
+}
+
+/* ícones */
+.icon {
+    width: 32px;
+    height: 32px;
+    transition: 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.15);
+}
+
+/* ====== MAIN ====== */
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+.tituloDoJoguin {
+    color:#333;
+    font-size: 1.5em;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,324 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #ffffff;
+    padding: 20px 15px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #3f8cff, #c568ff);
+    display: flex;              
+    justify-content: center;    
+    align-items: center;       
+}
+
+.texto-logo {                
+    color: rgb(0, 255, 76);               
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu ul li {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #000000;
+    transition: 0.4s;
+}
+
+.menu ul li:hover {
+    background: #f3f5ff;
+}
+
+h5 {
+    font-size: medium;
+}
+
+#imagem-icones {
+    width: 20px;
+}
+
+.icone-do-Dashboard {
+    width: 25px;
+}
+
+
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.topbar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 55px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+
+.texto-jogos {
+    font-family: Arial, Helvetica, sans-serif;
+    color:#797878
+}
+
+.card-grande {
+    width: 90%;               /* ocupa grande parte da largura */
+    max-width: 800px;         /* limite para telas grandes */
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+}
+
+.card-grande-topo {
+    display: flex;
+    align-items: center;
+    
+}
+
+.card-grande-img {
+    width: 90px;
+    height: 90px;
+    border-radius: 10px;
+    object-fit: cover;
+    
+}
+
+.card-grande-titulo {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.card-grande-desc {
+    margin: 0;
+    margin-left: 110px; 
+    color: #666;
+    font-size: 20px;
+    
+}
+
+.cards-menores-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 por linha = mais largos */
+    gap: 40px;
+    margin-top: 35px;
+}
+
+/* card realmente GRANDE */
+.card-menor {
+    background: #fff;
+    padding: 30px;
+    height: 320px;           /* bem maior */
+    border-radius: 20px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.10);
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    transition: transform .2s, box-shadow .2s;
+}
+
+.card-menor:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
+}
+
+/* imagem maior */
+.card-menor-img {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto;
+}
+
+/* título */
+.card-menor h3 {
+    font-size: 24px;
+}
+
+/* descrição */
+.card-menor p {
+    font-size: 17px;
+    color: #444;
+}
+
+/* botão JOGAR */
+.btn-jogar {
+    margin-top: 10px;
+    padding: 12px 20px;
+    background: #3f8cff;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn-jogar:hover {
+    background: #1f6cd1;
+}
+
+.card-grande-img2 {
+    width: 10%;
+    padding: 10px;
+}
+
+.card-grande2 {
+    width: 90%;              
+    max-width: 800px;         
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    margin-top: 20px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.linha-separadora {
+    width: 100%;
+    max-width: 100%;
+    height: 1px;
+    background: #ddd;
+    margin: 20px auto;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 40px;
+}
+
+.card {
+    background-color: #1e293b;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px #0004;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img {
+    width: 100%;
+    height: 330px;
+    object-fit: cover;
+
+    border-radius: 14px;
+}
+
+.badge {
+    display: inline-block;
+    margin-top: 10px;
+    background-color: #0ea5e9;
+    padding: 4px 10px;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.card-title {
+    margin-top: 15px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.card-desc {
+    margin-top: 10px;
+    color: #cbd5e1;
+    font-size: 15px;
+    text-align: center;
+}
+
+.card-info {
+    text-align: center;
+    margin: 12px 0 20px;
+    color: #cbd5e1;
+}
+
+.card-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.card-btn:hover {
+    background-color: #e2e8f0;
+}
+
+nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}

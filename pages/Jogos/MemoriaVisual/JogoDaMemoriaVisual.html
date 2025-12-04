@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA do DevSchool Hub</title>
+    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloJogodaMemoriaVisual.css">
+</head>
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR MINIMALISTA -->
+        <aside class="sidebar">
+            <div class="logo"></div>
+
+            <nav class="menu">
+                <ul>
+                    <li>
+                        <a href="/index.html">
+                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/Anotação.html">
+                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/jogos.html">
+                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/lettcode.html">
+                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/tarefas.html">
+                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/chatbot.html">
+                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-area">
+            <main class="content">
+                <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+            <div class="container">
+                <header class="game-header">
+                    <h1 class="title">Memória Visual</h1>
+                    <p class="subtitle">Teste seus limites de memória visual! Cada nível adiciona mais quadrados à sequência.</p>
+                </header>
+
+                <div class="game-container">
+                    <!-- Stats -->
+                    <div class="stats">
+                        <div class="stat-card">
+                            <p class="stat-label">Nível</p>
+                            <p class="stat-value" id="level">1</p>
+                        </div>
+
+                        <div id="record-container">
+                            Maior nível: <span id="best-level">0</span>
+                        </div>
+                    </div>
+                    
+
+                    <!-- Status Message -->
+                    <div class="status-message" id="statusMessage">
+                        <p id="statusText">Memorize a sequência de quadrados que acendem e reproduza-a clicando nos quadrados!</p>
+                    </div>
+
+                    <!-- Start Button -->
+                    <div class="button-container" id="startButtonContainer">
+                        <button class="btn-start" id="startButton">Iniciar Jogo</button>
+                    </div>
+
+                    <!-- Game Grid -->
+                    <div class="game-board" id="gameBoard">
+                        <div class="grid-container" id="gridContainer"></div>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div class="error-container" id="errorContainer" style="display: none;">
+                        <p class="error-text">Os quadrados corretos estão destacados em vermelho</p>
+                    </div>
+                </div>
+
+                <!-- Instructions -->
+                 
+                <footer class="instructions">
+                    <div class="instructions-card">
+                        <h2 class="instructions-title">Como Jogar</h2>
+                        <div class="instructions-list">
+                            <p>• Observe atentamente a sequência de quadrados que acendem</p>
+                            <p>• Memorize a ordem exata</p>
+                            <p>• Reproduza a sequência clicando nos quadrados</p>
+                            <p>• Cada nível aumenta a dificuldade com mais quadrados</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </main>
+        </div>
+
+    </div>
+</body>
+<script src="JSdoJOGOdaMemoriaVisual.js"></script>
+</html>

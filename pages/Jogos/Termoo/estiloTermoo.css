@@ -1,0 +1,411 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+:root {
+    /* Cores de Fundo e Texto */
+    --bg-primary: #f8f8f8;
+    --bg-secondary: #e0e0e0;
+    --text-primary: #333333;
+    --text-muted: #999999;
+    --border-color: #d3d6da; /* Borda padrão dos tiles */
+
+    /* Cores dos Tiles do Jogo */
+    --tile-empty: #ffffff; /* Tile vazio/padrão */
+    --tile-filled: #ffffff; /* Tile preenchido (antes da submissão) */
+    --tile-correct: #6aaa64; /* Verde: Letra correta na posição correta */
+    --tile-present: #c9b458; /* Amarelo: Letra correta na posição errada */
+    --tile-absent: #787c7e; /* Cinza escuro: Letra ausente */
+
+    /* Cores do Teclado */
+    --key-bg: #d3d6da; /* Fundo padrão das teclas */
+    --key-hover: #c5c8cc; /* Fundo hover das teclas */
+    --primary: #5490ff; /* Cor do botão principal (Play Again) */
+    --primary-hover: #457bd4;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg-primary);
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 80px;
+    height: 100vh;
+    background: #ffffff;
+    padding: 15px 10px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    margin-bottom:80px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.menu ul li a {
+    display: flex;
+    justify-content: center;
+}
+
+.icon {
+    width: 32px;
+    height: 32px;
+    transition: 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.15);
+}
+
+/* ====== MAIN AREA E HEADER DO JOGO ====== */
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o conteúdo horizontalmente */
+}
+
+.header {
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 0;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* Centraliza o game-header */
+}
+
+.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 350px;
+    padding: 0 10px;
+}
+
+.titulo {
+    color: var(--text-primary);
+    font-size: 1.3em;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.reset-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.reset-btn:hover {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+}
+
+/* ====== GAME CONTAINER (Centraliza Tabuleiro e Teclado) ====== */
+.game-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza horizontalmente */
+    width: 100%;
+    max-width: 500px; 
+    margin: 0 auto;
+}
+
+/* ====== GAME BOARD (O TABULEIRO DE QUADRADOS) ====== */
+.game-board {
+    width: 100%;
+    max-width: 350px; 
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.board-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.board-row.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-5px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+}
+
+.tile {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.3s;
+    background: var(--tile-empty);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.tile.filled {
+    background: var(--tile-filled);
+    border-color: var(--text-muted);
+    animation: pop 0.1s ease-out;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.tile.correct {
+    background: var(--tile-correct);
+    border-color: var(--tile-correct);
+    color: white;
+}
+
+.tile.present {
+    background: var(--tile-present);
+    border-color: var(--tile-present);
+    color: #1a1a2e;
+}
+
+.tile.absent {
+    background: var(--tile-absent);
+    border-color: var(--tile-absent);
+    color: white;
+}
+
+.tile.reveal {
+    animation: flip 0.5s ease-in-out;
+}
+
+@keyframes flip {
+    0% { transform: rotateX(0deg); }
+    50% { transform: rotateX(90deg); }
+    100% { transform: rotateX(0deg); }
+}
+
+.tile.win {
+    animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+/* ====== GAME MESSAGE ====== */
+.game-message {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 100;
+    animation: slideIn 0.2s ease-out;
+}
+
+.game-message.hidden {
+    display: none;
+}
+
+.game-message.success {
+    background: var(--tile-correct);
+    color: white;
+}
+
+.game-message.error {
+    background: #ef4444;
+    color: white;
+}
+
+.game-message.info {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+/* ====== KEYBOARD ====== */
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    margin-top: 16px;
+    width: 100%;
+    max-width: 480px; /* Ajuste para o teclado */
+}
+
+.keyboard-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.key {
+    min-width: 36px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+    background: var(--key-bg);
+    color: var(--text-primary);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0 12px;
+}
+
+.key:hover {
+    background: var(--key-hover);
+}
+
+.key:active {
+    transform: scale(0.95);
+}
+
+.key.wide {
+    min-width: 60px;
+    font-size: 12px;
+}
+
+.key.correct {
+    background: var(--tile-correct);
+    color: white;
+}
+
+.key.present {
+    background: var(--tile-present);
+    color: #1a1a2e;
+}
+
+.key.absent {
+    background: var(--tile-absent);
+    color: white;
+}
+
+/* ====== PLAY AGAIN BUTTON ====== */
+.play-again-btn {
+    padding: 16px 32px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 16px;
+}
+
+.play-again-btn:hover {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+}
+
+.play-again-btn.hidden {
+    display: none;
+}
+
+.btn-voltar {
+    position: fixed;     /* fixa na tela */
+    top: 15px;           /* distância do topo */
+    left: 105px;          /* distância da esquerda */
+    z-index: 9999;       /* fica acima de tudo */
+    padding: 6px 12px;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: #e2e2e2;
+    transform: translateX(-3px);
+}
+
+
+/* ====== RESPONSIVE (Ajustes de Mobile) ====== */
+@media (max-width: 640px) {
+    .sidebar {
+        display: none;
+    }
+
+    .main-area {
+        margin-left: 0;
+    }
+
+    .tile {
+        width: 48px;
+        height: 48px;
+        font-size: 20px;
+    }
+
+    .key {
+        min-width: 28px;
+        height: 45px;
+        font-size: 12px;
+        padding: 0 8px;
+    }
+
+    .key.wide {
+        min-width: 50px;
+        font-size: 10px;
+    }
+
+    .titulo {
+        font-size: 1em;
+    }
+}

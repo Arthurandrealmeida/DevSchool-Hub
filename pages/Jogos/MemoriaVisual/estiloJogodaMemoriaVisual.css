@@ -1,0 +1,427 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.btn-voltar {
+    position: fixed;     /* fixa na tela */
+    top: 15px;           /* distância do topo */
+    left: 105px;          /* distância da esquerda */
+    z-index: 9999;       /* fica acima de tudo */
+    padding: 6px 12px;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: #e2e2e2;
+    transform: translateX(-3px);
+}
+
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 80px; /* bem menor */
+    height: 100vh;
+    background: #ffffff;
+    padding: 15px 10px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* caixas do menu */
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu ul li {
+    margin-bottom:80px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}
+
+.menu ul li a {
+    display: flex;
+    justify-content: center;
+}
+
+/* ícones */
+.icon {
+    width: 32px;
+    height: 32px;
+    transition: 0.3s;
+}
+
+.icon:hover {
+    transform: scale(1.15);
+}
+
+/* ====== ÁREA PRINCIPAL DO JOGO ====== */
+.content {
+    flex: 1;
+    padding: 40px;
+    background: #f2f4f7; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container geral */
+.container {
+    width: 100%;
+    max-width: none;
+    padding: 20px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ====== CABEÇALHO ====== */
+.game-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2rem;
+    color: #222;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.subtitle {
+    color: #555;
+    max-width: 600px;
+    margin: 12px auto 0 auto;
+    font-size: 0.95rem;
+}
+
+/* ====== STATUS E ESTATÍSTICAS ====== */
+.stats {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.stat-card {
+    background: white;
+    padding: 18px 28px;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.stat-value {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.6rem;
+    color: #ffcc00;
+}
+
+/* ====== STATUS MESSAGE ====== */
+.status-message {
+    margin-top: 22px;
+    margin-bottom: 22px;
+}
+
+#statusText {
+    font-size: 1rem;
+    color: #444;
+}
+
+/* ====== BOTÃO ====== */
+.btn-start {
+    background: #ffcc00;
+    color: #222;
+    padding: 18px 38px;
+    border-radius: 14px;
+    border: none;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.button-container {
+    width: 100%;
+    display: flex;
+    justify-content: center !important;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 20px;
+}
+
+.btn-start:hover {
+    background: #e6b800;
+    transform: translateY(-3px);
+}
+
+/* ====== TABULEIRO (estilo Human Benchmark) ====== */
+.game-board {
+    background: #111827;
+    padding: 35px;
+    border-radius: 18px;
+    margin-top: 30px;
+    margin-bottom: 26px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+}
+
+.grid-container {
+    display: grid;
+    gap: 14px;
+
+    /* REMOVE O LIMITE */
+    width: 100%;
+    height: auto;
+    max-width: 750px; 
+
+    margin: auto;
+    padding: 10px;
+}
+
+.grid-square {
+    aspect-ratio: 1;
+    border-radius: 10px;
+    background: #1f2937;
+    border: 2px solid #2d3748;
+    cursor: pointer;
+    transition: 0.15s;
+
+    /* AUMENTO REAL */
+    width: 100px;
+}
+
+
+/* Bloqueia qualquer alteração de cor ao passar o mouse (apenas para o estado padrão) */
+.grid-square:hover {
+    background: #1f2937; /* Cor normal do quadrado */
+    border: 2px solid #2d3748; /* Borda normal do quadrado */
+    transition: none; /* Não queremos transição no hover, apenas no clique */
+}
+.grid-square.active-showing, .grid-square.disabled {
+    cursor: default !important;
+}
+
+/* Impede que o hover mude quadrados já clicados */
+.grid-square.active-clicked:hover {
+    background: #3b82f6 !important;
+    box-shadow: 0 0 15px #3b82f677 !important;
+}
+
+
+
+/* Quando acende */
+.grid-square.active-showing {
+    background: #ffcc00;
+    box-shadow: 0 0 20px #ffcc00aa;
+}
+
+/* Clique */
+.grid-square.active-clicked {
+    background: #3b82f6;
+    box-shadow: 0 0 15px #3b82f677;
+}
+
+/* Erro */
+.grid-square.active-wrong {
+    background: #ef4444;
+    box-shadow: 0 0 15px #ef444477;
+}
+
+/* ====== INSTRUÇÕES ====== */
+.instructions-card {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.07);
+    max-width: 650px;
+}
+
+.instructions-title {
+    font-family: 'Press Start 2P', cursive;
+    color: #222;
+    margin-bottom: 18px;
+}
+
+.instructions-list p {
+    font-size: 0.95rem;
+    color: #444;
+}
+
+/* Centralização geral da página */
+.main-content {
+    width: calc(100% - 80px); /* desconta a sidebar */
+    margin-left: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 30px;
+}
+
+/* Título e subtítulo mais próximos */
+.main-content h1 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.main-area {
+    margin-left: 80px; /* espaço igual à sidebar */
+    width: calc(100% - 80px);
+}
+
+
+.main-content p.sub-title {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+/* Caixa do nível — centralizada */
+.status-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.status-box {
+    background: white;
+    border-radius: 12px;
+    padding: 10px 25px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Grade do jogo */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 colunas */
+    gap: 12px; /* pouco espaço entre os cards */
+    width: 550px;   /* largura ideal sem rolagem */
+    height: auto;
+    margin: 0 auto;
+    justify-items: center;
+}
+
+/* Cards sem espaços extras */
+.card {
+    width: 85px;
+    height: 85px;
+    border-radius: 12px;
+    background: #111827;
+    cursor: pointer;
+}
+
+/* Modo médio: 20 cartas, 5×4 */
+body.modo-medio .grid {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+/* Remover espaços verticais */
+.section {
+    margin: 0;
+    padding: 0;
+}
+
+/* Caixa “Como Jogar” mais centralizada e bonita */
+.rules-box {
+    width: 60%;
+    margin-top: 40px;
+    padding: 25px;
+    border-radius: 16px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* Performance helpers: force compositing layer, prefer transform/opacity */
+.grid-square {
+  will-change: transform, opacity, box-shadow;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  /* transição leve só para suavidade (rápida) */
+  transition: background-color 120ms linear, box-shadow 140ms linear, transform 120ms linear;
+  aspect-ratio: 1;              /* sempre quadrado */
+  width: var(--square-size);    /* tamanho muda conforme nível */
+  border-radius: 6px;
+  transition: background-color .15s, box-shadow .15s;
+}
+
+/* Prefira 'box-shadow' com menor blur se estiver pesado */
+.grid-square.active-showing {
+  background: #ffcc00;
+  box-shadow: 0 0 12px #ffcc00aa; /* blur reduzido */
+}
+
+/* Remover hover durante a fase de memorização */
+.grid-square.active-showing:hover {
+  background-color: #ffcc00 !important;
+  box-shadow: 0 0 12px #ffcc00aa !important;
+  cursor: default;
+}
+
+
+.grid-square.active-clicked {
+  background: #3b82f6;
+  box-shadow: 0 0 12px #3b82f677;
+}
+
+/* active-wrong */
+.grid-square.active-wrong {
+  background: #ef4444;
+  box-shadow: 0 0 12px #ef444477;
+}
+
+/* disabled (visually neutral) */
+.grid-square.disabled {
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* reduce shadow on container for less layout cost */
+.game-board {
+  will-change: contents;
+}
+
+#record-container {
+    background: white;
+    padding: 18px 28px;
+    border-radius: 14px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+
+    font-size: 0.9rem;
+    color: #666;
+    display: flex; 
+    align-items: center; 
+    gap: 8px; /* Adicionado para um pequeno espaço */
+}
+
+#record-container span {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.6rem;
+    color: #ffcc00;
+    
+    /* 4. IMPORTANTE: REMOVER O 'display: block' IMPLÍCITO DA LINHA E DEIXAR COMO FLEX */
+    /* Isso garante que ele se comporte bem com o align-items: center do pai */
+}

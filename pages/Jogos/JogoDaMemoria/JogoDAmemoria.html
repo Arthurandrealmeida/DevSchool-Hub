@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA do DevSchool Hub</title>
+    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloDoJogoDaMemoria.css">
+</head>
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR MINIMALISTA -->
+        <aside class="sidebar">
+            <div class="logo"></div>
+
+            <nav class="menu">
+                <ul>
+                    <li>
+                        <a href="../../../index.html">
+                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../../Anotações/Anotação.html">
+                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../../Jogos/Jogos.html">
+                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../../leetCode/lettcode.html">
+                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../../tarefas/Tarefas.html">
+                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="../../chatbot/chatbot.html">
+                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+
+        <div class="main-area">
+            
+            <main class="content">
+               <h1 class="tituloDoJoguin">Jogo Da Memoria</h1>
+
+               <div class="painel-opcoes">
+            <label for="dificuldade">Dificuldade:</label> 
+            <select id="dificuldade">
+                <option value="facil">Fácil</option>
+                <option value="medio">Médio</option>
+                <option value="dificil" selected>Difícil</option>
+            </select> 
+            </div>    
+        <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+
+
+            <div class="placeholder">
+                <p>Selecione a dificuldade para começar o jogo 👇</p> 
+            </div>
+
+               <div class="grid">
+                <!--Precisamos carregar um script para fazer todas as imagens ficarem aleatoria-->
+               </div>
+            </main>
+        </div>
+
+    </div>
+    <div id="modalFimDeJogo" class="modal">
+    <div class="modal-content">
+        <h2>Parabéns!</h2>
+        <p id="tempoFinal"></p>
+
+        <div class="modal-buttons">
+            <button id="btnReiniciar">Jogar Novamente</button>
+            <button id="btnFechar">Fechar</button>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="JSdoJOGOdaMemoria.js"></script>
+</html>

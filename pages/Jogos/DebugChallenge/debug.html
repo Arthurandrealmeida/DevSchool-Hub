@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Challenge - DevSchool Hub</title>
+
+    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloDegubChallange.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="layout">
+
+        <aside class="sidebar">
+            <div class="logo"></div>
+
+            <nav class="menu">
+                <ul>
+                    <li><a href="/index.html"><img class="icon" src="/imagens/dashboard.png"></a></li>
+                    <li><a href="/hiperLinks/Anotação.html"><img class="icon" src="/imagens/livroIMAGEM.png"></a></li>
+                    <li><a href="/hiperLinks/jogos.html"><img class="icon" src="/imagens/Jogos.png"></a></li>
+                    <li><a href="/hiperLinks/lettcode.html"><img class="icon" src="/imagens/lam2.png"></a></li>
+                    <li><a href="/hiperLinks/tarefas.html"><img class="icon" src="/imagens/tarefa.png"></a></li>
+                    <li><a href="/hiperLinks/chatbot.html"><img class="icon" src="/imagens/RoboPequeno.png"></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-area">
+            <main class="content">
+
+                <div id="screen-idle" class="home-container">
+                    <!-- ÍCONE COM FLOAT -->
+                    <div class="bug-float">🐛</div>
+                    <h1 class="game-title">Debug Challenge</h1>
+                    <p class="game-subtitle">Encontre o bug em cada código! Clique na opção que resolve o erro.</p>
+                    <!-- MODOS DE JOGO -->
+                        <div class="mode-container">
+                            <button class="mode-btn easy">Fácil</button>
+                            <button class="mode-btn medium">Médio</button>
+                            <button class="mode-btn hard">Difícil</button>
+                        </div>
+                    <!-- BOTÃO PRINCIPAL -->
+                    <button id="btn-start" class="start-glow">
+                        ▶ Começar Jogo
+                    </button>
+                </div>
+
+
+                <div id="screen-playing" class="screen hidden">
+
+                    <div class="game-header">
+                        <div class="header-left">
+                            <span class="bug-small">🐛</span>
+                            <h1 class="header-title">Debug Challenge</h1>
+                        </div>
+                        <button id="btn-reset" class="pixel-button destructive">
+                            🔄Voltar
+                        </button>
+                    </div>
+
+                    <div class="stats-bar">
+                        <div class="stat-box">
+                            <span class="stat-label">LEVEL</span>
+                            <span id="stat-level" class="stat-value">1</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">SCORE</span>
+                            <span id="stat-score" class="stat-value primary">0</span>
+                        </div>
+
+                        <div class="stat-box">
+                            <span class="stat-label">STREAK</span>
+                            <span id="stat-streak" class="stat-value warning">0</span>
+                        </div>
+
+                        <div class="stat-box time-box">
+                            <span class="stat-label">TEMPO</span>
+                            <span id="stat-time" class="stat-value">60</span>
+                            <div class="time-bar">
+                                <div id="time-progress" class="time-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="game-card">
+                        <div class="card-header">
+                            <div class="challenge-info">
+                                <h3 id="challenge-title" class="challenge-title"></h3>
+                                <p id="challenge-description" class="challenge-description"></p>
+                            </div>
+                            <button id="btn-hint" class="pixel-button hint-btn">💡 Dica</button>
+                        </div>
+
+                        <div id="hint-box" class="hint-box hidden">
+                            <p id="hint-text"></p>
+                        </div>
+
+                        <div class="code-editor">
+                            <div class="editor-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="file-name">script.js</span>
+                            </div>
+                            <div id="code-display" class="code-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="screen-gameover" class="screen hidden">
+                    <div class="gameover-content">
+                        <div class="trophy-icon">🏆</div>
+                        <h1 class="game-title">Game Over!</h1>
+
+                        <div class="final-stats">
+                            <div class="final-stat">
+                                <span class="final-label">SCORE</span>
+                                <span id="final-score" class="final-value primary">0</span>
+                            </div>
+                            <div class="final-stat">
+                                <span class="final-label">LEVEL</span>
+                                <span id="final-level" class="final-value">1</span>
+                            </div>
+                        </div>
+
+                        <p id="hints-used" class="hints-info"></p>
+
+                        <button id="btn-restart" class="pixel-button">
+                            🔄 Jogar Novamente
+                        </button>
+
+                        <button id="btn-reset-gameover" class="pixel-button destructive">
+                            🔄Voltar
+                        </button>
+
+                        <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+
+                    </div>
+                </div>
+        <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+            </main>
+        </div>
+    </div>
+
+    <script src="JSdoDebugChallenge.js"></script>
+</body>
+</html>

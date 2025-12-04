@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempo de Reação | DevSchool Hub</title>
+    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloTempodeReação.css">
+</head>
+
+<body>
+    <div class="layout">
+
+        <!-- SIDEBAR ORIGINAL DO SEU SITE -->
+        <aside class="sidebar">
+            <nav class="menu">
+                <ul>
+                    <li><a href="/index.html"><img class="icon" src="/imagens/dashboard.png" alt="Dashboard"></a></li>
+                    <li><a href="/hiperLinks/Anotação.html"><img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações"></a></li>
+                    <li><a href="/hiperLinks/jogos.html"><img class="icon" src="/imagens/Jogos.png" alt="Jogos"></a></li>
+                    <li><a href="/hiperLinks/lettcode.html"><img class="icon" src="/imagens/lam2.png" alt="LeetCode"></a></li>
+                    <li><a href="/hiperLinks/tarefas.html"><img class="icon" src="/imagens/tarefa.png" alt="Tarefas"></a></li>
+                    <li><a href="/hiperLinks/chatbot.html"><img class="icon" src="/imagens/RoboPequeno.png" alt="IA"></a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL -->
+        <div class="main-area">
+            <main class="content">
+
+                <!-- TODO O CONTEÚDO DO SEGUNDO HTML COMEÇA AQUI -->
+                <header>
+                    <h1>Tempo de Reação</h1>
+                    <p class="subtitle">Teste sua velocidade de reação e melhore seus reflexos</p>
+                </header>
+
+                <div id="game-container">
+
+                    <div id="game-box" class="game-box idle">
+                        <span id="game-message">Clique para começar</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-label">Média</span>
+                            <span id="average-time" class="stat-value">--</span>
+                            <span class="stat-unit">ms</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <span class="stat-label">Melhor</span>
+                            <span id="best-time" class="stat-value">--</span>
+                            <span class="stat-unit">ms</span>
+                        </div>
+
+                        <div class="stat-card">
+                            <span class="stat-label">Tentativas</span>
+                            <span id="attempts" class="stat-value">0</span>
+                        </div>
+                    </div>
+
+                    <div id="history-section" class="history-section hidden">
+                        <h3>Histórico</h3>
+                        <div id="history-list" class="history-list"></div>
+                    </div>
+
+                </div>
+
+                <footer>
+                    <p>Quando a caixa ficar <span class="highlight">verde</span>, clique o mais rápido possível!</p>
+                </footer>
+
+                                 <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+
+                <!-- FIM DO CONTEÚDO DO SEGUNDO HTML -->
+            </main>
+        </div>
+
+    </div>
+
+    <script src="JSdoTempoDeReação.js"></script>
+</body>
+</html>

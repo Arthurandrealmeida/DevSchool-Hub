@@ -1,0 +1,247 @@
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: #ffffff;
+    padding: 20px 15px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    height: 40px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #3f8cff, #c568ff);
+    display: flex;              
+    justify-content: center;    
+    align-items: center;       
+}
+
+.texto-logo {                
+    color: rgb(0, 255, 76);               
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+}
+
+.menu ul li {
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #000000;
+    transition: 0.4s;
+}
+
+.menu ul li:hover {
+    background: #f3f5ff;
+}
+
+h5 {
+    font-size: medium;
+}
+
+#imagem-icones {
+    width: 20px;
+}
+
+.icone-do-Dashboard {
+    width: 25px;
+}
+
+
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.topbar {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    background: white;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 55px;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+.escolha {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bolder;
+    font-size: larger;
+    color: #6b6a6a;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+
+.leetcode-layout {
+  display: flex;
+  flex-direction: row-reverse; /* Mantém o menu à direita */
+  gap: 40px;
+
+  width: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+
+  margin-top: 20px;
+}
+
+/* CATEGORIAS */
+.leetcode-categories {
+  width: 440px;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 1px solid #dfdddd;
+}
+
+
+.leetcode-categories ul {
+  list-style: none;
+  padding: 0;
+}
+
+.leetcode-categories a {
+  display: block;
+  padding: 12px 0;
+  text-decoration: none;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  font-size: 20px;
+}
+
+.leetcode-categories a:hover {
+  color: #7d4bff;
+}
+
+/* ÁREA DE PROBLEMAS */
+.leetcode-problems {
+  flex: 1;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  border: 1px solid #dfdddd;
+}
+
+
+/* SEÇÕES (FACIL, MEDIO, DIFICIL) */
+.problem-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e5e5;
+  scroll-margin-top: 80px;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  border-radius: 10px;
+  display: inline-block;
+  color: white;
+}
+
+.easy {
+  background: #4CAF50;
+}
+
+.medium {
+  background: #FF9800;
+}
+
+.hard {
+  background: #e53935;
+}
+
+/* PROBLEMAS */
+.problem {
+  background: white;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  border: 1px solid #ececec;
+}
+
+.leetcode-problems pre {
+    white-space: pre-wrap;     /* quebra linha automaticamente */
+    word-wrap: break-word;     /* evita texto gigante causar scroll */
+    overflow-x: auto;          /* só mostra scroll se realmente precisar */
+    max-width: 100%;           /* impede de ultrapassar o card */
+    font-family: "Consolas", monospace; /* deixa padrão de código */
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+
+.problem h3 {
+  margin: 0 0 8px 0;
+}
+
+details summary {
+  cursor: pointer;
+  font-weight: bold;
+  color: #7d4bff;
+}
+
+details pre {
+  background: #f9f9f9;
+  padding: 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  border: 1px solid #eee;
+}
+
+nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+}

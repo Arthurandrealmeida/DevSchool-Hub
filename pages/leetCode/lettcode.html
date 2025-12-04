@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>leetCode DevSchool Hub</title>
+    <link rel="shortcut icon" href="../../imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="stylelettcode.css">
+</head>
+<body>
+    <div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
+
+        <div class ="menu">
+        <nav>
+            <ul>
+                <h5>Menu Principal</h5>
+                <li>
+                    <a href="../../index.html">
+                        <img id="imagem-icones" src="../../imagens/dashboard.png" alt="">Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="../Anotações/Anotação.html">
+                        <img id="imagem-icones" src="../../imagens/livroIMAGEM.png" alt="">Anotações
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Jogos/Jogos.html">
+                        <img id="imagem-icones" src="../../imagens/Jogos.png" alt="">Jogos
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../leetCode/lettcode.html">
+                        <img id="imagem-icones" src="../../imagens/lam2.png" alt="">LeetCode
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../tarefas/Tarefas.html">
+                        <img id="imagem-icones" src="../../imagens/tarefa.png" alt="">Tarefas
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../chatbot/chatbot.html">
+                        <img id="imagem-icones" src="../../imagens/RoboPequeno.png" alt="">IA
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    </aside>
+
+    <div class="main-area">
+
+        <header class="topbar">
+            <div class="logo-area">
+                <img src="../../imagens/LogoDeEstudante.png" alt="logo" class="logo-img">
+                <h1>DevSchool Hub</h1>
+            </div>
+
+            <div class="divider"></div>
+        </header>
+
+        <main class="content">
+           <div class="leetcode-layout">
+
+  <aside class="leetcode-categories">
+    <h2>Categorias</h2>
+    <ul>
+      <li><a href="#facil">Fácil</a></li>
+      <li><a href="#medio">Médio</a></li>
+      <li><a href="#dificil">Difícil</a></li>
+    </ul>
+  </aside>
+
+  <section class="leetcode-problems">
+
+    <h1>Escolha uma categoria →</h1>
+
+    <!-- ==========================
+             F Á C I L
+    =============================-->
+    <div id="facil" class="problem-section">
+      <h2 class="section-title easy">Problemas Fáceis</h2>
+
+      <article class="problem">
+        <h3>1. Two Sum</h3>
+        <p>Dado um array e um alvo, retorne os índices que somam o alvo.</p>
+        <details>
+          <summary>Ver Resposta</summary>
+          <pre>Use um dicionário/hashmap enquanto percorre o array. Para cada número, calcule qual valor falta para chegar no alvo (target - número). Se esse valor já estiver no dicionário, você encontrou a dupla e retorna os dois índices. Se não estiver, salve o número atual no dicionário para futuras verificações. Isso resolve o problema em tempo O(n).</pre>
+        </details>
+      </article>
+
+      
+
+      <article class="problem">
+        <h3>2. Palindrome Number</h3>
+        <p>Verifique se um número é palíndromo sem converter para string.</p>
+        <details>
+          <summary>Ver Resposta</summary>
+          <pre>Você compara o número com sua versão invertida reconstruída matematicamente. Para inverter, vai pegando o último dígito com % 10 e formando o número ao contrário multiplicando por 10 e somando. Se o número original for igual ao invertido no final, ele é um palíndromo.</pre>
+        </details>
+      </article>
+    </div>
+
+    <!-- ==========================
+             M É D I O
+    =============================-->
+    <div id="medio" class="problem-section">
+      <h2 class="section-title medium">Problemas Médios</h2>
+
+      <article class="problem">
+        <h3>3. Roman to Integer</h3>
+        <p>Converta algarismos romanos para inteiros.</p>
+        <details>
+          <summary>Ver Resposta</summary>
+          <pre>Você percorre a string somando o valor de cada símbolo romano. Porém, quando um símbolo menor vem antes de um maior (como IV ou IX), você subtrai em vez de somar. Assim, basta comparar o valor atual com o próximo: se o próximo for maior, subtraia; senão, some.</pre>
+        </details>
+      </article>
+
+      <article class="problem">
+        <h3>4. Add Two Numbers</h3>
+        <p>Soma dois números representados por listas ligadas.</p>
+        <details>
+          <summary>Ver Resposta</summary>
+          <pre>Você percorre as duas listas nó por nó, somando os valores e carregando o carry (vai-um) quando a soma passa de 9. Cria um novo nó com o resultado de cada soma parcial. Avança nas listas até ambas acabarem e adiciona o carry final, se existir.</pre>
+        </details>
+      </article>
+    </div>
+
+    <!-- ==========================
+             D I F Í C I L
+    =============================-->
+    <div id="dificil" class="problem-section">
+      <h2 class="section-title hard">Problemas Difíceis</h2>
+
+      <article class="problem">
+        <h3>5. Median of Two Sorted Arrays</h3>
+        <p>Encontre a mediana de dois arrays ordenados.</p>
+        <details>
+          <summary>Ver Resposta</summary>
+          <pre>Você combina os dois arrays mantendo a ordem sem precisar juntá-los de fato. Avança como em um merge até chegar ao meio da fusão. A mediana será o valor do meio (ou a média dos dois valores centrais) dependendo se o total de elementos é ímpar ou par.</pre>
+        </details>
+      </article>
+
+      <article class="problem">
+        <h3>6. Merge K Sorted Lists</h3>
+        <p>Junte K listas ordenadas em uma só.</p>
+        <details>
+          <summary>Ver Resposta</summary>
+          <pre>Use uma min-heap para sempre pegar o menor nó entre as K listas. Insira na heap o primeiro nó de cada lista e vá removendo o menor enquanto adiciona o próximo dessa mesma lista. O resultado é construído em ordem crescente até todas as listas acabarem.</pre>
+        </details>
+      </article>
+    </div>
+
+  </section>
+</div>
+
+        </main>
+    </div>
+</div>
+</body>
+</html>
+

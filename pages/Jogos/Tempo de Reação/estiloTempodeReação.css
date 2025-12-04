@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --background: hsl(210, 20%, 96%);
+  --foreground: hsl(222, 47%, 11%);
+  --card: hsl(0, 0%, 100%);
+  --primary: hsl(142, 76%, 36%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --muted: hsl(210, 20%, 90%);
+  --muted-foreground: hsl(215, 16%, 47%);
+  --border: hsl(214, 32%, 91%);
+  --sidebar-bg: hsl(222, 47%, 11%);
+  --sidebar-foreground: hsl(210, 40%, 98%);
+  --sidebar-hover: hsl(222, 47%, 18%);
+  --sidebar-active: hsl(142, 76%, 36%);
+  --game-waiting: hsl(0, 84%, 60%);
+  --game-ready: hsl(142, 76%, 36%);
+  --game-early: hsl(38, 92%, 50%);
+  --radius: 0.75rem;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Fredoka', sans-serif;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 90px;
+    height: 100vh;
+    background: #ffffff;
+    padding: 15px 10px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center;  <-- O .sidebar já faz isso */
+    gap: 20px;
+}
+
+.menu {
+    width: 100%; /* Garante que o menu ocupe toda a largura da sidebar */
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0; /* REMOVIDO: O padding estava faltando na definição original */
+    margin: 0;  /* REMOVIDO: O margin estava faltando na definição original */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* ESTA É A MUDANÇA PRINCIPAL: Centraliza os itens <li> na ul */
+    gap: 20px; /* Aumentei o gap para ficar mais espaçado como na imagem */
+}
+
+.menu ul li {
+    /* Não precisa de CSS aqui se o <ul> estiver centralizando */
+    margin: 0; /* Zera qualquer margem remanescente */
+}
+
+.menu li a {
+    width: 50px; /* Aumentei para dar espaço ao ícone */
+    height: 50px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Garante que o ícone esteja centralizado DENTRO do <a> */
+    color: rgba(248, 250, 252, 0.6);
+    transition: all 0.2s ease;
+    text-decoration: none;
+    background-color: transparent; /* Certifique-se de que não há fundo inesperado */
+}
+
+/* ícones */
+.icon {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+    display: block;
+    /* REMOVIDO: O display: block foi corrigido no <a> */
+}
+
+.menu li a:hover {
+  transform: scale(1.5);
+}
+
+.menu li a.active {
+  background-color: var(--sidebar-active);
+  color: var(--sidebar-foreground);
+}
+
+/* Main Area */
+.main-area {
+  flex: 1;
+  margin-left: 64px;
+}
+
+.content {
+  max-width: 896px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+header {
+  margin-bottom: 32px;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin-bottom: 8px;
+}
+
+header .subtitle {
+  color: var(--muted-foreground);
+}
+
+/* Game Container */
+#game-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.game-box {
+  width: 100%;
+  height: 280px;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.game-box span {
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.game-box.idle {
+  background-color: var(--primary);
+}
+
+.game-box.waiting {
+  background-color: var(--game-waiting);
+}
+
+.game-box.ready {
+  background-color: var(--game-ready);
+  box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+}
+
+.game-box.early {
+  background-color: var(--game-early);
+}
+
+.game-box.result {
+  background-color: var(--primary);
+}
+
+.game-box:hover {
+  transform: scale(1.01);
+}
+
+.game-box:active {
+  transform: scale(0.99);
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.stat-unit {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+}
+
+/* History Section */
+.history-section {
+  background-color: var(--card);
+  border-radius: var(--radius);
+  padding: 20px;
+  border: 1px solid var(--border);
+}
+
+.history-section.hidden {
+  display: none;
+}
+
+.history-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 12px;
+}
+
+.history-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-item {
+  background-color: var(--muted);
+  padding: 6px 12px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--foreground);
+}
+
+/* Footer */
+footer {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+}
+
+footer .highlight {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  header h1 {
+    font-size: 1.5rem;
+  }
+
+  .game-box {
+    height: 200px;
+  }
+
+  .game-box span {
+    font-size: 1.25rem;
+  }
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  display: block;
+}
+
+.btn-voltar {
+    position: fixed;     /* fixa na tela */
+    top: 15px;           /* distância do topo */
+    left: 105px;          /* distância da esquerda */
+    z-index: 9999;       /* fica acima de tudo */
+    padding: 6px 12px;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: #e2e2e2;
+    transform: translateX(-3px);
+}

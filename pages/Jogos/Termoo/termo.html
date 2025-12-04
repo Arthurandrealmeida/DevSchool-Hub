@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Termo</title>
+    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="estiloTermoo.css">
+</head>
+<body>
+    <div class="layout">
+
+        <aside class="sidebar">
+            <div class="logo"></div>
+
+            <nav class="menu">
+                <ul>
+                    <li>
+                        <a href="/index.html">
+                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/Anotação.html">
+                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/jogos.html">
+                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/lettcode.html">
+                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/tarefas.html">
+                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/hiperLinks/chatbot.html">
+                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-area">
+            <header class="header">
+                <div class="game-header"> 
+                    <h1 class="titulo">TERMO</h1>
+                    <button id="reset-btn" class="reset-btn">↻</button>
+                </div>
+            </header>
+
+            <main class="game-container">
+                <div id="game-board" class="game-board"></div>
+
+                <div id="game-message" class="message-container hidden"></div>
+                
+                <div id="keyboard" class="keyboard"></div>
+
+                <button id="play-again-btn" class="play-again-btn hidden">JOGAR NOVAMENTE</button>
+                <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+            </main>
+        </div>
+    </div>
+</body>
+<script src="JSdoTermo.js"></script>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarefas do DevSchool</title>
+    <link rel="shortcut icon" href="../../imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="styleTarefas.css">
+</head>
+<body>
+    <div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
+
+        <div class ="menu">
+        <nav>
+            <ul>
+                <h5>Menu Principal</h5>
+                <li>
+                    <a href="../../index.html">
+                        <img id="imagem-icones" src="../../imagens/dashboard.png" alt="">Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="../Anotações/Anotação.html">
+                        <img id="imagem-icones" src="../../imagens/livroIMAGEM.png" alt="">Anotações
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../Jogos/Jogos.html">
+                        <img id="imagem-icones" src="../../imagens/Jogos.png" alt="">Jogos
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../leetCode/lettcode.html">
+                        <img id="imagem-icones" src="../../imagens/lam2.png" alt="">LeetCode
+                    </a>
+                </li>
+
+                <li>
+                    <a href="../tarefas/Tarefas.html">
+                        <img id="imagem-icones" src="../../imagens/tarefa.png" alt="">Tarefas
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="../chatbot/chatbot.html">
+                        <img id="imagem-icones" src="../../imagens/RoboPequeno.png" alt="">IA
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    </aside>
+
+    <div class="main-area">
+
+        <header class="topbar">
+            <div class="logo-area">
+                <img src="../../imagens/LogoDeEstudante.png" alt="logo" class="logo-img">
+                <h1>DevSchool Hub</h1>
+            </div>
+
+            <div class="divider"></div>
+        </header>
+
+        <main class="content">
+           <div class="tarefas-container">
+
+    <div class="tarefas-header">
+        <div>
+            <h1 class="titulo-tarefas">Tarefas & Lembretes</h1>
+            <p class="subtitulo-tarefas">Gerencie suas atividades e prazos</p>
+        </div>
+
+        <button class="btn-nova-tarefa">
+            <span>+</span> Nova Tarefa
+        </button>
+    </div>
+
+    <div class="colunas-tarefas">
+
+        <!-- COLUNA ATIVAS -->
+        <section class="coluna-tarefa">
+            <h2 class="titulo-coluna">Ativas</h2>
+
+        </section>
+
+        <!-- COLUNA CONCLUÍDAS -->
+        <section class="coluna-tarefa">
+            <h2 class="titulo-coluna">Concluídas</h2>
+
+        </section>
+
+    </div>
+
+</div>
+
+<div class="modal" id="modal-create">
+    <div class="modal-content">
+        <h2>Nova Tarefa</h2>
+
+        <div class="form-field">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" placeholder="Digite o título da tarefa...">
+        </div>
+
+        <div class="modal-buttons">
+            <button id="cancelar" class="btn-cancelar">Cancelar</button>
+            <button id="criar" class="btn-criar">Criar</button>
+        </div>
+    </div>
+</div>
+
+
+        </main>
+    </div>
+</div>
+</body>
+<script src="Tarefas.js"></script>
+</html>

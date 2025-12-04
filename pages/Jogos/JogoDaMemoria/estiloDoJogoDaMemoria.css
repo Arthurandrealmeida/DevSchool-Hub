@@ -1,0 +1,400 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* =========================================================
+   BASE
+========================================================= */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+.sidebar {
+    width: 80px;
+    height: 100vh;
+    background: #ffffff;
+    padding: 15px 10px;
+    border-right: 1px solid #99999954;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu {
+    width: 100%;
+}
+
+.menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu ul li {
+    margin: 0;
+}
+
+.menu li a {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(248, 250, 252, 0.6);
+    text-decoration: none;
+    transition: 0.2s ease;
+    background: transparent;
+}
+
+.icon {
+    width: 28px;
+    height: 28px;
+    display: block;
+    object-fit: contain;
+}
+
+.icon:hover {
+    transform: scale(1.4);
+}
+
+/* =========================================================
+   ÁREA PRINCIPAL
+========================================================= */
+.main-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    background: #f8f8f8;
+}
+
+.tituloDoJoguin {
+    color: #333;
+    font-size: 1.5em;
+    font-family: 'Press Start 2P', cursive;
+    display: flex;
+    justify-content: center;
+}
+
+/* =========================================================
+   GRID E CARTAS
+========================================================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(270px, 120px));
+    gap: 15px;
+    justify-content: center;
+}
+
+.card {
+    width: 100%;
+    aspect-ratio: 3/4;
+    border-radius: 5px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 400ms ease;
+}
+
+.face {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 5px;
+    background-size: cover;
+    background-position: center;
+    backface-visibility: hidden;
+    transition: 400ms ease;
+}
+
+.back {
+    background-image: url(../../../imagens/imagensDoJogoDaMemoria/back2.png);
+    transform: rotateY(0deg);
+}
+
+.front {
+    transform: rotateY(180deg);
+}
+
+.card.revelarCard {
+    transform: rotateY(180deg);
+}
+
+.cardDisabilidado {
+    transform: rotateY(180deg);
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.painel-opcoes {
+    padding: 10px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+.modal {
+    z-index: 1;
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s ease;
+}
+
+.modal.show {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-content {
+    background: #ffffff;
+    padding: 25px;
+    width: 350px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    animation: subir 0.4s ease;
+}
+
+@keyframes subir {
+    from { transform: translateY(40px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#btnReiniciar {
+    background: #4CAF50;
+    color: #fff;
+}
+
+#btnReiniciar:hover {
+    background: #3e8e41;
+}
+
+#btnFechar {
+    background: #d9534f;
+    color: #fff;
+}
+
+#btnFechar:hover {
+    background: #c9302c;
+}
+
+/* =========================================================
+   PLACEHOLDER
+========================================================= */
+.placeholder {
+    margin-top: 120px;
+    text-align: center;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 18px;
+    color: #444;
+    animation: blink 1s infinite alternate;
+}
+
+@keyframes blink {
+    from { opacity: 0.3; }
+    to   { opacity: 1; }
+}
+
+/* =========================================================
+   BTN VOLTAR
+========================================================= */
+.btn-voltar {
+    position: fixed;     /* fixa na tela */
+    top: 15px;           /* distância do topo */
+    left: 105px;          /* distância da esquerda */
+    z-index: 9999;       /* fica acima de tudo */
+    padding: 6px 12px;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: #e2e2e2;
+    transform: translateX(-3px);
+}
+
+/* =========================================================
+   DIFERENTES MODOS
+========================================================= */
+body.modo-facil .grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+body.modo-medio .grid {
+    grid-template-columns: repeat(7, 1fr);
+    width: 85%;
+    height: calc(100vh - 40%);
+    margin:0 auto 
+}
+
+body.modo-dificil .grid {
+    grid-template-columns: repeat(8, 1fr);
+    width: 85%;
+    height: calc(100vh - 200px);
+}
+
+/* =========================================================
+   MEDIA QUERIES
+========================================================= */
+
+@media (min-width: 1600px) {
+    body.modo-dificil .grid {
+        width: 70%;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 20px;
+        margin: 0 auto;
+    }
+
+
+
+    body.modo-facil .grid {
+        width: 80%;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 20px;
+        margin: 0 auto;
+    }
+}
+
+@media (min-width: 1501px) and (max-width: 1599px) {
+    body.modo-facil .grid {
+        width:57% ;
+    }
+ }
+
+
+@media (max-width: 1500px) {
+        body.modo-dificil .grid {
+        width: 9% !important;
+        margin: 0 auto;         
+        height: calc(100vh - 100%);
+    }
+
+
+    body.modo-facil .grid {
+        width: 70%;
+    }
+}
+
+/* 1200px */
+@media (max-width: 1200px) {
+    body.modo-dificil .grid {
+        width: 90% !important;
+        height: calc(100vh - 100%) !important;
+        margin: 0 auto;         
+    }
+
+}
+
+
+@media (min-width: 901px) and (max-width: 1199px) {
+    body.modo-dificil .grid {
+        width: calc(100% - 80px); 
+        max-width: 800px;        
+        margin: 0 auto;         
+        grid-template-columns: repeat(7, 1fr);
+    }
+
+    body.modo-medio .grid {
+        width: calc(100% - 80px);
+        max-width: 900px;
+        margin: 0 auto;
+        grid-template-columns: repeat(6, 1fr);
+    }
+
+    body.modo-facil .grid {
+        width: 80%;
+        height: calc(100vh - 100%); 
+               
+    }
+    
+}
+
+/* Tablets */
+@media (max-width: 900px) {
+    body.modo-dificil .grid {
+        width: 79% !important;
+        grid-template-columns: repeat(6, 1fr);
+        margin: 0 auto;         
+        margin-left: center;
+        margin-right: center;
+    }
+
+    body.modo-medio .grid {
+        width: 79% !important;
+        grid-template-columns: repeat(4, 1fr);
+        margin: 0 auto;         
+        margin-left: center;
+        margin-right: center;
+    }
+
+    body.modo-facil .grid {
+        width:100% ; 
+   }
+
+}
+
+/* Celular */
+@media (max-width: 600px) {
+    body.modo-dificil .grid {
+        grid-template-columns: repeat(8, 1fr);
+        width: 500px !important;
+        height: calc(100vh - 80%) !important;
+        margin: 0 auto;         
+    }
+
+    body.modo-medio .grid {
+        grid-template-columns: repeat(7, 1fr);
+        width: 100% !important;
+        height: calc(100vh - 100%) !important;
+        margin: 0 auto;         
+    }
+    
+}
+
+@media (min-width: 1201px) and (max-width: 1499px) {
+
+    body.modo-dificil .grid {
+        width: 70% !important;
+        height: calc(100vh - 100%) !important;
+        margin: 0 auto;
+    }
+
+}

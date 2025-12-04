@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anotações do DevSchool</title>
+    <link rel="shortcut icon" href="../../imagens/IconDevSchool.png" type="image/x-icon">
+    <link rel="stylesheet" href="styleAnotação.css">
+</head>
+
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
+
+        <div class="menu">
+            <nav>
+                <ul>
+                    <h5>Menu Principal</h5>
+                    <li><a href="../../index.html"><img id="imagem-icones" src="../../imagens/dashboard.png"> Dashboard</a></li>
+                    <li><a href="../Anotações/Anotação.html"><img id="imagem-icones" src="../../imagens/livroIMAGEM.png"> Anotações</a></li>
+                    <li><a href="../Jogos/Jogos.html"><img id="imagem-icones" src="../../imagens/Jogos.png"> Jogos</a></li>
+                    <li><a href="../leetCode/lettcode.html"><img id="imagem-icones" src="../../imagens/lam2.png"> LeetCode</a></li>
+                    <li><a href="../tarefas/Tarefas.html"><img id="imagem-icones" src="../../imagens/tarefa.png"> Tarefas</a></li>
+                    <li><a href="../chatbot/chatbot.html"><img id="imagem-icones" src="../../imagens/RoboPequeno.png"> IA</a></li>
+                </ul>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="main-area">
+
+        <header class="topbar">
+            <div class="logo-area">
+                <img src="../../imagens/LogoDeEstudante.png" class="logo-img">
+                <h1>DevSchool Hub</h1>
+            </div>
+
+            <div class="divider"></div>
+        </header>
+
+        <main class="content">
+            <h1>Suas Anotações</h1>
+            <p class="Texto-anotação">Organize e revise suas anotações</p>
+
+            <div class="top-tools">
+                <input type="text" class="search-bar" placeholder="Pesquisar anotações...">
+                <button class="new-note-btn">Nova Anotação</button>
+            </div>
+
+            <!-- ÁREA ONDE OS CARDS SERÃO ADICIONADOS -->
+            <div class="notes-area" id="notes-area"></div>
+        </main>
+    </div>
+</div>
+
+
+<div class="modal" id="modal-create">
+    <div class="modal-content">
+        <h2>Nova Anotação</h2>
+
+        <div class="form-field">
+    <label for="titulo">Título:</label>
+    <input type="text" id="titulo">
+</div>
+
+<div class="form-field">
+    <label for="conteudo">Conteúdo:</label>
+    <textarea id="conteudo"></textarea>
+</div>
+
+
+
+        <div class="modal-buttons">
+            <button id="cancelar">Cancelar</button>
+            <button id="criar">Criar</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="modal-view">
+    <div class="modal-content">
+        <h2 id="modal-titulo"></h2>
+        <p id="modal-texto"></p>
+        <button id="fechar-view">Fechar</button>
+    </div>
+</div>
+
+<script src="anotações.js"></script>
+</body>
+</html>
