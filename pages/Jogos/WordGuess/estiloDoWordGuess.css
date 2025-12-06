@@ -1,0 +1,343 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* ====== LAYOUT GERAL ====== */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+  width: 80px;
+  height: 100vh;
+  background: #ffffff;
+  padding: 15px 10px;
+  border-right: 1px solid #99999954;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+/* caixas do menu */
+.menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu ul li {
+  margin-bottom: 80px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.menu ul li a {
+  display: flex;
+  justify-content: center;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  transition: 0.3s;
+}
+.icon:hover {
+  transform: scale(1.15);
+}
+
+/* ====== MAIN ====== */
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1;
+  padding: 20px;
+  background: #f8f8f8;
+}
+
+.tituloDoJoguin {
+  color: #333;
+  font-size: 1.2rem;
+  font-family: "Press Start 2P", cursive;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+/* JOGO */
+#game-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  min-width: 240px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  margin-top:12px
+}
+
+.controls input {
+  padding: 12px;
+  font-size: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.controls button {
+  padding: 12px;
+  font-size: 15px;
+  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background: #2b6df6;
+  color: white;
+}
+
+.controls button:hover {
+  filter: brightness(1.1);
+}
+
+.controls button:active {
+  transform: scale(0.98);
+}
+
+#feedback {
+  font-weight: bold;
+  min-height: 1.2em;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 6px;
+}
+
+
+/* Responsivo */
+@media (max-width: 900px) {
+  #globe-area {
+    width: 360px;
+    height: 360px;
+  }
+}
+
+:root {
+  --bg: #f7f7f8;
+  --panel: #fff;
+  --accent: #222;
+  --muted: #666;
+  --success: #2c9f4a;
+  --gap: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--accent);
+}
+
+.card {
+  width: 760px;
+  background: var(--panel);
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  padding: 20px;
+}
+h1 {
+  font-family: "Press Start 2P", Arial, sans-serif;
+  font-size: 18px;
+  text-align: center;
+  margin: 0 0 8px 0;
+  color: #111;
+}
+:root {
+        --bg: #f6f7fb;
+        --card: #fff;
+        --muted: #666;
+        --accent: #0b3d91;
+        --success: #2ca02c;
+        --wrong: #c0392b;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: Inter, system-ui, Arial, sans-serif;
+        background: var(--bg);
+        color: #111;
+      }
+      .wrap {
+        max-width: 1220px;
+        margin: 20px auto;
+        padding: 18px;
+      }
+      .panel {
+        background: var(--card);
+        padding: 14px;
+        border-radius: 10px;
+        box-shadow: 0 6px 28px rgba(15, 20, 30, 0.06);
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+      }
+      h1 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .meta {
+        color: var(--muted);
+        font-size: 13px;
+        display: flex;
+    }
+
+    .markBtn {
+      display: flex;
+    }
+      
+      input[type="text"] {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        min-width: 320px;
+        font-size: 15px;
+      }
+      button {
+        padding: 10px 12px;
+        border-radius: 8px;
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        cursor: pointer;
+        font-weight: 600;
+      }
+      button.secondary {
+        background: #666;
+      }
+      .map-row {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+      #map-area {
+        flex: 1;
+        background: #d4f3f5;
+        border-radius: 8px;
+        border: 1px solid #274cb3;
+        min-width: 600px;
+        min-height: 400px;
+        
+      }
+      #info {
+        width: 320px;
+        min-width: 260px;
+      }
+      svg {
+        width: 100%;
+        height: 520px;
+        display: block;
+      }
+      .country{
+  fill:#f6f6f6;
+  stroke:#333;
+  stroke-width:1.2;
+  cursor:pointer;
+  transition:fill .18s,stroke .12s
+}
+
+      .country:hover {
+        stroke: #333;
+        stroke-width: 0.8;
+      }
+      .country.correct {
+        fill: var(--success) !important;
+        opacity: 0.98;
+      }
+      .country.partial {
+        fill: #a4e7b1;
+      }
+      #found-panel {
+        background: #fafafa;
+        border-radius: 8px;
+        padding: 10px;
+        margin-top: 12px;
+        border: 1px solid #eee;
+      }
+      #found-list {
+        list-style: none;
+        padding-left: 12px;
+        margin: 8px 0;
+      }
+      #found-list li {
+        padding: 6px 4px;
+        border-bottom: 1px dashed #eee;
+        font-size: 14px;
+      }
+      .small {
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 6px;
+      }
+      @media (max-width: 980px) {
+        .map-row {
+          flex-direction: column;
+        }
+        svg {
+          height: 520px;
+        }
+        #info {
+          width: 100%;
+        }
+      }
+
+.btn-voltar {
+    position: fixed;     /* fixa na tela */
+    top: 15px;           /* distância do topo */
+    left: 105px;          /* distância da esquerda */
+    z-index: 9999;       /* fica acima de tudo */
+    padding: 6px 12px;
+    background: #f0f0f0;
+    color: #333;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: #e2e2e2;
+    transform: translateX(-3px);
+}

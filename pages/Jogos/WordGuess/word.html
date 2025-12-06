@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GeoGuess — Globo 3D</title>
+  <link rel="stylesheet" href="estiloDoWordGuess.css" />
+  <link rel="shortcut icon" href="/imagens/IconDevSchool.png">
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+</script>
+
+</head>
+<body>
+  <div class="layout">
+    <!-- SIDEBAR MINIMALISTA -->
+    <aside class="sidebar">
+      <div class="logo"></div>
+      <nav class="menu">
+        <ul>
+          <li><a href="/index.html"><img class="icon" src="/imagens/dashboard.png" alt="Dashboard"></a></li>
+          <li><a href="/hiperLinks/Anotação.html"><img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações"></a></li>
+          <li><a href="/hiperLinks/jogos.html"><img class="icon" src="/imagens/Jogos.png" alt="Jogos"></a></li>
+          <li><a href="/hiperLinks/lettcode.html"><img class="icon" src="/imagens/lam2.png" alt="LeetCode"></a></li>
+          <li><a href="/hiperLinks/tarefas.html"><img class="icon" src="/imagens/tarefa.png" alt="Tarefas"></a></li>
+          <li><a href="/hiperLinks/chatbot.html"><img class="icon" src="/imagens/RoboPequeno.png" alt="IA"></a></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <div class="main-area">
+          <main class="content">
+                <h1 class="tituloDoJoguin">countries</h1>
+           <div class="wrap">
+      <div class="panel">
+        <div class="topbar">
+          <div>
+            <div class="meta">
+              Digite o nome do país e pressione Enter / botão para marcar.
+              Objetivo: lembrar o máximo possível.
+            </div>
+          </div>
+          <div style="text-align: right">
+            <div id="score" style="font-weight: 700">Acertos únicos: 0</div>
+            <div class="small">
+              Total países: <span id="totalCount">—</span>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="map-row">
+          <div id="map-area">
+            <div id="mapContainer"></div>
+          </div>
+
+          <div id="info">
+            <div class="controls">
+          <input
+            id="guessInput"
+            type="text"
+            placeholder="Digite o país (ex: Brasil ou Brazil)"
+          />
+          <button id="markBtn">Marcar</button>
+          <button id="resetBtn" class="secondary">Resetar</button>
+          <button id="showListBtn" class="secondary">
+            Mostrar lista de nomes
+          </button>
+        </div>
+            
+
+            <div id="namesList" style="margin-top: 12px; display: none">
+              <div style="font-weight: 700; margin-bottom: 8px">
+                Lista de nomes (clicar preenche input)
+              </div>
+              <div
+                id="namesContainer"
+                style="
+                  max-height: 480px;
+                  overflow: auto;
+                  border: 1px solid #eee;
+                  border-radius: 6px;
+                  padding: 8px;
+                  background: #fff;
+                "
+              ></div>
+            </div>
+          </div>
+        </div>
+        <div id="found-panel">
+              <div style="font-weight: 700">Últimos palpites</div>
+              <ol id="log" style="padding-left: 16px; margin: 8px 0 0 0"></ol>
+
+              <div style="height: 10px"></div>
+              <div class="hint">
+                Observações: clicar em um país preenche o input (útil em mobile)
+                — **clicar NÃO marca** automaticamente.
+              </div>
+            </div> 
+
+        <div id="found-panel" style="margin-top: 12px">
+          <div style="font-weight: 700">Países encontrados</div>
+          <ul id="found-list"></ul>
+        </div>
+      </div>
+    </div>      
+          </main>
+        </div>
+    </div>
+    <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+
+<script type="module" src="JSdoWordGuess.js"></script>
+
+</body>
+</html>

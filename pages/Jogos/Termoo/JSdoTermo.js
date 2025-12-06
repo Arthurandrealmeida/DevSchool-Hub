@@ -107,7 +107,7 @@ const WORD_LIST = [
     "TELAS", "TENOR", "TERCO", "TODOS", "TORNA", "TORPE", "TRAIR", "VANDA", 
     "TREVO", "TRUPE", "TUDO", "UNHAS", "USINA", "VALIDA", "VALOR", "PRATO",
     "PODRE", "TENTE","SENHA","CHOVE","CHATO","BOLHA","BRUTO","VINHO","GALHO",
-    "GANHO",
+    "GANHO","GARRA","TROTE","BARRA"
 ];
 
 const KEYBOARD_ROWS = [
