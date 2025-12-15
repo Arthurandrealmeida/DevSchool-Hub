@@ -73,3 +73,33 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+.black {
+    background: #026666fb;
+}
+
+.white {
+    background: #f8f8f8;
+}
+
+#board {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); 
+    grid-template-rows: repeat(8, 1fr);
+    width: 400px;
+    height: 400px; 
+    border: 1px solid #000;
+}
+
+.celula {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+
+.selected {
+    /* Exemplo simples de destaque */
+    border: 1px solid rgb(0, 255, 128); 
+    box-sizing: border-box; /* Garante que a borda não mude o tamanho da célula */
+}
