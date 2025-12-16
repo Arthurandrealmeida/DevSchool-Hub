@@ -165,12 +165,18 @@ function movePiece(originCell, destinationCell) {
 function getValidMoves(coords, type, color) {
     switch (type) {
         case 'pawn':
-            // Chama a função real de cálculo do peão
             return calculatePawnMoves(coords, color);
+        case 'rook':
+            return calculateRookMoves(coords, color);
         default:
             return [];
     }
 }
+
+
+//=========================================================//
+//=======================Movimento do peão=================//
+//=========================================================//
 
 function calculatePawnMoves(startCoords, pieceColor) {
     let moves = [];
@@ -211,6 +217,51 @@ function calculatePawnMoves(startCoords, pieceColor) {
 
     return moves;
 }
+
+//=========================================================//
+//======================Movimento da torre=================//
+//=========================================================//
+function calculateRookMoves(startCoords, pieceColor) {
+    let moves = [];
+    const startPos = idtopos(startCoords);
+
+    // Direções da torre: cima, baixo, esquerda, direita
+    const directions = [
+        { dx: -1, dy: 0 }, // cima
+        { dx: 1, dy: 0 },  // baixo
+        { dx: 0, dy: -1 }, // esquerda
+        { dx: 0, dy: 1 }   // direita
+    ];
+
+    for (const dir of directions) {
+        let x = startPos.x + dir.dx;
+        let y = startPos.y + dir.dy;
+
+        while (posinbounds({ x, y })) {
+            const piece = getPieceAtPos({ x, y });
+
+            if (!piece) {
+                // Casa vazia → pode mover
+                moves.push(postoid({ x, y }));
+            } else {
+                // Tem peça
+                if (piece.color !== pieceColor) {
+                    // Peça inimiga → pode capturar
+                    moves.push(postoid({ x, y }));
+                }
+                // Para em qualquer peça
+                break;
+            }
+
+            x += dir.dx;
+            y += dir.dy;
+        }
+    }
+
+    return moves;
+}
+
+
 
 // Funções para Destaque Visual
 function highlightValidMoves(moves) {
