@@ -132,7 +132,16 @@ function handleBoardClick(event) {
             const pieceColor = pieceAlt[0];
             const pieceType = pieceAlt[1];
 
-            validMoves = getValidMoves(targetCoords, pieceType, pieceColor);
+let rawMoves = getValidMoves(targetCoords, pieceType, pieceColor);
+validMoves = filterMovesThatExposeKing(rawMoves, clickedCell, pieceColor);
+
+
+validMoves = rawMoves.filter(coord => {
+    const targetCell = document.querySelector(
+        `[data-coordenada="${coord}"]`
+    );
+    return !wouldLeaveKingInCheck(selectedCell, targetCell, pieceColor);
+});
             highlightValidMoves(validMoves); 
         }
     } else { // SEGUNDO CLIQUE
@@ -156,11 +165,26 @@ function handleBoardClick(event) {
 }
 
 function movePiece(originCell, destinationCell) {
-    // Captura: Remove qualquer peça que já esteja na casa de destino
-    destinationCell.innerHTML = ''; 
-    // Move a imagem
-    destinationCell.appendChild(selectedPieceElement);
+    const movedPiece = selectedPieceElement;
+    const movedColor = movedPiece.alt.split(' ')[0];
+    const enemyColor = movedColor === 'white' ? 'black' : 'white';
+
+    // Captura
+    destinationCell.innerHTML = '';
+    destinationCell.appendChild(movedPiece);
+
+    // Atualiza visual de xeque
+    updateCheckVisuals();
+
+    // ⚠️ Delay APENAS para o ALERT (não para o movimento)
+    setTimeout(() => {
+        if (isCheckmate(enemyColor)) {
+            alert(`XEQUE-MATE! ${movedColor.toUpperCase()} VENCEU`);
+        }
+    }, 300); // ajuste: 200–400ms fica ótimo
 }
+
+
 
 function getValidMoves(coords, type, color) {
     switch (type) {
@@ -168,10 +192,20 @@ function getValidMoves(coords, type, color) {
             return calculatePawnMoves(coords, color);
         case 'rook':
             return calculateRookMoves(coords, color);
+        case 'bishop':
+            return calculateBishopMoves(coords, color);
+        case 'knight':
+            return calculateKnightMoves(coords, color);
+        case 'queen':
+            return calculateQueenMoves(coords, color);
+        case 'king':
+            return calculateKingMoves(coords, color);
         default:
             return [];
     }
 }
+
+
 
 
 //=========================================================//
@@ -259,6 +293,268 @@ function calculateRookMoves(startCoords, pieceColor) {
     }
 
     return moves;
+}
+
+
+//=========================================================//
+//======================Movimento do bispo=================//
+//=========================================================//
+function calculateBishopMoves(startCoords, pieceColor) {
+    let moves = [];
+    const startPos = idtopos(startCoords);
+
+    // Diagonais
+    const directions = [
+        { dx: -1, dy: -1 }, // cima-esquerda
+        { dx: -1, dy: 1 },  // cima-direita
+        { dx: 1, dy: -1 },  // baixo-esquerda
+        { dx: 1, dy: 1 }    // baixo-direita
+    ];
+
+    for (const dir of directions) {
+        let x = startPos.x + dir.dx;
+        let y = startPos.y + dir.dy;
+
+        while (posinbounds({ x, y })) {
+            const piece = getPieceAtPos({ x, y });
+
+            if (!piece) {
+                moves.push(postoid({ x, y }));
+            } else {
+                if (piece.color !== pieceColor) {
+                    moves.push(postoid({ x, y }));
+                }
+                break;
+            }
+
+            x += dir.dx;
+            y += dir.dy;
+        }
+    }
+
+    return moves;
+}
+
+//=========================================================//
+//=====================Movimento do cavalo=================//
+//=========================================================//
+function calculateKnightMoves(startCoords, pieceColor) {
+    let moves = [];
+    const startPos = idtopos(startCoords);
+
+    const knightMoves = [
+        { dx: -2, dy: -1 },
+        { dx: -2, dy: 1 },
+        { dx: -1, dy: -2 },
+        { dx: -1, dy: 2 },
+        { dx: 1, dy: -2 },
+        { dx: 1, dy: 2 },
+        { dx: 2, dy: -1 },
+        { dx: 2, dy: 1 }
+    ];
+
+    for (const move of knightMoves) {
+        const pos = {
+            x: startPos.x + move.dx,
+            y: startPos.y + move.dy
+        };
+
+        if (!posinbounds(pos)) continue;
+
+        const piece = getPieceAtPos(pos);
+
+        if (!piece || piece.color !== pieceColor) {
+            moves.push(postoid(pos));
+        }
+    }
+
+    return moves;
+}
+
+//=========================================================//
+//=====================Movimento da rainha=================//
+//=========================================================//
+function calculateQueenMoves(startCoords, pieceColor) {
+    return [
+        ...calculateRookMoves(startCoords, pieceColor),
+        ...calculateBishopMoves(startCoords, pieceColor)
+    ];
+}
+
+//=========================================================//
+//=====================Movimento do rei====================//
+//=========================================================//
+function calculateKingMoves(startCoords, pieceColor) {
+    let moves = [];
+    const startPos = idtopos(startCoords);
+
+    const directions = [
+        { dx: -1, dy: 0 }, { dx: 1, dy: 0 },
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },
+        { dx: -1, dy: -1 }, { dx: -1, dy: 1 },
+        { dx: 1, dy: -1 }, { dx: 1, dy: 1 }
+    ];
+
+    for (const dir of directions) {
+        const pos = {
+            x: startPos.x + dir.dx,
+            y: startPos.y + dir.dy
+        };
+
+        if (!posinbounds(pos)) continue;
+
+        const piece = getPieceAtPos(pos);
+        if (!piece || piece.color !== pieceColor) {
+            moves.push(postoid(pos));
+        }
+    }
+
+    return moves;
+}
+
+//verificar se está em xeque
+function isKingInCheck(color) {
+    const kingPos = findKing(color);
+    if (!kingPos) return false;
+
+    const enemyColor = color === 'white' ? 'black' : 'white';
+    const enemyPieces = document.querySelectorAll(`img[alt^="${enemyColor}"]`);
+
+    for (const piece of enemyPieces) {
+        const cell = piece.closest('.celula');
+        const coords = cell.dataset.coordenada;
+        const [, type] = piece.alt.split(' ');
+
+        const moves = getValidMoves(coords, type, enemyColor);
+        if (moves.includes(postoid(kingPos))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+function findKing(color) {
+    const kingImg = document.querySelector(`img[alt="${color} king"]`);
+    if (!kingImg) return null;
+
+    const cell = kingImg.closest('.celula');
+    return idtopos(cell.dataset.coordenada);
+}
+
+
+function isSquareAttacked(pos, byColor) {
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            const piece = getPieceAtPos({ x, y });
+            if (!piece || piece.color !== byColor) continue;
+
+            const fromId = postoid({ x, y });
+            const moves = getValidMoves(fromId, piece.type, piece.color);
+
+            if (moves.includes(postoid(pos))) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function wouldLeaveKingInCheck(fromCell, toCell, pieceColor) {
+    const movingPiece = fromCell.querySelector('img');
+    const capturedPiece = toCell.querySelector('img');
+
+    // Simula
+    toCell.appendChild(movingPiece);
+    if (capturedPiece) capturedPiece.remove();
+
+    const inCheck = isKingInCheck(pieceColor);
+
+    // Desfaz simulação
+    fromCell.appendChild(movingPiece);
+    if (capturedPiece) toCell.appendChild(capturedPiece);
+
+    return inCheck;
+}
+
+function updateCheckVisuals() {
+    document.querySelectorAll('.king-in-check')
+        .forEach(el => el.classList.remove('king-in-check'));
+
+    ['white', 'black'].forEach(color => {
+        if (isKingInCheck(color)) {
+            const kingImg = document.querySelector(`img[alt="${color} king"]`);
+            if (kingImg) {
+                kingImg.closest('.celula')
+                    .classList.add('king-in-check');
+            }
+        }
+    });
+}
+
+function filterMovesThatExposeKing(moves, fromCell, color) {
+    return moves.filter(coord => {
+        const toCell = document.querySelector(`[data-coordenada="${coord}"]`);
+
+        let valid = true;
+        simulateMove(fromCell, toCell, () => {
+            if (isKingInCheck(color)) valid = false;
+        });
+
+        return valid;
+    });
+}
+
+
+function simulateMove(fromCell, toCell, callback) {
+    const piece = fromCell.querySelector('img');
+    const captured = toCell.querySelector('img');
+
+    toCell.appendChild(piece);
+    if (captured) captured.remove();
+
+    callback();
+
+    fromCell.appendChild(piece);
+    if (captured) toCell.appendChild(captured);
+}
+
+
+
+//visual
+function updateCheckStatus() {
+    document.querySelectorAll('.king-in-check')
+        .forEach(el => el.classList.remove('king-in-check'));
+
+    ['white', 'black'].forEach(color => {
+        if (isKingInCheck(color)) {
+            const kingImg = document.querySelector(`img[alt="${color} king"]`);
+            if (kingImg) {
+                kingImg.parentElement.classList.add('king-in-check');
+            }
+        }
+    });
+}
+
+
+function isCheckmate(color) {
+    if (!isKingInCheck(color)) return false;
+
+    const pieces = document.querySelectorAll(`img[alt^="${color}"]`);
+
+    for (const piece of pieces) {
+        const cell = piece.closest('.celula');
+        const coords = cell.dataset.coordenada;
+        const [, type] = piece.alt.split(' ');
+
+        const moves = getValidMoves(coords, type, color);
+        const valid = filterMovesThatExposeKing(moves, cell, color);
+
+        if (valid.length > 0) return false;
+    }
+
+    return true;
 }
 
 

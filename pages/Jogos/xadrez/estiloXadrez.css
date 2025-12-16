@@ -103,3 +103,15 @@ body {
     border: 1px solid rgb(0, 255, 128); 
     box-sizing: border-box; /* Garante que a borda não mude o tamanho da célula */
 }
+
+@keyframes checkPulse {
+    0% { box-shadow: 0 0 0px rgba(255,0,0,0.4); }
+    50% { box-shadow: 0 0 15px rgba(255,0,0,0.6); }
+    100% { box-shadow: 0 0 0px rgba(255,0,0,0.4); }
+}
+
+.king-in-check {
+    animation: checkPulse 1.2s infinite;
+    border-radius: 8px;
+}
+
