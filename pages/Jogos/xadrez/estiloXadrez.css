@@ -63,6 +63,9 @@ body {
     flex: 1;
     padding: 20px;
     background: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .tituloDoJoguin {

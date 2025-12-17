@@ -23,6 +23,17 @@ const imgpath = {
     }
 };
 
+//ver quais peças se moveram para implementar o roque
+const movedPieces = {
+    'white-king': false,
+    'black-king': false,
+    'white-rook-A': false,
+    'white-rook-H': false,
+    'black-rook-A': false,
+    'black-rook-H': false
+};
+
+
 // 3. ADICIONADO: Funções Utilitárias de Coordenadas
 const idtopos = (id) => {
     // id é a coordenada string, ex: "A1" ou "H8"
@@ -164,25 +175,114 @@ validMoves = rawMoves.filter(coord => {
     }
 }
 
+let selectedOriginCell = null;
+
+function handleCellClick(cell) {
+    const piece = cell.querySelector('img');
+
+    // 🔹 1. Selecionar peça
+    if (!selectedPieceElement) {
+        if (piece && piece.color === currentPlayer) {
+            selectedPieceElement = piece;
+            selectedOriginCell = cell;
+            showPossibleMoves(cell.dataset.coordenada);
+        }
+        return;
+    }
+
+    // 🔹 2. Mover peça
+    if (selectedPieceElement && cell !== selectedOriginCell) {
+        movePiece(selectedOriginCell, cell);
+        selectedPieceElement = null;
+        selectedOriginCell = null;
+        clearHighlights();
+    }
+}
+
+
 function movePiece(originCell, destinationCell) {
     const movedPiece = selectedPieceElement;
-    const movedColor = movedPiece.alt.split(' ')[0];
-    const enemyColor = movedColor === 'white' ? 'black' : 'white';
+    const [color, type] = movedPiece.alt.split(' ');
+    const enemyColor = color === 'white' ? 'black' : 'white';
 
-    // Captura
-    destinationCell.innerHTML = '';
-    destinationCell.appendChild(movedPiece);
+    const from = originCell.dataset.coordenada;
+    const to   = destinationCell.dataset.coordenada;
 
-    // Atualiza visual de xeque
+    // ================= TRAVA DE SEGURANÇA =================
+    const legalMoves = getValidMoves(from, type, color);
+    if (!legalMoves.includes(to)) return;
+    // ======================================================
+    
+
+    // ================= ROQUE =================
+    if (
+        type === 'king' &&
+        from[0] === 'E' &&
+        (to[0] === 'G' || to[0] === 'C')
+    ) {
+        const rank = from[1];
+        let rookFrom, rookTo;
+
+        if (to[0] === 'G') {
+            rookFrom = `H${rank}`;
+            rookTo   = `F${rank}`;
+        } else {
+            rookFrom = `A${rank}`;
+            rookTo   = `D${rank}`;
+        }
+
+        const rookFromCell = document.querySelector(
+            `[data-coordenada="${rookFrom}"]`
+        );
+        const rookToCell = document.querySelector(
+            `[data-coordenada="${rookTo}"]`
+        );
+        const rookPiece = rookFromCell?.querySelector('img');
+
+        // valida torre
+        if (!rookPiece || rookPiece.alt !== `${color} rook`) return;
+
+        originCell.innerHTML = '';
+destinationCell.innerHTML = '';
+rookToCell.innerHTML = '';
+
+destinationCell.appendChild(movedPiece);
+rookToCell.appendChild(rookPiece);
+
+
+        // flags
+        movedPieces[`${color}-king`] = true;
+        if (rookFrom[0] === 'A') movedPieces[`${color}-rook-A`] = true;
+        if (rookFrom[0] === 'H') movedPieces[`${color}-rook-H`] = true;
+
+        updateCheckVisuals();
+        return;
+    }
+    // =======================================
+
+    // ===== MOVIMENTO NORMAL =====
+originCell.innerHTML = '';
+destinationCell.innerHTML = '';
+destinationCell.appendChild(movedPiece);
+
+    if (type === 'king') {
+        movedPieces[`${color}-king`] = true;
+    }
+
+    if (type === 'rook') {
+        if (from[0] === 'A') movedPieces[`${color}-rook-A`] = true;
+        if (from[0] === 'H') movedPieces[`${color}-rook-H`] = true;
+    }
+
     updateCheckVisuals();
 
-    // ⚠️ Delay APENAS para o ALERT (não para o movimento)
     setTimeout(() => {
         if (isCheckmate(enemyColor)) {
-            alert(`XEQUE-MATE! ${movedColor.toUpperCase()} VENCEU`);
+            alert(`XEQUE-MATE! ${color.toUpperCase()} VENCEU`);
         }
-    }, 300); // ajuste: 200–400ms fica ótimo
+    }, 300);
 }
+
 
 
 
@@ -384,7 +484,7 @@ function calculateQueenMoves(startCoords, pieceColor) {
 //=========================================================//
 //=====================Movimento do rei====================//
 //=========================================================//
-function calculateKingMoves(startCoords, pieceColor) {
+function calculateKingMoves(startCoords, pieceColor, forAttackMap = false) {
     let moves = [];
     const startPos = idtopos(startCoords);
 
@@ -409,6 +509,54 @@ function calculateKingMoves(startCoords, pieceColor) {
         }
     }
 
+    // ⛔ SE FOR MAPA DE ATAQUE, PARA AQUI
+    if (forAttackMap) return moves;
+
+
+// ================= ROQUE =================
+const isWhite = pieceColor === 'white';
+const kingMoved = movedPieces[`${pieceColor}-king`];
+const enemyColor = isWhite ? 'black' : 'white';
+
+// O rei não pode já ter se movido nem estar em xeque
+if (!forAttackMap && !kingMoved && !isKingInCheck(pieceColor)) {
+    const rank = isWhite ? '1' : '8';
+
+    // ---------- ROQUE PEQUENO ----------
+    const rookH = movedPieces[`${pieceColor}-rook-H`] === false;
+    const f = idtopos(`F${rank}`);
+    const g = idtopos(`G${rank}`);
+
+    if (
+        rookH &&
+        !getPieceAtPos(f) &&
+        !getPieceAtPos(g) &&
+        !isSquareAttacked(f, enemyColor) &&
+        !isSquareAttacked(g, enemyColor)
+    ) {
+        moves.push(`G${rank}`);
+    }
+
+    // ---------- ROQUE GRANDE ----------
+    const rookA = movedPieces[`${pieceColor}-rook-A`] === false;
+    const d = idtopos(`D${rank}`);
+    const c = idtopos(`C${rank}`);
+    const b = idtopos(`B${rank}`);
+
+    if (
+        rookA &&
+        !getPieceAtPos(d) &&
+        !getPieceAtPos(c) &&
+        !getPieceAtPos(b) &&
+        !isSquareAttacked(d, enemyColor) &&
+        !isSquareAttacked(c, enemyColor)
+    ) {
+        moves.push(`C${rank}`);
+    }
+}
+// =======================================
+
+
     return moves;
 }
 
@@ -425,7 +573,13 @@ function isKingInCheck(color) {
         const coords = cell.dataset.coordenada;
         const [, type] = piece.alt.split(' ');
 
-        const moves = getValidMoves(coords, type, enemyColor);
+let moves;
+
+if (type === 'king') {
+    moves = calculateKingMoves(coords, enemyColor, true);
+} else {
+    moves = getValidMoves(coords, type, enemyColor);
+}
         if (moves.includes(postoid(kingPos))) {
             return true;
         }
@@ -451,7 +605,13 @@ function isSquareAttacked(pos, byColor) {
             if (!piece || piece.color !== byColor) continue;
 
             const fromId = postoid({ x, y });
-            const moves = getValidMoves(fromId, piece.type, piece.color);
+let moves;
+
+if (piece.type === 'king') {
+    moves = calculateKingMoves(fromId, piece.color, true);
+} else {
+    moves = getValidMoves(fromId, piece.type, piece.color);
+}
 
             if (moves.includes(postoid(pos))) {
                 return true;
@@ -506,19 +666,23 @@ function filterMovesThatExposeKing(moves, fromCell, color) {
     });
 }
 
-
 function simulateMove(fromCell, toCell, callback) {
     const piece = fromCell.querySelector('img');
     const captured = toCell.querySelector('img');
 
+    if (!piece) return;
+
+    // move temporariamente
     toCell.appendChild(piece);
     if (captured) captured.remove();
 
     callback();
 
+    // desfaz exatamente o que fez
     fromCell.appendChild(piece);
     if (captured) toCell.appendChild(captured);
 }
+
 
 
 
@@ -555,6 +719,12 @@ function isCheckmate(color) {
     }
 
     return true;
+}
+
+function isSameColorRookAt(square, color) {
+    const pos = idtopos(square);
+    const piece = getPieceAtPos(pos);
+    return piece && piece.type === 'rook' && piece.color === color;
 }
 
 
