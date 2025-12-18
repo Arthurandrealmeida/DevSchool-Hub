@@ -1,7 +1,18 @@
+let playerColor = null;
+let engineLevel = 1;
+let gameMode = null; // 'cpu' | 'pvp'
+
+
+
 const container = document.getElementById('board');
 const TAMANHO_GRADE = 8;
 const NUM_CELULAS = TAMANHO_GRADE * TAMANHO_GRADE;
 const colunasLetras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+let enPassantTarget = null;
+let currentTurn = 'white';
+let positionHistory = {};
+let halfMoveClock = 0;
+
 
 // 1. MOVIDO PARA FORA DO LOOP: imgpath
 const imgpath = {
@@ -133,14 +144,15 @@ function handleBoardClick(event) {
 
     if (!selectedCell) { 
         const piece = clickedCell.querySelector('img'); 
-        if (piece) { 
+if (piece) {
+    const [pieceColor] = piece.alt.split(' ');
+    if (pieceColor !== currentTurn) return;
             selectedPieceElement = piece; 
             selectedCell = clickedCell;
             selectedCell.classList.add('selected');
 
             // 2. CORRIGIDO: Extração correta de tipo e cor do atributo alt
             const pieceAlt = piece.alt.split(' ');
-            const pieceColor = pieceAlt[0];
             const pieceType = pieceAlt[1];
 
 let rawMoves = getValidMoves(targetCoords, pieceType, pieceColor);
@@ -212,7 +224,6 @@ function movePiece(originCell, destinationCell) {
     const legalMoves = getValidMoves(from, type, color);
     if (!legalMoves.includes(to)) return;
     // ======================================================
-    
 
     // ================= ROQUE =================
     if (
@@ -221,53 +232,77 @@ function movePiece(originCell, destinationCell) {
         (to[0] === 'G' || to[0] === 'C')
     ) {
         const rank = from[1];
-        let rookFrom, rookTo;
+        const rookFrom = to[0] === 'G' ? `H${rank}` : `A${rank}`;
+        const rookTo   = to[0] === 'G' ? `F${rank}` : `D${rank}`;
 
-        if (to[0] === 'G') {
-            rookFrom = `H${rank}`;
-            rookTo   = `F${rank}`;
-        } else {
-            rookFrom = `A${rank}`;
-            rookTo   = `D${rank}`;
-        }
-
-        const rookFromCell = document.querySelector(
-            `[data-coordenada="${rookFrom}"]`
-        );
-        const rookToCell = document.querySelector(
-            `[data-coordenada="${rookTo}"]`
-        );
+        const rookFromCell = document.querySelector(`[data-coordenada="${rookFrom}"]`);
+        const rookToCell   = document.querySelector(`[data-coordenada="${rookTo}"]`);
         const rookPiece = rookFromCell?.querySelector('img');
 
-        // valida torre
         if (!rookPiece || rookPiece.alt !== `${color} rook`) return;
 
         originCell.innerHTML = '';
-destinationCell.innerHTML = '';
-rookToCell.innerHTML = '';
+        destinationCell.innerHTML = '';
+        rookToCell.innerHTML = '';
 
-destinationCell.appendChild(movedPiece);
-rookToCell.appendChild(rookPiece);
+        destinationCell.appendChild(movedPiece);
+        rookToCell.appendChild(rookPiece);
 
-
-        // flags
         movedPieces[`${color}-king`] = true;
         if (rookFrom[0] === 'A') movedPieces[`${color}-rook-A`] = true;
         if (rookFrom[0] === 'H') movedPieces[`${color}-rook-H`] = true;
 
+        enPassantTarget = null;
         updateCheckVisuals();
-        return;
     }
     // =======================================
 
-    // ===== MOVIMENTO NORMAL =====
-originCell.innerHTML = '';
-destinationCell.innerHTML = '';
-destinationCell.appendChild(movedPiece);
+    // ================= EXECUTA EN PASSANT =================
+    if (
+        type === 'pawn' &&
+        enPassantTarget &&
+        to === enPassantTarget.square
+    ) {
+        const capturedRank = color === 'white'
+            ? Number(to[1]) - 1
+            : Number(to[1]) + 1;
 
-    if (type === 'king') {
-        movedPieces[`${color}-king`] = true;
+        const capturedCell = document.querySelector(
+            `[data-coordenada="${to[0]}${capturedRank}"]`
+        );
+
+        if (capturedCell) capturedCell.innerHTML = '';
     }
+    // ======================================================
+    const captured = destinationCell.querySelector('img');
+
+    
+    // ================= MOVIMENTO NORMAL =================
+    originCell.innerHTML = '';
+    destinationCell.innerHTML = '';
+    destinationCell.appendChild(movedPiece);
+
+
+    if (type === 'pawn' || captured) {
+    halfMoveClock = 0;
+} else {
+    halfMoveClock++;
+}
+
+
+    // ================= MARCA EN PASSANT =================
+    if (type === 'pawn' && Math.abs(Number(from[1]) - Number(to[1])) === 2) {
+        const middleRank = (Number(from[1]) + Number(to[1])) / 2;
+        enPassantTarget = {
+            square: `${from[0]}${middleRank}`,
+            pawnColor: color
+        };
+    } else {
+        enPassantTarget = null;
+    }
+    // =====================================================
+
+    if (type === 'king') movedPieces[`${color}-king`] = true;
 
     if (type === 'rook') {
         if (from[0] === 'A') movedPieces[`${color}-rook-A`] = true;
@@ -275,6 +310,20 @@ destinationCell.appendChild(movedPiece);
     }
 
     updateCheckVisuals();
+    currentTurn = currentTurn === 'white' ? 'black' : 'white';
+
+    const signature = getBoardSignature();
+positionHistory[signature] = (positionHistory[signature] || 0) + 1;
+
+if (positionHistory[signature] === 3) {
+    alert('EMPATE por repetição de posição');
+}
+
+if (halfMoveClock >= 100) {
+    alert('EMPATE pela regra dos 50 lances');
+}
+
+
 
     setTimeout(() => {
         if (isCheckmate(enemyColor)) {
@@ -282,6 +331,7 @@ destinationCell.appendChild(movedPiece);
         }
     }, 300);
 }
+
 
 
 
@@ -347,7 +397,20 @@ function calculatePawnMoves(startCoords, pieceColor) {
         moves.push(postoid(captureLeft));
     }
 
-    // TODO: Adicionar lógica para En Passant aqui depois
+// ===== EN PASSANT =====
+if (enPassantTarget && enPassantTarget.pawnColor !== pieceColor) {
+    const epPos = idtopos(enPassantTarget.square);
+
+    // o peão precisa estar ao lado
+    if (
+        epPos.x === x + direction &&
+        Math.abs(epPos.y - y) === 1
+    ) {
+        moves.push(enPassantTarget.square);
+    }
+}
+
+
 
     return moves;
 }
@@ -684,6 +747,20 @@ function simulateMove(fromCell, toCell, callback) {
 }
 
 
+function getBoardSignature() {
+    let signature = '';
+
+    document.querySelectorAll('.celula').forEach(cell => {
+        const piece = cell.querySelector('img');
+        if (piece) {
+            signature += `${cell.dataset.coordenada}:${piece.alt};`;
+        }
+    });
+
+    signature += `turn:${currentTurn};`;
+    return signature;
+}
+
 
 
 //visual
@@ -745,3 +822,81 @@ function dehighlightValidMoves() {
          cell.classList.remove('possible-move');
      });
 }
+
+function iniciarPartida() {
+  currentPlayer = 'white';
+
+  console.log('Modo:', gameMode);
+  console.log('Jogador:', playerColor);
+  console.log('Engine nível:', engineLevel);
+
+  if (gameMode === 'pvp') {
+    // 1v1 local → turnos normais
+    return;
+  }
+
+  if (gameMode === 'cpu' && playerColor === 'black') {
+    // futuramente: engine começa
+  }
+}
+
+
+
+const modal = document.getElementById('startModal');
+const startBtn = document.getElementById('startGameBtn');
+
+const modeButtons = document.querySelectorAll('.mode-options button');
+const colorButtons = document.querySelectorAll('.color-options button');
+
+const colorSection = document.getElementById('colorSection');
+const engineSection = document.getElementById('engineSection');
+const engineSelect = document.getElementById('engineLevel');
+
+// === ESCOLHA DO MODO ===
+modeButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    modeButtons.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    gameMode = btn.dataset.mode;
+
+    colorSection.style.display = 'block';
+
+    if (gameMode === 'cpu') {
+      engineSection.style.display = 'block';
+    } else {
+      engineSection.style.display = 'none';
+      engineLevel = null;
+    }
+
+    startBtn.disabled = true;
+    startBtn.classList.remove('enabled');
+  });
+});
+
+// === ESCOLHA DA COR ===
+colorButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    colorButtons.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    const choice = btn.dataset.color;
+    playerColor =
+      choice === 'random'
+        ? Math.random() < 0.5 ? 'white' : 'black'
+        : choice;
+
+    startBtn.disabled = false;
+    startBtn.classList.add('enabled');
+  });
+});
+
+// === START ===
+startBtn.addEventListener('click', () => {
+  if (engineSelect) {
+    engineLevel = Number(engineSelect.value);
+  }
+
+  modal.style.display = 'none';
+  iniciarPartida();
+});
