@@ -1,11 +1,15 @@
-let playerColor = null;
 let engineLevel = 1;
 let gameMode = null; // 'cpu' | 'pvp'
 let draggedPiece = null;
 let origemCell = null;
+let isDragging = false;
+let moveCount = 0;
+let notationHistory = [];
 
 
-
+const colorModal = document.getElementById('colorModal');
+const confirmColorBtn = document.getElementById('confirmColor');
+let selectedColor = null;
 const container = document.getElementById('board');
 const TAMANHO_GRADE = 8;
 const NUM_CELULAS = TAMANHO_GRADE * TAMANHO_GRADE;
@@ -16,7 +20,6 @@ let positionHistory = {};
 let halfMoveClock = 0;
 
 
-// 1. MOVIDO PARA FORA DO LOOP: imgpath
 const imgpath = {
     'black': {
         'pawn': './img/peãoPreto.png',
@@ -94,47 +97,71 @@ for (let i = 0; i < NUM_CELULAS; i++) {
 
     const linha = Math.floor(i / TAMANHO_GRADE);
     const coluna = i % TAMANHO_GRADE;
-    if ((linha + coluna) % 2 === 0) {
-        celula.classList.add('white');
-    } else {
-        celula.classList.add('black');
-    }
+    celula.classList.add((linha + coluna) % 2 === 0 ? 'white' : 'black');
 
-    // Código das coordenadas e posicionamento de peças (mantido)
     const letraColuna = colunasLetras[coluna];
-    const numeroLinha = 8 - linha; 
-    const coordenada = `${letraColuna}${numeroLinha}`;
-    celula.setAttribute('data-coordenada', coordenada);
+    const numeroLinha = 8 - linha;
+    celula.dataset.coordenada = `${letraColuna}${numeroLinha}`;
 
     let tipoPeca = null;
     let corPeca = null;
 
-    if (linha === 1) { tipoPeca = 'pawn'; corPeca = 'black'; } 
-    else if (linha === 6) { tipoPeca = 'pawn'; corPeca = 'white'; } 
+    if (linha === 1) { tipoPeca = 'pawn'; corPeca = 'black'; }
+    else if (linha === 6) { tipoPeca = 'pawn'; corPeca = 'white'; }
     else if (linha === 0 || linha === 7) {
-        corPeca = (linha === 0) ? 'black' : 'white';
-        if (coluna === 0 || coluna === 7) tipoPeca = 'rook'; 
+        corPeca = linha === 0 ? 'black' : 'white';
+        if (coluna === 0 || coluna === 7) tipoPeca = 'rook';
         if (coluna === 1 || coluna === 6) tipoPeca = 'knight';
-        if (coluna === 2 || coluna === 5) tipoPeca = 'bishop'; 
+        if (coluna === 2 || coluna === 5) tipoPeca = 'bishop';
         if (coluna === 3) tipoPeca = 'queen';
-        if (coluna === 4) tipoPeca = 'king'; 
+        if (coluna === 4) tipoPeca = 'king';
     }
 
+    // ✅ DRAG OVER
+    celula.addEventListener('dragover', e => e.preventDefault());
+
+    // ✅ DROP
+    celula.addEventListener('drop', e => {
+    e.preventDefault();
+    if (!draggedPiece || !origemCell) return;
+
+    movePiece(origemCell, celula); // 🔥 USA A LÓGICA EXISTENTE
+});
+
+
     if (tipoPeca && corPeca) {
-    const img = document.createElement('img');
-    img.src = imgpath[corPeca][tipoPeca];
-    img.alt = `${corPeca} ${tipoPeca}`;
-
-    // 🔥 ESSENCIAL PARA DRAG & DROP
-    img.classList.add('piece');
-    img.draggable = true;
-
-    celula.appendChild(img);
-}
-
+        const img = document.createElement('img');
+        img.src = imgpath[corPeca][tipoPeca];
+        img.alt = `${corPeca} ${tipoPeca}`;
+        img.classList.add('piece');
+        img.draggable = true;
+        celula.appendChild(img);
+    }
 
     container.appendChild(celula);
 }
+
+
+document.addEventListener('dragstart', e => {
+    if (!e.target.classList.contains('piece')) return;
+
+    const [color] = e.target.alt.split(' ');
+    
+    // Se não for a vez da cor, cancela o arrasto
+    if (color !== currentTurn) {
+        e.preventDefault();
+        return;
+    }
+
+    draggedPiece = e.target;
+    origemCell = draggedPiece.parentElement;
+});
+
+document.addEventListener('dragend', () => {
+    draggedPiece = null;
+});
+
+
 
 
 // --- LÓGICA DE MOVIMENTO E REGRAS ---
@@ -145,6 +172,7 @@ let validMoves = [];
 container.addEventListener('click', handleBoardClick);
 
 function handleBoardClick(event) {
+    if (isDragging) return;
     const clickedCell = event.target.closest('.celula');
     if (!clickedCell) return; 
 
@@ -222,126 +250,111 @@ function handleCellClick(cell) {
 
 
 function movePiece(originCell, destinationCell) {
-    const movedPiece = selectedPieceElement;
+    // 1. Identificar quem está movendo
+    const movedPiece = originCell.querySelector('img');
+    if (!movedPiece) return;
+
     const [color, type] = movedPiece.alt.split(' ');
-    const enemyColor = color === 'white' ? 'black' : 'white';
-
     const from = originCell.dataset.coordenada;
-    const to   = destinationCell.dataset.coordenada;
+    const to = destinationCell.dataset.coordenada;
 
-    // ================= TRAVA DE SEGURANÇA =================
-    const legalMoves = getValidMoves(from, type, color);
-    if (!legalMoves.includes(to)) return;
-    // ======================================================
+    // --- VERIFICAÇÃO DE REGRAS ---
+    const rawMoves = getValidMoves(from, type, color); 
+    const isPossibleTarget = rawMoves.includes(to);
+    const leavesKingSafe = !wouldLeaveKingInCheck(originCell, destinationCell, color);
 
-    // ================= ROQUE =================
-    if (
-        type === 'king' &&
-        from[0] === 'E' &&
-        (to[0] === 'G' || to[0] === 'C')
-    ) {
-        const rank = from[1];
-        const rookFrom = to[0] === 'G' ? `H${rank}` : `A${rank}`;
-        const rookTo   = to[0] === 'G' ? `F${rank}` : `D${rank}`;
+    if (isPossibleTarget && leavesKingSafe) {
+        const enemyColor = color === 'white' ? 'black' : 'white';
+        const captured = destinationCell.querySelector('img');
 
-        const rookFromCell = document.querySelector(`[data-coordenada="${rookFrom}"]`);
-        const rookToCell   = document.querySelector(`[data-coordenada="${rookTo}"]`);
-        const rookPiece = rookFromCell?.querySelector('img');
-
-        if (!rookPiece || rookPiece.alt !== `${color} rook`) return;
-
-        originCell.innerHTML = '';
-        destinationCell.innerHTML = '';
-        rookToCell.innerHTML = '';
-
-        destinationCell.appendChild(movedPiece);
-        rookToCell.appendChild(rookPiece);
-
-        movedPieces[`${color}-king`] = true;
-        if (rookFrom[0] === 'A') movedPieces[`${color}-rook-A`] = true;
-        if (rookFrom[0] === 'H') movedPieces[`${color}-rook-H`] = true;
-
-        enPassantTarget = null;
-        updateCheckVisuals();
-    }
-    // =======================================
-
-    // ================= EXECUTA EN PASSANT =================
-    if (
-        type === 'pawn' &&
-        enPassantTarget &&
-        to === enPassantTarget.square
-    ) {
-        const capturedRank = color === 'white'
-            ? Number(to[1]) - 1
-            : Number(to[1]) + 1;
-
-        const capturedCell = document.querySelector(
-            `[data-coordenada="${to[0]}${capturedRank}"]`
-        );
-
-        if (capturedCell) capturedCell.innerHTML = '';
-    }
-    // ======================================================
-    const captured = destinationCell.querySelector('img');
-
-    
-    // ================= MOVIMENTO NORMAL =================
-    originCell.innerHTML = '';
-    destinationCell.innerHTML = '';
-    destinationCell.appendChild(movedPiece);
-
-
-    if (type === 'pawn' || captured) {
-    halfMoveClock = 0;
-} else {
-    halfMoveClock++;
-}
-
-
-    // ================= MARCA EN PASSANT =================
-    if (type === 'pawn' && Math.abs(Number(from[1]) - Number(to[1])) === 2) {
-        const middleRank = (Number(from[1]) + Number(to[1])) / 2;
-        enPassantTarget = {
-            square: `${from[0]}${middleRank}`,
-            pawnColor: color
-        };
-    } else {
-        enPassantTarget = null;
-    }
-    // =====================================================
-
-    if (type === 'king') movedPieces[`${color}-king`] = true;
-
-    if (type === 'rook') {
-        if (from[0] === 'A') movedPieces[`${color}-rook-A`] = true;
-        if (from[0] === 'H') movedPieces[`${color}-rook-H`] = true;
-    }
-
-    updateCheckVisuals();
-    currentTurn = currentTurn === 'white' ? 'black' : 'white';
-
-    const signature = getBoardSignature();
-positionHistory[signature] = (positionHistory[signature] || 0) + 1;
-
-if (positionHistory[signature] === 3) {
-    alert('EMPATE por repetição de posição');
-}
-
-if (halfMoveClock >= 100) {
-    alert('EMPATE pela regra dos 50 lances');
-}
-
-
-
-    setTimeout(() => {
-        if (isCheckmate(enemyColor)) {
-            alert(`XEQUE-MATE! ${color.toUpperCase()} VENCEU`);
+        // [REGRA] ROQUE: Se o rei move 2 casas, move a torre junto
+        if (type === 'king' && Math.abs(from.charCodeAt(0) - to.charCodeAt(0)) === 2) {
+            const rank = from[1];
+            const rookFrom = to[0] === 'G' ? `H${rank}` : `A${rank}`;
+            const rookTo   = to[0] === 'G' ? `F${rank}` : `D${rank}`;
+            const rookFromCell = document.querySelector(`[data-coordenada="${rookFrom}"]`);
+            const rookToCell   = document.querySelector(`[data-coordenada="${rookTo}"]`);
+            const rookPiece = rookFromCell?.querySelector('img');
+            if (rookPiece) {
+                rookToCell.appendChild(rookPiece);
+                rookFromCell.innerHTML = '';
+            }
         }
-    }, 300);
+
+        // [REGRA] EN PASSANT: Remove o peão inimigo se a captura for En Passant
+        if (type === 'pawn' && enPassantTarget && to === enPassantTarget.square) {
+            const capturedRank = color === 'white' ? Number(to[1]) - 1 : Number(to[1]) + 1;
+            const capturedCell = document.querySelector(`[data-coordenada="${to[0]}${capturedRank}"]`);
+            if (capturedCell) capturedCell.innerHTML = '';
+        }
+
+        // EXECUÇÃO DO MOVIMENTO NO DOM
+        destinationCell.innerHTML = ''; 
+        destinationCell.appendChild(movedPiece); 
+        originCell.innerHTML = ''; 
+
+        // [REGRA] MARCAR EN PASSANT: Define alvo se o peão andou 2 casas
+        if (type === 'pawn' && Math.abs(Number(from[1]) - Number(to[1])) === 2) {
+            enPassantTarget = { 
+                square: `${from[0]}${(Number(from[1]) + Number(to[1])) / 2}`, 
+                pawnColor: color 
+            };
+        } else {
+            enPassantTarget = null;
+        }
+
+        // [REGRA] ATUALIZAR ESTADO DE PEÇAS MOVIDAS (Para o Roque)
+        if (type === 'king') movedPieces[`${color}-king`] = true;
+        if (type === 'rook') {
+            if (from[0] === 'A') movedPieces[`${color}-rook-A`] = true;
+            if (from[0] === 'H') movedPieces[`${color}-rook-H`] = true;
+        }
+
+        // ATUALIZAÇÃO DO TURNO E VISUAIS
+        currentTurn = enemyColor;
+        updateCheckVisuals();
+
+        const notation = generateNotation(type, from, to, !!captured);
+notationHistory.push(notation);
+
+const li = document.createElement('li');
+li.textContent = notation;
+document.getElementById('notationList').appendChild(li);
+
+
+        // Verificação de Mate
+        setTimeout(() => {
+            if (isCheckmate(enemyColor)) alert(`XEQUE-MATE! ${color.toUpperCase()} VENCEU`);
+        }, 300);
+
+    } else {
+        console.log("Movimento Inválido!");
+    }
+
+    moveCount++;
+document.getElementById('moveCount').textContent = moveCount;
+
+currentTurn = currentTurn === 'white' ? 'black' : 'white';
+document.getElementById('turnDisplay').textContent =
+  currentTurn === 'white' ? 'Brancas' : 'Pretas';
+
+  moveCount++;
+updateGameInfo();
+
 }
 
+function generateNotation(type, from, to, capture = false) {
+  const pieceLetter = {
+    pawn: '',
+    knight: 'N',
+    bishop: 'B',
+    rook: 'R',
+    queen: 'Q',
+    king: 'K'
+  }[type];
 
+  return `${pieceLetter}${capture ? 'x' : ''}${to}`;
+}
 
 
 
@@ -365,6 +378,12 @@ function getValidMoves(coords, type, color) {
 }
 
 
+function updateGameInfo() {
+  document.getElementById('turnDisplay').textContent =
+    currentTurn === 'white' ? 'Brancas' : 'Pretas';
+
+  document.getElementById('moveCount').textContent = moveCount;
+}
 
 
 //=========================================================//
@@ -900,6 +919,20 @@ colorButtons.forEach(btn => {
   });
 });
 
+let playerColor = 'white';
+
+document.querySelectorAll('.color-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    playerColor = btn.dataset.color;
+
+    document.querySelectorAll('.color-btn')
+      .forEach(b => b.classList.remove('selected'));
+
+    btn.classList.add('selected');
+  });
+});
+
+
 // === START ===
 startBtn.addEventListener('click', () => {
   if (engineSelect) {
@@ -925,6 +958,7 @@ function applyBoardOrientation() {
   }
 }
 
+
 const homeScreen = document.getElementById('homeScreen');
 const boardContainer = document.getElementById('boardContainer');
 
@@ -932,48 +966,52 @@ document.querySelectorAll('.mode-card').forEach(card => {
   card.addEventListener('click', () => {
     gameMode = card.dataset.mode;
 
-    homeScreen.style.display = 'none';
-    boardContainer.style.display = 'block';
-
-    iniciarPartida();
+    // abre o modal
+    colorModal.style.display = 'flex';
   });
 });
 
 
-document.addEventListener('dragstart', e => {
-  if (!e.target.classList.contains('piece')) return;
+confirmColorBtn.addEventListener('click', () => {
+  colorModal.style.display = 'none';
 
-  draggedPiece = e.target;
-  origemCell = draggedPiece.parentElement;
+  // agora sim
+  homeScreen.style.display = 'none';
+  boardContainer.style.display = 'block';
 
-  e.dataTransfer.setData('text/plain', 'piece');
-  e.dataTransfer.effectAllowed = 'move';
-
-  setTimeout(() => {
-    draggedPiece.classList.add('dragging');
-  }, 0);
+  applyBoardOrientation();
+  iniciarPartida();
 });
+
+
+document
+  .querySelectorAll('#colorModal button[data-color]')
+  .forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedColor = btn.dataset.color;
+      playerColor = selectedColor;
+
+      confirmColorBtn.disabled = false;
+    });
+  });
 
 
 document.addEventListener('dragend', () => {
-  if (draggedPiece) draggedPiece.classList.remove('dragging');
-  draggedPiece = null;
-  origemCell = null;
+    isDragging = false;
 });
 
-const board = document.getElementById('board');
 
-board.addEventListener('dragover', e => {
-  const celula = e.target.closest('.celula');
-  if (!celula) return;
-  e.preventDefault();
+// 2. OBRIGATÓRIO: Permitir que o drop aconteça
+container.addEventListener('dragover', e => {
+    e.preventDefault(); // Sem isso, o evento 'drop' abaixo nunca dispara
 });
 
-board.addEventListener('drop', e => {
-  const celula = e.target.closest('.celula');
-  if (!celula || !draggedPiece) return;
+celula.addEventListener('drop', e => {
+    e.preventDefault();
+    if (!origemCell || !draggedPiece) return;
 
-  e.preventDefault();
-  celula.appendChild(draggedPiece);
+    movePiece(origemCell, celula);
+
+    draggedPiece = null;
+    origemCell = null;
 });
-

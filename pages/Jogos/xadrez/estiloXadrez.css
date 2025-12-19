@@ -101,6 +101,7 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 10px;
+    pointer-events: auto;
 }
 
 img {
@@ -132,10 +133,14 @@ img {
   transform: rotate(180deg);
 }
 
-
-.board.flipped img {
+#board.flipped {
   transform: rotate(180deg);
 }
+
+#board.flipped img {
+  transform: rotate(180deg);
+}
+
 
 .main-layout {
   display: flex;
@@ -198,6 +203,17 @@ img {
 
 .piece {
   cursor: grab;
+    /* Evita que o navegador tente "selecionar" o texto da página ao arrastar */
+    user-select: none;
+}
+
+.piece:active {
+    cursor: grabbing;
+}
+
+/* Quando você arrasta algo sobre a célula, ela muda de cor */
+.celula:drag-over {
+    background-color: rgba(255, 255, 0, 0.4) !important;
 }
 
 .piece.dragging {
@@ -205,3 +221,24 @@ img {
   cursor: grabbing;
 }
 
+.color-btn.selected {
+  outline: 2px solid gold;
+  transform: scale(1.05);
+}
+
+.game-info {
+  display: none;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  background: #111;
+  color: #fff;
+  padding: 15px;
+  width: 250px;
+  border-radius: 10px;
+  font-family: monospace;
+}
+.notation {
+  max-height: 200px;
+  overflow-y: auto;
+}
