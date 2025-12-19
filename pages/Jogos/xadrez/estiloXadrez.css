@@ -12,7 +12,7 @@ body {
 
 /* ====== SIDEBAR ====== */
 .sidebar {
-    width: 80px; /* bem menor */
+    width: 80px; 
     height: 100vh;
     background: #ffffff;
     padding: 15px 10px;
@@ -77,6 +77,8 @@ body {
     justify-content: center;
 }
 
+
+
 .black {
     background: #026666fb;
 }
@@ -89,8 +91,8 @@ body {
     display: grid;
     grid-template-columns: repeat(8, 1fr); 
     grid-template-rows: repeat(8, 1fr);
-    width: 400px;
-    height: 400px; 
+    width: 600px;
+    height: 600px; 
     border: 1px solid #000;
 }
 
@@ -99,6 +101,10 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 10px;
+}
+
+img {
+    width: 55px;
 }
 
 .selected {
@@ -118,99 +124,84 @@ body {
     border-radius: 8px;
 }
 
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
+.board.flipped .celula {
+  transform: rotate(180deg);
+}
+
+.board.flipped .piece {
+  transform: rotate(180deg);
+}
+
+
+.board.flipped img {
+  transform: rotate(180deg);
+}
+
+.main-layout {
   display: flex;
+  gap: 40px;
   align-items: center;
-  justify-content: center;
-  z-index: 9999;
 }
 
-.modal {
-  background: #121212;
-  color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  width: 320px;
-  text-align: center;
-  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+#boardContainer {
+  flex-shrink: 0;
 }
 
-.modal h2 {
+.home-screen-right {
+  width: 260px;
+}
+
+.home-screen-right h2 {
   margin-bottom: 20px;
+  text-align: left;
 }
 
-.color-options {
+.mode-cards-column {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 14px;
 }
 
-.color-options button {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
+.mode-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid #3333336b;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f4f4f4;
   cursor: pointer;
-  background: #1e1e1e;
-  color: white;
   transition: 0.2s;
 }
 
-.color-options button:hover {
-  background: #333;
-}
-
-.color-options button.selected {
-  background: #4caf50;
-}
-
-.engine-options {
-  margin-bottom: 20px;
-}
-
-.engine-options select {
-  background: #1e1e1e;
-  color: white;
-  border: 1px solid #333;
-}
-
-#startGameBtn {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  background: #2196f3;
-  color: white;
-  cursor: pointer;
-  opacity: 0.5;
-}
-
-#startGameBtn.enabled {
-  opacity: 1;
-}
-
-.mode-options {
+.mode-card div {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
+  text-align: left;
+  
 }
 
-.mode-options button {
-  padding: 10px;
-  font-size: 16px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  background: #1e1e1e;
-  color: white;
+.mode-card strong {
+  font-size: 15px;
+  
 }
 
-.mode-options button.selected {
-  background: #ff9800;
+.mode-card span {
+  font-size: 13px;
+  color: #555;
 }
+
+.mode-card:hover {
+  background: #e0e0e0;
+  transform: translateX(4px);
+}
+
+.piece {
+  cursor: grab;
+}
+
+.piece.dragging {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+

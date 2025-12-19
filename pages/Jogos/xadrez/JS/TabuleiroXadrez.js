@@ -1,6 +1,8 @@
 let playerColor = null;
 let engineLevel = 1;
 let gameMode = null; // 'cpu' | 'pvp'
+let draggedPiece = null;
+let origemCell = null;
 
 
 
@@ -119,11 +121,18 @@ for (let i = 0; i < NUM_CELULAS; i++) {
     }
 
     if (tipoPeca && corPeca) {
-        const img = document.createElement('img');
-        img.src = imgpath[corPeca][tipoPeca];
-        img.alt = `${corPeca} ${tipoPeca}`; // Importante: alt="black pawn"
-        celula.appendChild(img);
-    }
+    const img = document.createElement('img');
+    img.src = imgpath[corPeca][tipoPeca];
+    img.alt = `${corPeca} ${tipoPeca}`;
+
+    // 🔥 ESSENCIAL PARA DRAG & DROP
+    img.classList.add('piece');
+    img.draggable = true;
+
+    celula.appendChild(img);
+}
+
+
     container.appendChild(celula);
 }
 
@@ -826,19 +835,19 @@ function dehighlightValidMoves() {
 function iniciarPartida() {
   currentPlayer = 'white';
 
-  console.log('Modo:', gameMode);
-  console.log('Jogador:', playerColor);
-  console.log('Engine nível:', engineLevel);
-
   if (gameMode === 'pvp') {
-    // 1v1 local → turnos normais
-    return;
+    console.log('Modo 1v1 iniciado');
   }
 
-  if (gameMode === 'cpu' && playerColor === 'black') {
-    // futuramente: engine começa
+  if (gameMode === 'cpu') {
+    console.log('Modo vs Bot iniciado');
+  }
+
+  if (gameMode === 'puzzles') {
+    console.log('Modo puzzles (futuro)');
   }
 }
+
 
 
 
@@ -898,5 +907,73 @@ startBtn.addEventListener('click', () => {
   }
 
   modal.style.display = 'none';
-  iniciarPartida();
+modal.style.display = 'none';
+
+applyBoardOrientation(); // 👈 AQUI
+
+iniciarPartida();
 });
+
+
+function applyBoardOrientation() {
+  const board = document.getElementById('board');
+
+  if (playerColor === 'black') {
+    board.classList.add('flipped');
+  } else {
+    board.classList.remove('flipped');
+  }
+}
+
+const homeScreen = document.getElementById('homeScreen');
+const boardContainer = document.getElementById('boardContainer');
+
+document.querySelectorAll('.mode-card').forEach(card => {
+  card.addEventListener('click', () => {
+    gameMode = card.dataset.mode;
+
+    homeScreen.style.display = 'none';
+    boardContainer.style.display = 'block';
+
+    iniciarPartida();
+  });
+});
+
+
+document.addEventListener('dragstart', e => {
+  if (!e.target.classList.contains('piece')) return;
+
+  draggedPiece = e.target;
+  origemCell = draggedPiece.parentElement;
+
+  e.dataTransfer.setData('text/plain', 'piece');
+  e.dataTransfer.effectAllowed = 'move';
+
+  setTimeout(() => {
+    draggedPiece.classList.add('dragging');
+  }, 0);
+});
+
+
+document.addEventListener('dragend', () => {
+  if (draggedPiece) draggedPiece.classList.remove('dragging');
+  draggedPiece = null;
+  origemCell = null;
+});
+
+const board = document.getElementById('board');
+
+board.addEventListener('dragover', e => {
+  const celula = e.target.closest('.celula');
+  if (!celula) return;
+  e.preventDefault();
+});
+
+board.addEventListener('drop', e => {
+  const celula = e.target.closest('.celula');
+  if (!celula || !draggedPiece) return;
+
+  e.preventDefault();
+  celula.appendChild(draggedPiece);
+});
+

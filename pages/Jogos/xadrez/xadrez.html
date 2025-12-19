@@ -55,54 +55,49 @@
             </nav>
         </aside>
 
-        <div class="main-area">
-            <main class="content">
-            <h1 class="tituloDoJoguin"></h1>
-                <div id="board"></div>
-            </main>
-        </div>
-    </div>
-   
-<div class="modal-overlay" id="startModal">
-  <div class="modal">
+        <main class="content">
+<div class="main-layout">
 
-    <h2>Modo de Jogo</h2>
-
-    <div class="mode-options">
-      <button data-mode="cpu">🤖 Contra o Computador</button>
-      <button data-mode="pvp">👥 1v1 (Local)</button>
-    </div>
-
-    <div id="colorSection" style="display:none;">
-      <h3>Escolha seu lado</h3>
-      <div class="color-options">
-        <button data-color="white">♔ Brancas</button>
-        <button data-color="black">♚ Pretas</button>
-        <button data-color="random">🎲 Aleatório</button>
-      </div>
-    </div>
-
-    <div id="engineSection" style="display:none;">
-      <label>
-        Nível da Engine
-        <select id="engineLevel">
-  <option value="100">100 ELO (Muito fraco)</option>
-  <option value="300">300 ELO</option>
-  <option value="500">500 ELO</option>
-  <option value="700">700 ELO</option>
-  <option value="1000">1000 ELO</option>
-  <option value="1300">1300 ELO</option>
-  <option value="1600">1600 ELO</option>
-  <option value="2000">2000 ELO</option>
-</select>
-
-      </label>
-    </div>
-
-    <button id="startGameBtn" disabled>Começar</button>
+  <div id="boardContainer">
+    <div id="board" class="board"></div>
 
   </div>
+
+  <div id="homeScreen" class="home-screen-right">
+    <h2>Modos de Jogo</h2>
+
+    <div class="mode-cards-column">
+      <div class="mode-card" data-mode="cpu">
+        🤖
+        <div>
+          <strong>Jogar vs Bot</strong>
+          <span>Desafie a IA</span>
+        </div>
+      </div>
+
+      <div class="mode-card" data-mode="pvp">
+        👥
+        <div>
+          <strong>1v1 Local</strong>
+          <span>Jogue no mesmo PC</span>
+        </div>
+      </div>
+
+      <div class="mode-card" data-mode="puzzles">
+        🧩
+        <div>
+          <strong>Problemas</strong>
+          <span>Treine tática</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+
+
+        </main>
+    </div>
 
 
 </body>
