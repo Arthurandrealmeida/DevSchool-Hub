@@ -1,16 +1,20 @@
+// --- VARIÁVEIS GLOBAIS ---
 let engineLevel = 1;
-let gameMode = null; // 'cpu' | 'pvp'
+let gameMode = 'local'; // Começa como local por padrão
 let draggedPiece = null;
 let origemCell = null;
 let isDragging = false;
 let moveCount = 0;
 let notationHistory = [];
+let playerColor = 'white'; 
+let moveNumber = 1;
+let gameOver = false;
 
-
-const colorModal = document.getElementById('colorModal');
-const confirmColorBtn = document.getElementById('confirmColor');
-let selectedColor = null;
+// Selecione apenas o que realmente existe no HTML
+const btnAbandonar = document.getElementById('btnAbandonar');
 const container = document.getElementById('board');
+let selectedMode = null;
+
 const TAMANHO_GRADE = 8;
 const NUM_CELULAS = TAMANHO_GRADE * TAMANHO_GRADE;
 const colunasLetras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
@@ -125,7 +129,7 @@ for (let i = 0; i < NUM_CELULAS; i++) {
     e.preventDefault();
     if (!draggedPiece || !origemCell) return;
 
-    movePiece(origemCell, celula); // 🔥 USA A LÓGICA EXISTENTE
+    movePiece(origemCell, celula);
 });
 
 
@@ -250,98 +254,115 @@ function handleCellClick(cell) {
 
 
 function movePiece(originCell, destinationCell) {
-    // 1. Identificar quem está movendo
     const movedPiece = originCell.querySelector('img');
-    if (!movedPiece) return;
+    if (gameOver || !movedPiece) return;
 
     const [color, type] = movedPiece.alt.split(' ');
+    if (color !== currentTurn) return;
+
     const from = originCell.dataset.coordenada;
     const to = destinationCell.dataset.coordenada;
 
-    // --- VERIFICAÇÃO DE REGRAS ---
-    const rawMoves = getValidMoves(from, type, color); 
-    const isPossibleTarget = rawMoves.includes(to);
-    const leavesKingSafe = !wouldLeaveKingInCheck(originCell, destinationCell, color);
+    const rawMoves = getValidMoves(from, type, color);
+    if (!rawMoves.includes(to)) return;
 
-    if (isPossibleTarget && leavesKingSafe) {
-        const enemyColor = color === 'white' ? 'black' : 'white';
-        const captured = destinationCell.querySelector('img');
+    if (wouldLeaveKingInCheck(originCell, destinationCell, color)) return;
 
-        // [REGRA] ROQUE: Se o rei move 2 casas, move a torre junto
-        if (type === 'king' && Math.abs(from.charCodeAt(0) - to.charCodeAt(0)) === 2) {
-            const rank = from[1];
-            const rookFrom = to[0] === 'G' ? `H${rank}` : `A${rank}`;
-            const rookTo   = to[0] === 'G' ? `F${rank}` : `D${rank}`;
-            const rookFromCell = document.querySelector(`[data-coordenada="${rookFrom}"]`);
-            const rookToCell   = document.querySelector(`[data-coordenada="${rookTo}"]`);
-            const rookPiece = rookFromCell?.querySelector('img');
-            if (rookPiece) {
-                rookToCell.appendChild(rookPiece);
-                rookFromCell.innerHTML = '';
-            }
-        }
+    const captured = destinationCell.querySelector('img');
 
-        // [REGRA] EN PASSANT: Remove o peão inimigo se a captura for En Passant
-        if (type === 'pawn' && enPassantTarget && to === enPassantTarget.square) {
-            const capturedRank = color === 'white' ? Number(to[1]) - 1 : Number(to[1]) + 1;
-            const capturedCell = document.querySelector(`[data-coordenada="${to[0]}${capturedRank}"]`);
-            if (capturedCell) capturedCell.innerHTML = '';
-        }
+let oldEnPassantTarget = enPassantTarget; 
+    // === DENTRO DA FUNÇÃO movePiece, ANTES DE MOVER A PEÇA ===
+if (type === 'pawn' && enPassantTarget && to === enPassantTarget.square) {
+    const toPos = idtopos(to);
+    const direction = color === 'white' ? 1 : -1; // Brancas capturam p/ cima, então o alvo está p/ baixo (+1)
+    
+    const pawnToCaptureCoords = postoid({ x: toPos.x + direction, y: toPos.y });
+    const pawnToCaptureCell = document.querySelector(`[data-coordenada="${pawnToCaptureCoords}"]`);
+    
+    if (pawnToCaptureCell) {
+        pawnToCaptureCell.innerHTML = ''; // Remove o peão adversário
+        console.log("Captura En Passant realizada em: " + pawnToCaptureCoords);
+    }
+}
 
-        // EXECUÇÃO DO MOVIMENTO NO DOM
-        destinationCell.innerHTML = ''; 
-        destinationCell.appendChild(movedPiece); 
-        originCell.innerHTML = ''; 
-
-        // [REGRA] MARCAR EN PASSANT: Define alvo se o peão andou 2 casas
-        if (type === 'pawn' && Math.abs(Number(from[1]) - Number(to[1])) === 2) {
-            enPassantTarget = { 
-                square: `${from[0]}${(Number(from[1]) + Number(to[1])) / 2}`, 
-                pawnColor: color 
-            };
-        } else {
-            enPassantTarget = null;
-        }
-
-        // [REGRA] ATUALIZAR ESTADO DE PEÇAS MOVIDAS (Para o Roque)
-        if (type === 'king') movedPieces[`${color}-king`] = true;
-        if (type === 'rook') {
-            if (from[0] === 'A') movedPieces[`${color}-rook-A`] = true;
-            if (from[0] === 'H') movedPieces[`${color}-rook-H`] = true;
-        }
-
-        // ATUALIZAÇÃO DO TURNO E VISUAIS
-        currentTurn = enemyColor;
-        updateCheckVisuals();
-
-        const notation = generateNotation(type, from, to, !!captured);
-notationHistory.push(notation);
-
-const li = document.createElement('li');
-li.textContent = notation;
-document.getElementById('notationList').appendChild(li);
+enPassantTarget = null;
 
 
-        // Verificação de Mate
-        setTimeout(() => {
-            if (isCheckmate(enemyColor)) alert(`XEQUE-MATE! ${color.toUpperCase()} VENCEU`);
-        }, 300);
-
-    } else {
-        console.log("Movimento Inválido!");
+    // === LÓGICA DO ROQUE (Mover a Torre junto com o Rei) ===
+    if (type === 'king' && Math.abs(idtopos(from).y - idtopos(to).y) === 2) {
+        const isKingside = to.startsWith('G');
+        const rank = color === 'white' ? '1' : '8';
+        const rookFromCoords = isKingside ? `H${rank}` : `A${rank}`;
+        const rookToCoords = isKingside ? `F${rank}` : `D${rank}`;
+        
+        const rookFromCell = document.querySelector(`[data-coordenada="${rookFromCoords}"]`);
+        const rookToCell = document.querySelector(`[data-coordenada="${rookToCoords}"]`);
+        const rookImg = rookFromCell.querySelector('img');
+        
+        rookToCell.appendChild(rookImg);
+        rookFromCell.innerHTML = '';
     }
 
-    moveCount++;
-document.getElementById('moveCount').textContent = moveCount;
+    // === EXECUÇÃO DO MOVIMENTO FÍSICO ===
+    destinationCell.innerHTML = '';
+    destinationCell.appendChild(movedPiece);
+    originCell.innerHTML = '';
 
-currentTurn = currentTurn === 'white' ? 'black' : 'white';
-document.getElementById('turnDisplay').textContent =
-  currentTurn === 'white' ? 'Brancas' : 'Pretas';
+    // === ATUALIZAR ESTADOS DE MOVIMENTAÇÃO (Para impedir roque futuro) ===
+    if (type === 'king') movedPieces[`${color}-king`] = true;
+    if (type === 'rook') {
+        if (from.startsWith('A')) movedPieces[`${color}-rook-A`] = true;
+        if (from.startsWith('H')) movedPieces[`${color}-rook-H`] = true;
+    }
 
-  moveCount++;
-updateGameInfo();
-
+    // === DEFINIR EN PASSANT TARGET (Para o próximo turno) ===
+    enPassantTarget = null; // Reseta por padrão
+    if (type === 'pawn' && Math.abs(idtopos(from).x - idtopos(to).x) === 2) {
+    const fromPos = idtopos(from);
+    const toPos = idtopos(to);
+    const ghostX = (fromPos.x + toPos.x) / 2; // A casa que o peão pulou
+    const ghostY = fromPos.y;
+    
+    enPassantTarget = { 
+        square: postoid({ x: ghostX, y: ghostY }), 
+        pawnColor: color 
+    };
 }
+
+    // Finalização do turno
+    const notation = generateNotation(type, from, to, !!captured);
+    registerMove(notation);
+    currentTurn = currentTurn === 'white' ? 'black' : 'white';
+    moveCount++;
+
+    updateGameInfo();
+    updateCheckVisuals();
+
+    const enemyColor = currentTurn;
+    checkGameOver(enemyColor);
+
+    if (isCheckmate(enemyColor)) {
+        setTimeout(() => endGame(color), 200);
+    }
+}
+
+function registerMove(notation) {
+    const list = document.getElementById('notationList');
+
+    if (currentTurn === 'white') {
+        // Brancas → nova linha
+        const li = document.createElement('li');
+        li.textContent = `${moveNumber}. ${notation}`;
+        list.appendChild(li);
+        notationHistory.push(li);
+    } else {
+        // Pretas → completa a linha
+        const lastLi = notationHistory[notationHistory.length - 1];
+        lastLi.textContent += ` ${notation}`;
+        moveNumber++;
+    }
+}
+
 
 function generateNotation(type, from, to, capture = false) {
   const pieceLetter = {
@@ -429,15 +450,11 @@ function calculatePawnMoves(startCoords, pieceColor) {
 if (enPassantTarget && enPassantTarget.pawnColor !== pieceColor) {
     const epPos = idtopos(enPassantTarget.square);
 
-    // o peão precisa estar ao lado
-    if (
-        epPos.x === x + direction &&
-        Math.abs(epPos.y - y) === 1
-    ) {
+    // O peão atual pode capturar se o alvo estiver na diagonal imediata à frente
+    if (epPos.x === x + direction && Math.abs(epPos.y - y) === 1) {
         moves.push(enPassantTarget.square);
     }
 }
-
 
 
     return moves;
@@ -852,101 +869,68 @@ function dehighlightValidMoves() {
 }
 
 function iniciarPartida() {
-  currentPlayer = 'white';
+    gameOver = false; // 🔥 ESSENCIAL
 
-  if (gameMode === 'pvp') {
-    console.log('Modo 1v1 iniciado');
-  }
+    currentTurn = 'white';
+    moveCount = 0;
+    moveNumber = 1;
+    notationHistory = [];
 
-  if (gameMode === 'cpu') {
-    console.log('Modo vs Bot iniciado');
-  }
-
-  if (gameMode === 'puzzles') {
-    console.log('Modo puzzles (futuro)');
-  }
+    document.getElementById('notationList').innerHTML = '';
+    updateGameInfo();
 }
 
 
 
 
-const modal = document.getElementById('startModal');
-const startBtn = document.getElementById('startGameBtn');
+// 1. Primeiro, pegamos todos os elementos necessários
+const allModeGroups = document.querySelectorAll('.mode-group');
 
-const modeButtons = document.querySelectorAll('.mode-options button');
-const colorButtons = document.querySelectorAll('.color-options button');
+allModeGroups.forEach(group => {
+    const card = group.querySelector('.mode-card');
+    const colorOptions = group.querySelector('.color-choice');
+    const groupButtons = group.querySelectorAll('.btn-choice');
+    const confirmBtn = group.querySelector('.btn-confirm');
 
-const colorSection = document.getElementById('colorSection');
-const engineSection = document.getElementById('engineSection');
-const engineSelect = document.getElementById('engineLevel');
+    // 2. Evento de clique no Card para mostrar as cores
+    card.addEventListener('click', () => {
+        // Esconde outras seleções abertas
+        document.querySelectorAll('.color-choice').forEach(el => el.classList.add('hidden'));
+        // Mostra a deste grupo
+        colorOptions.classList.remove('hidden');
+    });
 
-// === ESCOLHA DO MODO ===
-modeButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    modeButtons.forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
+    // 3. Evento de clique nos botões de cor (Branco/Preto)
+    groupButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove a seleção visual dos outros botões DESTE grupo
+            groupButtons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
 
-    gameMode = btn.dataset.mode;
+            // Define a cor global e habilita o confirmar
+            playerColor = btn.dataset.color; 
+            confirmBtn.disabled = false;
+            confirmBtn.classList.add('enabled');
+        });
+    });
 
-    colorSection.style.display = 'block';
+    // 4. Evento de Confirmar
+    // Dentro do loop allModeGroups.forEach...
 
-    if (gameMode === 'cpu') {
-      engineSection.style.display = 'block';
-    } else {
-      engineSection.style.display = 'none';
-      engineLevel = null;
+confirmBtn.addEventListener('click', () => {
+    // 1. Identifica o modo
+    gameMode = card.innerText.includes('Bot') ? 'vs-bot' : 'local';
+
+    // 2. Se for Bot, salva o Rating selecionado
+    if (gameMode === 'vs-bot') {
+        const ratingSelect = group.querySelector('#botRating');
+        engineLevel = parseInt(ratingSelect.value); // Salva na variável que você já tem no topo do código
+        console.log("Iniciando contra Bot nível: " + engineLevel);
     }
 
-    startBtn.disabled = true;
-    startBtn.classList.remove('enabled');
-  });
+    startGameWithColor(playerColor);
 });
-
-// === ESCOLHA DA COR ===
-colorButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    colorButtons.forEach(b => b.classList.remove('selected'));
-    btn.classList.add('selected');
-
-    const choice = btn.dataset.color;
-    playerColor =
-      choice === 'random'
-        ? Math.random() < 0.5 ? 'white' : 'black'
-        : choice;
-
-    startBtn.disabled = false;
-    startBtn.classList.add('enabled');
-  });
 });
-
-let playerColor = 'white';
-
-document.querySelectorAll('.color-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    playerColor = btn.dataset.color;
-
-    document.querySelectorAll('.color-btn')
-      .forEach(b => b.classList.remove('selected'));
-
-    btn.classList.add('selected');
-  });
-});
-
-
-// === START ===
-startBtn.addEventListener('click', () => {
-  if (engineSelect) {
-    engineLevel = Number(engineSelect.value);
-  }
-
-  modal.style.display = 'none';
-modal.style.display = 'none';
-
-applyBoardOrientation(); // 👈 AQUI
-
-iniciarPartida();
-});
-
 
 function applyBoardOrientation() {
   const board = document.getElementById('board');
@@ -962,26 +946,7 @@ function applyBoardOrientation() {
 const homeScreen = document.getElementById('homeScreen');
 const boardContainer = document.getElementById('boardContainer');
 
-document.querySelectorAll('.mode-card').forEach(card => {
-  card.addEventListener('click', () => {
-    gameMode = card.dataset.mode;
 
-    // abre o modal
-    colorModal.style.display = 'flex';
-  });
-});
-
-
-confirmColorBtn.addEventListener('click', () => {
-  colorModal.style.display = 'none';
-
-  // agora sim
-  homeScreen.style.display = 'none';
-  boardContainer.style.display = 'block';
-
-  applyBoardOrientation();
-  iniciarPartida();
-});
 
 
 document
@@ -995,6 +960,7 @@ document
     });
   });
 
+  
 
 document.addEventListener('dragend', () => {
     isDragging = false;
@@ -1006,12 +972,228 @@ container.addEventListener('dragover', e => {
     e.preventDefault(); // Sem isso, o evento 'drop' abaixo nunca dispara
 });
 
-celula.addEventListener('drop', e => {
-    e.preventDefault();
-    if (!origemCell || !draggedPiece) return;
+// --- DENTRO DO SEU LOOP DE CRIAÇÃO DO TABULEIRO ---
+for (let i = 0; i < NUM_CELULAS; i++) {
+    const celula = document.createElement('div');
+    celula.classList.add('celula');
+    
+    // ... (restante do seu código de cores e coordenadas) ...
 
-    movePiece(origemCell, celula);
+    // 1. Permitir que a célula receba o drop (Drag Over)
+    celula.addEventListener('dragover', e => {
+        e.preventDefault(); // OBRIGATÓRIO para o drop funcionar
+    });
 
-    draggedPiece = null;
-    origemCell = null;
+    // 2. O Evento de Drop (MOVA O SEU CÓDIGO PARA CÁ)
+    celula.addEventListener('drop', e => {
+        e.preventDefault();
+        
+        // Agora 'celula' está definida porque estamos dentro do loop!
+        if (!origemCell || !draggedPiece) return;
+
+        // Tenta mover a peça para ESTA célula que recebeu o drop
+        movePiece(origemCell, celula);
+
+        // Limpa as variáveis globais
+        draggedPiece = null;
+        origemCell = null;
+    });
+
+    container.appendChild(celula);
+}
+
+let selectedColor = null;
+// --- CORREÇÃO DA LÓGICA DE INTERAÇÃO DOS MENUS ---
+
+// 1. Variáveis que faltavam ser declaradas para não dar erro no console
+const boardElement = document.getElementById('board');
+const homeScreenElement = document.getElementById('homeScreen');
+const boardContainerElement = document.getElementById('boardContainer');
+
+// --- LÓGICA DE INTERAÇÃO ATUALIZADA ---
+
+console.log("Script de botões carregado!");
+
+document.querySelectorAll('.mode-group').forEach((group, index) => {
+    const card = group.querySelector('.mode-card');
+    const colorOptions = group.querySelector('.color-choice');
+
+    if (!card || !colorOptions) {
+        console.error(`Erro no grupo ${index}: Card ou Opções não encontrados!`);
+        return;
+    }
+
+    card.addEventListener('click', () => {
+        console.log("Você clicou no card: " + card.innerText);
+        
+        // Tentativa de limpar todos antes
+        document.querySelectorAll('.color-choice').forEach(el => {
+            el.classList.add('hidden');
+            console.log("Escondendo um grupo...");
+        });
+
+        // Mostra o atual
+        colorOptions.classList.remove('hidden');
+        console.log("Removendo .hidden do grupo clicado. Elemento agora:", colorOptions);
+    });
 });
+
+function startGameWithColor(color) {
+    playerColor = color;
+    
+    const homeScreen = document.getElementById('homeScreen');
+    const gameInfo = document.getElementById('gameInfo');
+    const board = document.getElementById('board');
+
+    // 1. Esconde o menu de seleção
+    if (homeScreen) homeScreen.classList.add('hidden');
+
+    // 2. Mostra o painel da partida
+    if (gameInfo) gameInfo.classList.remove('hidden');
+
+    // 3. Gira o tabuleiro se necessário
+    if (playerColor === 'black') {
+        board.classList.add('flipped');
+    } else {
+        board.classList.remove('flipped');
+    }
+
+    // 4. Inicia as variáveis e o tabuleiro
+    iniciarPartida(); 
+    
+    // Se o jogador escolheu pretas e é vs-bot, o bot joga primeiro
+    if (gameMode === 'vs-bot' && playerColor === 'black') {
+        setTimeout(executarLanceAleatorio, 600);
+    }
+}
+
+function iniciarPartida() {
+    gameOver = false; // <--- OBRIGATÓRIO
+    currentTurn = 'white';
+    moveCount = 0;
+    moveNumber = 1;
+    notationHistory = [];
+    document.getElementById('notationList').innerHTML = '';
+    updateGameInfo();
+}
+
+function voltarParaMenu() {
+    gameOver = true; // Trava movimentos enquanto limpa
+
+    // 1. Alterna a visibilidade dos painéis
+    document.getElementById('homeScreen').classList.remove('hidden');
+    document.getElementById('homeScreen').style.display = 'block';
+    
+    document.getElementById('gameInfo').classList.add('hidden');
+    document.getElementById('boardContainer').style.display = 'none';
+
+    // 2. Limpa o tabuleiro visualmente para a próxima vez
+    const board = document.getElementById('board');
+    board.innerHTML = ''; 
+
+    console.log("Jogo resetado e voltando ao menu...");
+}
+
+
+// Função auxiliar para evitar que o script quebre se o botão sumir
+function safeAddClick(id, callback) {
+    const el = document.getElementById(id);
+    if (el) {
+        el.onclick = callback;
+    } else {
+        console.warn(`Aviso: Elemento #${id} não encontrado no HTML.`);
+    }
+}
+
+// Configura o botão de abandonar
+safeAddClick('btnAbandonar', () => {
+    if (confirm("Tem certeza que deseja abandonar a partida?")) {
+        window.location.reload();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    safeAddClick('btnAbandonar', () => {
+        if (confirm("Tem certeza que deseja abandonar a partida?")) {
+            console.log("Botão Voltar para Menu clicado!");
+            window.location.reload();
+        }
+    });
+
+    safeAddClick('btnPlayAgain', () => {
+        document.getElementById('endGameModal').classList.add('hidden');
+        iniciarPartida();
+    });
+
+    safeAddClick('btnBackMenu', () => {
+        console.log("Botão Voltar para Menu clicado!");
+        window.location.reload();
+    });
+});
+
+function endGame(result, reason) {
+    const modal = document.getElementById('endGameModal');
+    const title = document.getElementById('endGameTitle');
+    const info = document.getElementById('endGameInfo');
+
+    if (result === 'draw') {
+        title.textContent = 'Empate!';
+        info.textContent = reason;
+    } else {
+        title.textContent = result === 'white' ? 'Vitória das Brancas' : 'Vitória das Pretas';
+        info.textContent = `Vencido por ${reason}`;
+    }
+
+    modal.classList.remove('hidden');
+    gameOver = true;
+}
+
+// Mude de playAgainBtn para btnPlayAgain
+document.getElementById('btnPlayAgain').addEventListener('click', () => {
+    document.getElementById('endGameModal').classList.add('hidden');
+    iniciarPartida();
+});
+
+// Mude de backMenuBtn para btnBackMenu
+document.getElementById('btnBackMenu').addEventListener('click', () => {
+    voltarParaMenu();
+});
+
+function checkGameOver(enemyColor) {
+    const hasMoves = playerHasLegalMoves(enemyColor);
+    const inCheck = isKingInCheck(enemyColor);
+
+    // 1. Verificação de Material Insuficiente (Apenas 2 reis)
+    const todasPecas = document.querySelectorAll('.celula img');
+    if (todasPecas.length === 2) {
+        setTimeout(() => endGame('draw', 'Material Insuficiente (Apenas os Reis)'), 200);
+        return;
+    }
+
+    // 2. Verificação de Xeque-mate ou Afogamento
+    if (!hasMoves) {
+        if (inCheck) {
+            // Se o inimigo não tem movimentos e está em xeque, o vencedor é quem NÃO é o inimigo
+            const winner = enemyColor === 'white' ? 'black' : 'white';
+            setTimeout(() => endGame(winner, 'Xeque-mate'), 200);
+        } else {
+            // Mate por afogamento (Stalemate)
+            setTimeout(() => endGame('draw', 'Mate por Afogamento'), 200);
+        }
+    }
+}
+
+function playerHasLegalMoves(color) {
+    const pieces = document.querySelectorAll(`img[alt^="${color}"]`);
+    for (const piece of pieces) {
+        const cell = piece.closest('.celula');
+        const coords = cell.dataset.coordenada;
+        const [, type] = piece.alt.split(' ');
+        
+        const moves = getValidMoves(coords, type, color);
+        const legalMoves = filterMovesThatExposeKing(moves, cell, color);
+        
+        if (legalMoves.length > 0) return true;
+    }
+    return false;
+}

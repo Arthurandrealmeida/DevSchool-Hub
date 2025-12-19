@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA do DevSchool Hub</title>
+    <title>Xadrez do DevSchool</title>
     <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="estiloXadrez.css">
 </head>
@@ -55,6 +55,7 @@
             </nav>
         </aside>
 
+
         <main class="content">
 <div class="main-layout">
 
@@ -67,38 +68,84 @@
     <h2>Modos de Jogo</h2>
 
     <div class="mode-cards-column">
-      <div class="mode-card" data-mode="cpu">
-        🤖
-        <div>
-          <strong>Jogar vs Bot</strong>
-          <span>Desafie a IA</span>
-        </div>
-      </div>
+  <div class="mode-group" data-mode="vs-bot">
+  <div class="mode-card">🤖 Jogar vs Bot</div>
+  
+  <div class="color-choice hidden">
+    <div class="rating-selector">
+      <label for="botRating">Dificuldade do Bot:</label>
+      <select id="botRating">
+        <option value="100">100 ELO</option>
+        <option value="400">400 ELO</option>
+        <option value="800">800 ELO</option>
+        <option value="1200">1200 ELO</option>
+        <option value="1600">1600 ELO</option>
+        <option value="2000">2000 ELO</option>
+      </select>
+    </div>
 
-      <div class="mode-card" data-mode="pvp">
-        👥
-        <div>
-          <strong>1v1 Local</strong>
-          <span>Jogue no mesmo PC</span>
-        </div>
-      </div>
+    <div class="btn-group">
+      <button class="btn-choice" data-color="white">⚪ Brancas</button>
+      <button class="btn-choice" data-color="black">⚫ Pretas</button>
+    </div>
+    
+    <button class="btn-confirm" disabled>Confirmar Bot</button>
+  </div>
+</div>
 
-      <div class="mode-card" data-mode="puzzles">
-        🧩
-        <div>
-          <strong>Problemas</strong>
-          <span>Treine tática</span>
-        </div>
-      </div>
-
+  <div class="mode-group" data-mode="local">
+    <div class="mode-card">👥 1v1 Local</div>
+    <div class="color-choice hidden">
+      <button class="btn-choice" data-color="white">⚪ Brancas</button>
+      <button class="btn-choice" data-color="black">⚫ Pretas</button>
+      <button class="btn-confirm" disabled>Confirmar Local</button>
     </div>
   </div>
+</div>
+
+  </div>
+
+  <div id="gameInfo" class="game-info-panel hidden">
+  <h2>Partida em Andamento</h2>
+  
+  <div class="info-item">
+    <strong>Vez de:</strong> <span id="turnDisplay">Brancas</span>
+  </div>
+  
+  <div class="info-item">
+    <strong>Total de Movimentos:</strong> <span id="moveCount">0</span>
+  </div>
+
+  <div class="notation-container">
+    <h3>Histórico de Lances</h3>
+    <ul id="notationList" class="notation-list"></ul>
+  </div>
+
+  <button id="btnAbandonar" class="btn-abandonar">Abandonar Partida</button>
+</div>
 
 </div>
 
 
+  </div>
+
+</div>
         </main>
+
+
     </div>
+
+    <div id="endGameModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <h2 id="endGameTitle"></h2>
+    <p id="endGameInfo"></p>
+
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button id="btnPlayAgain">Jogar novamente</button>
+      <button id="btnBackMenu">Voltar ao menu</button>
+    </div>
+  </div>
+</div>
 
 
 </body>

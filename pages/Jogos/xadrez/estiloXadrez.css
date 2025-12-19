@@ -94,6 +94,8 @@ body {
     width: 600px;
     height: 600px; 
     border: 1px solid #000;
+    transform-origin: center;
+    transition: transform 0.4s ease;
 }
 
 .celula {
@@ -125,14 +127,6 @@ img {
     border-radius: 8px;
 }
 
-.board.flipped .celula {
-  transform: rotate(180deg);
-}
-
-.board.flipped .piece {
-  transform: rotate(180deg);
-}
-
 #board.flipped {
   transform: rotate(180deg);
 }
@@ -161,45 +155,6 @@ img {
   text-align: left;
 }
 
-.mode-cards-column {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.mode-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: 1px solid #3333336b;
-  padding: 14px;
-  border-radius: 10px;
-  background: #f4f4f4;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.mode-card div {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  
-}
-
-.mode-card strong {
-  font-size: 15px;
-  
-}
-
-.mode-card span {
-  font-size: 13px;
-  color: #555;
-}
-
-.mode-card:hover {
-  background: #e0e0e0;
-  transform: translateX(4px);
-}
 
 .piece {
   cursor: grab;
@@ -238,7 +193,199 @@ img {
   border-radius: 10px;
   font-family: monospace;
 }
+
+
+/* Garantir que o painel apareça como um bloco quando a classe hidden sair */
+.game-info-panel {
+    display: block; 
+}
 .notation {
   max-height: 200px;
   overflow-y: auto;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  min-width: 280px;
+}
+
+
+
+.btn-choice {
+  background: #eee;
+}
+
+
+
+.btn-choice.selected {
+    border: 2px solid #2ecc71;
+    background-color: #d4edda;
+}
+
+.btn-confirm {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.btn-confirm.enabled {
+  background: #3498db;
+  cursor: pointer;
+}
+
+
+
+
+/* Lógica de Rotação (Girar o tabuleiro) */
+/* Vira o tabuleiro 180 graus */
+#board.flipped {
+    transform: rotate(180deg);
+}
+
+/* Desvira as peças para elas ficarem em pé para o jogador */
+#board.flipped .piece, 
+#board.flipped img {
+    transform: rotate(180deg);
+}
+
+.mode-cards-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 260px;
+}
+
+.mode-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 12px;
+  cursor: pointer;
+  list-style: none;
+  font-weight: bold;
+  border: 1px solid black;
+}
+
+.mode-card:hover{
+  scale: 105%;
+}
+
+.mode-details summary {
+  list-style: none;
+}
+
+.mode-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.color-choice {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f2f2f2;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid black;
+}
+
+.color-choice p {
+    border: 1px solid rgba(0, 0, 0, 0.514);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.color-choice button {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+    border: 1px solid black;
+
+}
+
+.rating-selector {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+    font-size: 0.9em;
+}
+
+.rating-selector select {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+}
+
+.btn-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#gameInfo.game-info-panel {
+    width: 260px;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid black;
+}  
+.info-item {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.notation-container {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 10px;
+}
+
+.notation-list {
+    max-height: 250px;
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+    font-family: monospace;
+    text-align: left;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.notation-list li {
+    padding: 4px 8px;
+    border-bottom: 1px solid #eee;
+}
+
+.btn-abandonar {
+    margin-top: 20px;
+    width: 100%;
+    padding: 10px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
