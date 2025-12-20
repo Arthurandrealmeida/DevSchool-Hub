@@ -9,6 +9,9 @@ let notationHistory = [];
 let playerColor = 'white'; 
 let moveNumber = 1;
 let gameOver = false;
+let positionHistory = new Map();
+let promotionPending = null;
+
 
 // Selecione apenas o que realmente existe no HTML
 const btnAbandonar = document.getElementById('btnAbandonar');
@@ -20,7 +23,6 @@ const NUM_CELULAS = TAMANHO_GRADE * TAMANHO_GRADE;
 const colunasLetras = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 let enPassantTarget = null;
 let currentTurn = 'white';
-let positionHistory = {};
 let halfMoveClock = 0;
 
 
@@ -42,6 +44,16 @@ const imgpath = {
         'king': './img/reiBranco.png',
     }
 };
+
+const pieceImageMap = {
+    pawn: 'peão',
+    rook: 'torre',
+    knight: 'cavalo',
+    bishop: 'bispo',
+    queen: 'rainha',
+    king: 'rei'
+};
+
 
 //ver quais peças se moveram para implementar o roque
 const movedPieces = {
@@ -256,13 +268,16 @@ function handleCellClick(cell) {
 function movePiece(originCell, destinationCell) {
     const movedPiece = originCell.querySelector('img');
     if (gameOver || !movedPiece) return;
+    if (promotionPending) return;
 
-    const [color, type] = movedPiece.alt.split(' ');
+
+    let [color, type] = movedPiece.alt.split(' ');
     if (color !== currentTurn) return;
 
     const from = originCell.dataset.coordenada;
     const to = destinationCell.dataset.coordenada;
 
+    // 🔑 ESSA LINHA É ESSENCIAL
     const rawMoves = getValidMoves(from, type, color);
     if (!rawMoves.includes(to)) return;
 
@@ -270,69 +285,78 @@ function movePiece(originCell, destinationCell) {
 
     const captured = destinationCell.querySelector('img');
 
-let oldEnPassantTarget = enPassantTarget; 
-    // === DENTRO DA FUNÇÃO movePiece, ANTES DE MOVER A PEÇA ===
-if (type === 'pawn' && enPassantTarget && to === enPassantTarget.square) {
-    const toPos = idtopos(to);
-    const direction = color === 'white' ? 1 : -1; // Brancas capturam p/ cima, então o alvo está p/ baixo (+1)
-    
-    const pawnToCaptureCoords = postoid({ x: toPos.x + direction, y: toPos.y });
-    const pawnToCaptureCell = document.querySelector(`[data-coordenada="${pawnToCaptureCoords}"]`);
-    
-    if (pawnToCaptureCell) {
-        pawnToCaptureCell.innerHTML = ''; // Remove o peão adversário
-        console.log("Captura En Passant realizada em: " + pawnToCaptureCoords);
+    // === EN PASSANT ===
+    if (type === 'pawn' && enPassantTarget && to === enPassantTarget.square) {
+        const toPos = idtopos(to);
+        const direction = color === 'white' ? 1 : -1;
+        const pawnToCapture = postoid({ x: toPos.x + direction, y: toPos.y });
+        document
+            .querySelector(`[data-coordenada="${pawnToCapture}"]`)
+            ?.replaceChildren();
     }
-}
 
-enPassantTarget = null;
+    enPassantTarget = null;
 
-
-    // === LÓGICA DO ROQUE (Mover a Torre junto com o Rei) ===
+    // === ROQUE ===
     if (type === 'king' && Math.abs(idtopos(from).y - idtopos(to).y) === 2) {
         const isKingside = to.startsWith('G');
         const rank = color === 'white' ? '1' : '8';
-        const rookFromCoords = isKingside ? `H${rank}` : `A${rank}`;
-        const rookToCoords = isKingside ? `F${rank}` : `D${rank}`;
-        
-        const rookFromCell = document.querySelector(`[data-coordenada="${rookFromCoords}"]`);
-        const rookToCell = document.querySelector(`[data-coordenada="${rookToCoords}"]`);
-        const rookImg = rookFromCell.querySelector('img');
-        
-        rookToCell.appendChild(rookImg);
-        rookFromCell.innerHTML = '';
+        const rookFrom = isKingside ? `H${rank}` : `A${rank}`;
+        const rookTo = isKingside ? `F${rank}` : `D${rank}`;
+
+        const rookFromCell = document.querySelector(`[data-coordenada="${rookFrom}"]`);
+        const rookToCell = document.querySelector(`[data-coordenada="${rookTo}"]`);
+
+        rookToCell.appendChild(rookFromCell.querySelector('img'));
+        rookFromCell.replaceChildren();
     }
 
-    // === EXECUÇÃO DO MOVIMENTO FÍSICO ===
-    destinationCell.innerHTML = '';
-    destinationCell.appendChild(movedPiece);
-    originCell.innerHTML = '';
+    // === MOVE ===
+    destinationCell.replaceChildren(movedPiece);
+    originCell.replaceChildren();
 
-    // === ATUALIZAR ESTADOS DE MOVIMENTAÇÃO (Para impedir roque futuro) ===
+    // === PROMOÇÃO ===
+    let promoted = false;
+    if (type === 'pawn') {
+        const finalRank = color === 'white' ? '8' : '1';
+        if (to[1] === finalRank) {
+promotionPending = {
+    pawnImg: movedPiece,
+    color,
+    square: to
+};
+
+showPromotionMenu(color);
+return;
+            promoted = true;
+
+            // 🔥 ATUALIZA O TYPE
+            [, type] = movedPiece.alt.split(' ');
+        }
+    }
+
+    const notation = generateNotation(type, from, to, !!captured, promoted);
+    registerMove(notation);
+
+    // === TRAVAR ROQUE FUTURO ===
     if (type === 'king') movedPieces[`${color}-king`] = true;
     if (type === 'rook') {
         if (from.startsWith('A')) movedPieces[`${color}-rook-A`] = true;
         if (from.startsWith('H')) movedPieces[`${color}-rook-H`] = true;
     }
 
-    // === DEFINIR EN PASSANT TARGET (Para o próximo turno) ===
-    enPassantTarget = null; // Reseta por padrão
+    // === DEFINIR EN PASSANT ===
     if (type === 'pawn' && Math.abs(idtopos(from).x - idtopos(to).x) === 2) {
-    const fromPos = idtopos(from);
-    const toPos = idtopos(to);
-    const ghostX = (fromPos.x + toPos.x) / 2; // A casa que o peão pulou
-    const ghostY = fromPos.y;
-    
-    enPassantTarget = { 
-        square: postoid({ x: ghostX, y: ghostY }), 
-        pawnColor: color 
-    };
-}
+        const fromPos = idtopos(from);
+        const toPos = idtopos(to);
+        enPassantTarget = {
+            square: postoid({ x: (fromPos.x + toPos.x) / 2, y: fromPos.y }),
+            pawnColor: color
+        };
+    }
 
-    // Finalização do turno
-    const notation = generateNotation(type, from, to, !!captured);
-    registerMove(notation);
     currentTurn = currentTurn === 'white' ? 'black' : 'white';
+    registerPosition();
     moveCount++;
 
     updateGameInfo();
@@ -345,6 +369,7 @@ enPassantTarget = null;
         setTimeout(() => endGame(color), 200);
     }
 }
+
 
 function registerMove(notation) {
     const list = document.getElementById('notationList');
@@ -363,19 +388,22 @@ function registerMove(notation) {
     }
 }
 
+function generateNotation(type, from, to, capture, promoted = false) {
+    let notation = '';
 
-function generateNotation(type, from, to, capture = false) {
-  const pieceLetter = {
-    pawn: '',
-    knight: 'N',
-    bishop: 'B',
-    rook: 'R',
-    queen: 'Q',
-    king: 'K'
-  }[type];
+    if (type !== 'pawn') {
+        notation += { rook:'R', knight:'N', bishop:'B', queen:'Q', king:'K' }[type];
+    }
 
-  return `${pieceLetter}${capture ? 'x' : ''}${to}`;
+    if (capture) notation += 'x';
+
+    notation += to;
+
+    if (promoted) notation += '=Q';
+
+    return notation;
 }
+
 
 
 
@@ -868,20 +896,6 @@ function dehighlightValidMoves() {
      });
 }
 
-function iniciarPartida() {
-    gameOver = false; // 🔥 ESSENCIAL
-
-    currentTurn = 'white';
-    moveCount = 0;
-    moveNumber = 1;
-    notationHistory = [];
-
-    document.getElementById('notationList').innerHTML = '';
-    updateGameInfo();
-}
-
-
-
 
 // 1. Primeiro, pegamos todos os elementos necessários
 const allModeGroups = document.querySelectorAll('.mode-group');
@@ -976,10 +990,6 @@ container.addEventListener('dragover', e => {
 for (let i = 0; i < NUM_CELULAS; i++) {
     const celula = document.createElement('div');
     celula.classList.add('celula');
-    
-    // ... (restante do seu código de cores e coordenadas) ...
-
-    // 1. Permitir que a célula receba o drop (Drag Over)
     celula.addEventListener('dragover', e => {
         e.preventDefault(); // OBRIGATÓRIO para o drop funcionar
     });
@@ -1073,7 +1083,13 @@ function iniciarPartida() {
     moveCount = 0;
     moveNumber = 1;
     notationHistory = [];
+    
     document.getElementById('notationList').innerHTML = '';
+
+
+    positionHistory.clear();
+    registerPosition(); 
+
     updateGameInfo();
 }
 
@@ -1131,26 +1147,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-function endGame(result, reason) {
+function endGame(result) {
+    gameOver = true;
+
     const modal = document.getElementById('endGameModal');
     const title = document.getElementById('endGameTitle');
     const info = document.getElementById('endGameInfo');
 
     if (result === 'draw') {
-        title.textContent = 'Empate!';
-        info.textContent = reason;
+        title.textContent = 'Empate por repetição';
+        info.textContent = `A mesma posição ocorreu 3 vezes.`;
     } else {
-        title.textContent = result === 'white' ? 'Vitória das Brancas' : 'Vitória das Pretas';
-        info.textContent = `Vencido por ${reason}`;
+        title.textContent =
+            result === 'white'
+                ? 'Vitória das Brancas'
+                : 'Vitória das Pretas';
+
+        info.textContent = `Partida finalizada em ${moveNumber - 1} lances.`;
     }
 
     modal.classList.remove('hidden');
-    gameOver = true;
 }
+
 
 // Mude de playAgainBtn para btnPlayAgain
 document.getElementById('btnPlayAgain').addEventListener('click', () => {
     document.getElementById('endGameModal').classList.add('hidden');
+
     iniciarPartida();
 });
 
@@ -1197,3 +1220,108 @@ function playerHasLegalMoves(color) {
     }
     return false;
 }
+
+function getPositionKey() {
+    let key = '';
+
+    // 1️⃣ peças no tabuleiro
+    document.querySelectorAll('.celula').forEach(cell => {
+        const coord = cell.dataset.coordenada;
+        const piece = cell.querySelector('img');
+
+        if (piece) {
+            key += `${coord}:${piece.alt};`;
+        }
+    });
+
+    // 2️⃣ vez de quem joga
+    key += `turn:${currentTurn};`;
+
+    // 3️⃣ roque
+    key += `castle:${JSON.stringify(movedPieces)};`;
+
+    // 4️⃣ en passant
+    key += `ep:${enPassantTarget ? enPassantTarget.square : 'none'};`;
+
+    return key;
+}
+
+function getPieceImage(piece, color) {
+    const nome = pieceImageMap[piece];
+    const cor = color === 'white' ? 'Branco' : 'Preto';
+    return `img/${nome}${cor}.png`;
+}
+
+
+function registerPosition() {
+    const key = getPositionKey();
+    const count = positionHistory.get(key) || 0;
+    positionHistory.set(key, count + 1);
+
+    // 🔥 REPETIÇÃO TRIPLA
+    if (count + 1 === 3) {
+        endGame('draw');
+    }
+}
+
+function promotePawn(pawnImg, color) {
+    let choice = prompt(
+        "Escolha a promoção:\nqueen, rook, bishop ou knight",
+        "queen"
+    );
+
+    const validPieces = ['queen', 'rook', 'bishop', 'knight'];
+
+    if (!validPieces.includes(choice)) {
+        choice = 'queen';
+    }
+
+    pawnImg.alt = `${color} ${choice}`;
+    pawnImg.src = `img/${choice}${color === 'white' ? 'Branco' : 'Preto'}.png`;
+}
+
+function showPromotionMenu(color) {
+    const menu = document.getElementById('promotion-menu');
+
+    menu.querySelectorAll('img').forEach(img => {
+        const piece = img.dataset.piece;
+        img.src = getPieceImage(piece, color);
+    });
+
+    menu.classList.remove('hidden');
+}
+
+document
+    .getElementById('promotion-menu')
+    .addEventListener('click', e => {
+        if (!promotionPending) return;
+        if (e.target.tagName !== 'IMG') return;
+
+        const piece = e.target.dataset.piece;
+        const { pawnImg, color } = promotionPending;
+
+        pawnImg.alt = `${color} ${piece}`;
+        pawnImg.src = getPieceImage(piece, color);
+
+        promotionPending = null;
+        document.getElementById('promotion-menu').classList.add('hidden');
+
+        // Agora o jogo continua normalmente
+        currentTurn = currentTurn === 'white' ? 'black' : 'white';
+        registerPosition();
+        updateGameInfo();
+        updateCheckVisuals();
+    });
+
+    document.addEventListener('mousedown', e => {
+    const menu = document.getElementById('promotion-menu');
+
+    if (
+        promotionPending &&
+        !menu.classList.contains('hidden') &&
+        !menu.contains(e.target)
+    ) {
+        menu.classList.add('hidden');
+        promotionPending = null;
+    }
+});
