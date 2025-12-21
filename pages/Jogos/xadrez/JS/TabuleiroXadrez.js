@@ -11,6 +11,7 @@ let moveNumber = 1;
 let gameOver = false;
 let positionHistory = new Map();
 let promotionPending = null;
+let botColor = null;
 
 
 // Selecione apenas o que realmente existe no HTML
@@ -64,6 +65,16 @@ const movedPieces = {
     'black-rook-A': false,
     'black-rook-H': false
 };
+
+const PIECE_VALUE = {
+    pawn: 1,
+    knight: 3,
+    bishop: 3,
+    rook: 5,
+    queen: 9,
+    king: 100
+};
+
 
 
 // 3. ADICIONADO: Funções Utilitárias de Coordenadas
@@ -179,7 +190,6 @@ document.addEventListener('dragend', () => {
 
 
 
-
 // --- LÓGICA DE MOVIMENTO E REGRAS ---
 let selectedPieceElement = null;
 let selectedCell = null;        
@@ -227,7 +237,6 @@ validMoves = rawMoves.filter(coord => {
         } else if (clickedCell === selectedCell) {
              // Clicou na mesma peça, apenas desmarca
         } else {
-            // Clicou em uma casa inválida, ignore ou emita um som de erro
             console.log("Movimento inválido!");
         }
         
@@ -281,7 +290,6 @@ function movePiece(originCell, destinationCell) {
     const rawMoves = getValidMoves(from, type, color);
     if (!rawMoves.includes(to)) return;
 
-    if (wouldLeaveKingInCheck(originCell, destinationCell, color)) return;
 
     const captured = destinationCell.querySelector('img');
 
@@ -356,6 +364,11 @@ return;
     }
 
     currentTurn = currentTurn === 'white' ? 'black' : 'white';
+
+    if (gameMode === 'vs-bot' && currentTurn === botColor) {
+        setTimeout(botMove, 400);
+    }
+
     registerPosition();
     moveCount++;
 
@@ -640,9 +653,26 @@ function calculateKingMoves(startCoords, pieceColor, forAttackMap = false) {
         if (!posinbounds(pos)) continue;
 
         const piece = getPieceAtPos(pos);
-        if (!piece || piece.color !== pieceColor) {
-            moves.push(postoid(pos));
-        }
+        for (const dir of directions) {
+    const pos = {
+        x: startPos.x + dir.dx,
+        y: startPos.y + dir.dy
+    };
+
+    if (!posinbounds(pos)) continue;
+
+    const piece = getPieceAtPos(pos);
+
+    if (piece && piece.color === pieceColor) continue;
+
+    // 🔥 FILTRO CRÍTICO: rei NÃO pode ir para casa atacada
+    if (!forAttackMap && isSquareAttacked(pos, pieceColor === 'white' ? 'black' : 'white')) {
+        continue;
+    }
+
+    moves.push(postoid(pos));
+}
+
     }
 
     // ⛔ SE FOR MAPA DE ATAQUE, PARA AQUI
@@ -654,41 +684,42 @@ const isWhite = pieceColor === 'white';
 const kingMoved = movedPieces[`${pieceColor}-king`];
 const enemyColor = isWhite ? 'black' : 'white';
 
-// O rei não pode já ter se movido nem estar em xeque
-if (!forAttackMap && !kingMoved && !isKingInCheck(pieceColor)) {
+if (!forAttackMap && !kingMoved) {
     const rank = isWhite ? '1' : '8';
 
     // ---------- ROQUE PEQUENO ----------
     const rookH = movedPieces[`${pieceColor}-rook-H`] === false;
     const f = idtopos(`F${rank}`);
     const g = idtopos(`G${rank}`);
+    const d = idtopos(`D${rank}`);
+    const c = idtopos(`C${rank}`);
 
     if (
-        rookH &&
-        !getPieceAtPos(f) &&
-        !getPieceAtPos(g) &&
-        !isSquareAttacked(f, enemyColor) &&
-        !isSquareAttacked(g, enemyColor)
-    ) {
-        moves.push(`G${rank}`);
-    }
+    rookH &&
+    !getPieceAtPos(f) &&
+    !getPieceAtPos(g) &&
+    !isSquareAttacked(f, enemyColor) &&
+    !isSquareAttacked(g, enemyColor)
+) {
+    moves.push(`G${rank}`);
+}
+
 
     // ---------- ROQUE GRANDE ----------
     const rookA = movedPieces[`${pieceColor}-rook-A`] === false;
-    const d = idtopos(`D${rank}`);
-    const c = idtopos(`C${rank}`);
     const b = idtopos(`B${rank}`);
 
     if (
-        rookA &&
-        !getPieceAtPos(d) &&
-        !getPieceAtPos(c) &&
-        !getPieceAtPos(b) &&
-        !isSquareAttacked(d, enemyColor) &&
-        !isSquareAttacked(c, enemyColor)
-    ) {
-        moves.push(`C${rank}`);
-    }
+    rookA &&
+    !getPieceAtPos(d) &&
+    !getPieceAtPos(c) &&
+    !getPieceAtPos(b) &&
+    !isSquareAttacked(d, enemyColor) &&
+    !isSquareAttacked(c, enemyColor)
+) {
+    moves.push(`C${rank}`);
+}
+
 }
 // =======================================
 
@@ -733,6 +764,25 @@ function findKing(color) {
     return idtopos(cell.dataset.coordenada);
 }
 
+function getRawMoves(coords, type, color) {
+    switch (type) {
+        case 'pawn':
+            return calculatePawnMoves(coords, color, true);
+        case 'rook':
+            return calculateRookMoves(coords, color);
+        case 'bishop':
+            return calculateBishopMoves(coords, color);
+        case 'knight':
+            return calculateKnightMoves(coords, color);
+        case 'queen':
+            return calculateQueenMoves(coords, color);
+        case 'king':
+            return calculateKingMoves(coords, color, true);
+        default:
+            return [];
+    }
+}
+
 
 function isSquareAttacked(pos, byColor) {
     for (let x = 0; x < 8; x++) {
@@ -741,38 +791,73 @@ function isSquareAttacked(pos, byColor) {
             if (!piece || piece.color !== byColor) continue;
 
             const fromId = postoid({ x, y });
-let moves;
 
-if (piece.type === 'king') {
-    moves = calculateKingMoves(fromId, piece.color, true);
-} else {
-    moves = getValidMoves(fromId, piece.type, piece.color);
-}
+            let moves;
 
-            if (moves.includes(postoid(pos))) {
-                return true;
+            if (piece.type === 'king') {
+                // Rei só gera ataques brutos (1 casa)
+                moves = calculateKingMoves(fromId, piece.color, true);
+            } else {
+                // NUNCA getValidMoves aqui
+                moves = getRawMoves(fromId, piece.type, piece.color);
             }
+
+            if (moves.includes(postoid(pos))) return true;
         }
     }
     return false;
 }
 
+
 function wouldLeaveKingInCheck(fromCell, toCell, pieceColor) {
     const movingPiece = fromCell.querySelector('img');
     const capturedPiece = toCell.querySelector('img');
 
-    // Simula
+    const from = fromCell.dataset.coordenada;
+    const to = toCell.dataset.coordenada;
+
+    let rookMove = null;
+
+    // 🔹 detectar roque
+    if (
+        movingPiece.alt.includes('king') &&
+        Math.abs(idtopos(from).y - idtopos(to).y) === 2
+    ) {
+        const isKingside = to.startsWith('G');
+        const rank = pieceColor === 'white' ? '1' : '8';
+
+        const rookFrom = isKingside ? `H${rank}` : `A${rank}`;
+        const rookTo = isKingside ? `F${rank}` : `D${rank}`;
+
+        const rookFromCell = document.querySelector(`[data-coordenada="${rookFrom}"]`);
+        const rookToCell = document.querySelector(`[data-coordenada="${rookTo}"]`);
+        const rookImg = rookFromCell.querySelector('img');
+
+        rookMove = { rookFromCell, rookToCell, rookImg };
+
+        rookToCell.appendChild(rookImg);
+        rookFromCell.replaceChildren();
+    }
+
+    // 🔹 simula movimento do rei
     toCell.appendChild(movingPiece);
     if (capturedPiece) capturedPiece.remove();
 
     const inCheck = isKingInCheck(pieceColor);
 
-    // Desfaz simulação
+    // 🔹 desfaz rei
     fromCell.appendChild(movingPiece);
     if (capturedPiece) toCell.appendChild(capturedPiece);
 
+    // 🔹 desfaz torre
+    if (rookMove) {
+        rookMove.rookFromCell.appendChild(rookMove.rookImg);
+        rookMove.rookToCell.replaceChildren();
+    }
+
     return inCheck;
 }
+
 
 function updateCheckVisuals() {
     document.querySelectorAll('.king-in-check')
@@ -805,19 +890,56 @@ function filterMovesThatExposeKing(moves, fromCell, color) {
 function simulateMove(fromCell, toCell, callback) {
     const piece = fromCell.querySelector('img');
     const captured = toCell.querySelector('img');
-
     if (!piece) return;
 
-    // move temporariamente
+    const [color, type] = piece.alt.split(' ');
+    const from = fromCell.dataset.coordenada;
+    const to = toCell.dataset.coordenada;
+
+    let rookMove = null;
+
+    // 🔹 SIMULA ROQUE
+    if (
+        type === 'king' &&
+        Math.abs(idtopos(from).y - idtopos(to).y) === 2
+    ) {
+        const isKingside = to.startsWith('G');
+        const rank = color === 'white' ? '1' : '8';
+
+        const rookFrom = isKingside ? `H${rank}` : `A${rank}`;
+        const rookTo = isKingside ? `F${rank}` : `D${rank}`;
+
+        const rookFromCell = document.querySelector(
+            `[data-coordenada="${rookFrom}"]`
+        );
+        const rookToCell = document.querySelector(
+            `[data-coordenada="${rookTo}"]`
+        );
+        const rookImg = rookFromCell.querySelector('img');
+
+        rookMove = { rookFromCell, rookToCell, rookImg };
+
+        rookToCell.appendChild(rookImg);
+        rookFromCell.replaceChildren();
+    }
+
+    // 🔹 move peça principal
     toCell.appendChild(piece);
     if (captured) captured.remove();
 
     callback();
 
-    // desfaz exatamente o que fez
+    // 🔹 desfaz peça principal
     fromCell.appendChild(piece);
     if (captured) toCell.appendChild(captured);
+
+    // 🔹 desfaz torre do roque
+    if (rookMove) {
+        rookMove.rookFromCell.appendChild(rookMove.rookImg);
+        rookMove.rookToCell.replaceChildren();
+    }
 }
+
 
 
 function getBoardSignature() {
@@ -935,7 +1057,6 @@ confirmBtn.addEventListener('click', () => {
     // 1. Identifica o modo
     gameMode = card.innerText.includes('Bot') ? 'vs-bot' : 'local';
 
-    // 2. Se for Bot, salva o Rating selecionado
     if (gameMode === 'vs-bot') {
         const ratingSelect = group.querySelector('#botRating');
         engineLevel = parseInt(ratingSelect.value); // Salva na variável que você já tem no topo do código
@@ -1050,6 +1171,7 @@ document.querySelectorAll('.mode-group').forEach((group, index) => {
 
 function startGameWithColor(color) {
     playerColor = color;
+    botColor = playerColor === 'white' ? 'black' : 'white';
     
     const homeScreen = document.getElementById('homeScreen');
     const gameInfo = document.getElementById('gameInfo');
@@ -1073,7 +1195,7 @@ function startGameWithColor(color) {
     
     // Se o jogador escolheu pretas e é vs-bot, o bot joga primeiro
     if (gameMode === 'vs-bot' && playerColor === 'black') {
-        setTimeout(executarLanceAleatorio, 600);
+        setTimeout(botMove, 600);
     }
 }
 
@@ -1325,3 +1447,192 @@ document
         promotionPending = null;
     }
 });
+
+function botMove() {
+    if (gameMode !== 'vs-bot') return;
+    if (currentTurn !== botColor) return;
+
+    const allMoves = [];
+    const captureMoves = [];
+    const safeCaptureMoves = [];
+    const safeMoves = [];
+
+    document.querySelectorAll('.celula').forEach(cell => {
+        const img = cell.querySelector('img');
+        if (!img) return;
+
+        const [color, type] = img.alt.split(' ');
+        if (color !== currentTurn) return;
+
+        const from = cell.dataset.coordenada;
+        const moves = getValidMoves(from, type, color);
+
+        moves.forEach(to => {
+            const fromCell = document.querySelector(
+                `[data-coordenada="${from}"]`
+            );
+            const toCell = document.querySelector(
+                `[data-coordenada="${to}"]`
+            );
+
+            if (wouldLeaveKingInCheck(fromCell, toCell, color)) return;
+
+            const move = { from, to };
+            allMoves.push(move);
+
+            const targetPiece = toCell.querySelector('img');
+            const enemyColor = color === 'white' ? 'black' : 'white';
+
+            // 👉 CAPTURA
+            if (targetPiece) {
+                captureMoves.push(move);
+
+                // verifica se a casa será atacada após a captura
+                if (!isSquareAttacked(to, enemyColor)) {
+                    safeCaptureMoves.push(move);
+                }
+            } else {
+                // 👉 LANCE NORMAL SEGURO
+                if (!isSquareAttacked(to, enemyColor)) {
+                    safeMoves.push(move);
+                }
+            }
+        });
+    });
+
+    if (allMoves.length === 0) return;
+
+    let chosenMove;
+
+// 🧠 600 ELO
+if (engineLevel >= 600) {
+    let bestScore = -Infinity;
+    let bestMoves = [];
+
+    allMoves.forEach(move => {
+        const score = evaluateMove(
+            move.from,
+            move.to,
+            currentTurn
+        );
+
+        if (score > bestScore) {
+            bestScore = score;
+            bestMoves = [move];
+        } else if (score === bestScore) {
+            bestMoves.push(move);
+        }
+    });
+
+    chosenMove = bestMoves[
+        Math.floor(Math.random() * bestMoves.length)
+    ];
+
+// 🎯 300 ELO
+} else if (engineLevel >= 300 && captureMoves.length > 0) {
+    chosenMove = captureMoves[
+        Math.floor(Math.random() * captureMoves.length)
+    ];
+
+// 🎲 100 ELO
+} else {
+    chosenMove = allMoves[
+        Math.floor(Math.random() * allMoves.length)
+    ];
+}
+
+
+    const fromCell = document.querySelector(
+        `[data-coordenada="${chosenMove.from}"]`
+    );
+    const toCell = document.querySelector(
+        `[data-coordenada="${chosenMove.to}"]`
+    );
+
+    setTimeout(() => {
+        movePiece(fromCell, toCell);
+    }, 400);
+}
+
+
+function evaluateMove(from, to, color) {
+    const fromCell = document.querySelector(
+        `[data-coordenada="${from}"]`
+    );
+    const toCell = document.querySelector(
+        `[data-coordenada="${to}"]`
+    );
+
+    const movedPiece = fromCell.querySelector('img');
+    const [, movedType] = movedPiece.alt.split(' ');
+    const enemyColor = color === 'white' ? 'black' : 'white';
+
+    let score = 0;
+
+    simulateMove(fromCell, toCell, () => {
+
+        // 👉 captura real (agora correta)
+        const captured = toCell.querySelector('img');
+        if (captured) {
+            const [, capturedType] = captured.alt.split(' ');
+            score += PIECE_VALUE[capturedType];
+        }
+
+        // 👉 recaptura real
+        const recaptureValue = worstRecaptureValue(
+            idtopos(to),
+            enemyColor
+        );
+
+        // 🚫 nunca trocar peça maior por menor
+        if (
+            captured &&
+            PIECE_VALUE[movedType] >
+                PIECE_VALUE[captured.alt.split(' ')[1]] &&
+            recaptureValue >= PIECE_VALUE[movedType]
+        ) {
+            score = -9999;
+            return;
+        }
+
+        // 🚫 regra absoluta: dama não pode ficar atacada
+        if (
+            movedType === 'queen' &&
+            isSquareAttacked(idtopos(to), enemyColor)
+        ) {
+            score = -9999;
+            return;
+        }
+
+        score -= recaptureValue;
+    });
+
+    return score;
+}
+
+
+
+
+function worstRecaptureValue(square, enemyColor) {
+    let worst = 0;
+
+    document.querySelectorAll('.celula').forEach(cell => {
+        const img = cell.querySelector('img');
+        if (!img) return;
+
+        const [color, type] = img.alt.split(' ');
+        if (color !== enemyColor) return;
+
+        const from = cell.dataset.coordenada;
+const moves =
+    type === 'king'
+        ? calculateKingMoves(from, color, true)
+        : getValidMoves(from, type, color);
+
+        if (moves.includes(square)) {
+            worst = Math.max(worst, PIECE_VALUE[type]);
+        }
+    });
+
+    return worst;
+}
