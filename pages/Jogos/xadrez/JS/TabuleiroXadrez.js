@@ -290,6 +290,8 @@ function movePiece(originCell, destinationCell) {
     const rawMoves = getValidMoves(from, type, color);
     if (!rawMoves.includes(to)) return;
 
+if (wouldLeaveKingInCheck(originCell, destinationCell, color)) return;
+
 
     const captured = destinationCell.querySelector('img');
 
@@ -630,6 +632,22 @@ function calculateQueenMoves(startCoords, pieceColor) {
     ];
 }
 
+function getPawnAttacks(coords, color) {
+    const pos = idtopos(coords);
+    const direction = color === 'white' ? -1 : 1;
+
+    const attacks = [];
+
+    for (const dy of [-1, 1]) {
+        const target = { x: pos.x + direction, y: pos.y + dy };
+        if (posinbounds(target)) {
+            attacks.push(postoid(target));
+        }
+    }
+
+    return attacks;
+}
+
 //=========================================================//
 //=====================Movimento do rei====================//
 //=========================================================//
@@ -644,6 +662,9 @@ function calculateKingMoves(startCoords, pieceColor, forAttackMap = false) {
         { dx: 1, dy: -1 }, { dx: 1, dy: 1 }
     ];
 
+    const enemyColor = pieceColor === 'white' ? 'black' : 'white';
+
+    // ---------- MOVIMENTOS NORMAIS ----------
     for (const dir of directions) {
         const pos = {
             x: startPos.x + dir.dx,
@@ -653,79 +674,51 @@ function calculateKingMoves(startCoords, pieceColor, forAttackMap = false) {
         if (!posinbounds(pos)) continue;
 
         const piece = getPieceAtPos(pos);
-        for (const dir of directions) {
-    const pos = {
-        x: startPos.x + dir.dx,
-        y: startPos.y + dir.dy
-    };
 
-    if (!posinbounds(pos)) continue;
+        // não pode capturar peça própria
+        if (piece && piece.color === pieceColor) continue;
 
-    const piece = getPieceAtPos(pos);
+        // 🔥 rei NÃO pode ir para casa atacada
+        if (!forAttackMap && isSquareAttacked(pos, enemyColor)) continue;
 
-    if (piece && piece.color === pieceColor) continue;
-
-    // 🔥 FILTRO CRÍTICO: rei NÃO pode ir para casa atacada
-    if (!forAttackMap && isSquareAttacked(pos, pieceColor === 'white' ? 'black' : 'white')) {
-        continue;
+        moves.push(postoid(pos));
     }
 
-    moves.push(postoid(pos));
-}
-
-    }
-
-    // ⛔ SE FOR MAPA DE ATAQUE, PARA AQUI
+    // ⛔ mapa de ataque NÃO inclui roque
     if (forAttackMap) return moves;
 
+    // ================= ROQUE =================
+    const kingMoved = movedPieces[`${pieceColor}-king`];
+    if (kingMoved) return moves;
 
-// ================= ROQUE =================
-const isWhite = pieceColor === 'white';
-const kingMoved = movedPieces[`${pieceColor}-king`];
-const enemyColor = isWhite ? 'black' : 'white';
-
-if (!forAttackMap && !kingMoved) {
-    const rank = isWhite ? '1' : '8';
+    const rank = pieceColor === 'white' ? '1' : '8';
 
     // ---------- ROQUE PEQUENO ----------
-    const rookH = movedPieces[`${pieceColor}-rook-H`] === false;
-    const f = idtopos(`F${rank}`);
-    const g = idtopos(`G${rank}`);
-    const d = idtopos(`D${rank}`);
-    const c = idtopos(`C${rank}`);
-
     if (
-    rookH &&
-    !getPieceAtPos(f) &&
-    !getPieceAtPos(g) &&
-    !isSquareAttacked(f, enemyColor) &&
-    !isSquareAttacked(g, enemyColor)
-) {
-    moves.push(`G${rank}`);
-}
-
+        movedPieces[`${pieceColor}-rook-H`] === false &&
+        !getPieceAtPos(idtopos(`F${rank}`)) &&
+        !getPieceAtPos(idtopos(`G${rank}`)) &&
+        !isSquareAttacked(idtopos(`F${rank}`), enemyColor) &&
+        !isSquareAttacked(idtopos(`G${rank}`), enemyColor)
+    ) {
+        moves.push(`G${rank}`);
+    }
 
     // ---------- ROQUE GRANDE ----------
-    const rookA = movedPieces[`${pieceColor}-rook-A`] === false;
-    const b = idtopos(`B${rank}`);
-
     if (
-    rookA &&
-    !getPieceAtPos(d) &&
-    !getPieceAtPos(c) &&
-    !getPieceAtPos(b) &&
-    !isSquareAttacked(d, enemyColor) &&
-    !isSquareAttacked(c, enemyColor)
-) {
-    moves.push(`C${rank}`);
-}
-
-}
-// =======================================
-
+        movedPieces[`${pieceColor}-rook-A`] === false &&
+        !getPieceAtPos(idtopos(`D${rank}`)) &&
+        !getPieceAtPos(idtopos(`C${rank}`)) &&
+        !getPieceAtPos(idtopos(`B${rank}`)) &&
+        !isSquareAttacked(idtopos(`D${rank}`), enemyColor) &&
+        !isSquareAttacked(idtopos(`C${rank}`), enemyColor)
+    ) {
+        moves.push(`C${rank}`);
+    }
 
     return moves;
 }
+
 
 //verificar se está em xeque
 function isKingInCheck(color) {
@@ -733,27 +726,35 @@ function isKingInCheck(color) {
     if (!kingPos) return false;
 
     const enemyColor = color === 'white' ? 'black' : 'white';
-    const enemyPieces = document.querySelectorAll(`img[alt^="${enemyColor}"]`);
 
-    for (const piece of enemyPieces) {
-        const cell = piece.closest('.celula');
-        const coords = cell.dataset.coordenada;
-        const [, type] = piece.alt.split(' ');
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            const piece = getPieceAtPos({ x, y });
+            if (!piece || piece.color !== enemyColor) continue;
 
-let moves;
+            const fromId = postoid({ x, y });
+            let attacks;
 
-if (type === 'king') {
-    moves = calculateKingMoves(coords, enemyColor, true);
-} else {
-    moves = getValidMoves(coords, type, enemyColor);
-}
-        if (moves.includes(postoid(kingPos))) {
-            return true;
+            switch (piece.type) {
+                case 'pawn':
+                    attacks = getPawnAttacks(fromId, enemyColor);
+                    break;
+                case 'king':
+                    attacks = getKingAttacks(fromId);
+                    break;
+                default:
+                    attacks = getRawMoves(fromId, piece.type, enemyColor);
+            }
+
+            if (attacks.includes(postoid(kingPos))) {
+                return true;
+            }
         }
     }
 
     return false;
 }
+
 
 
 function findKing(color) {
@@ -767,7 +768,8 @@ function findKing(color) {
 function getRawMoves(coords, type, color) {
     switch (type) {
         case 'pawn':
-            return calculatePawnMoves(coords, color, true);
+    return getPawnAttacks(coords, color);
+
         case 'rook':
             return calculateRookMoves(coords, color);
         case 'bishop':
@@ -783,7 +785,6 @@ function getRawMoves(coords, type, color) {
     }
 }
 
-
 function isSquareAttacked(pos, byColor) {
     for (let x = 0; x < 8; x++) {
         for (let y = 0; y < 8; y++) {
@@ -791,22 +792,28 @@ function isSquareAttacked(pos, byColor) {
             if (!piece || piece.color !== byColor) continue;
 
             const fromId = postoid({ x, y });
+            let attacks;
 
-            let moves;
-
-            if (piece.type === 'king') {
-                // Rei só gera ataques brutos (1 casa)
-                moves = calculateKingMoves(fromId, piece.color, true);
-            } else {
-                // NUNCA getValidMoves aqui
-                moves = getRawMoves(fromId, piece.type, piece.color);
+            switch (piece.type) {
+                case 'pawn':
+                    attacks = getPawnAttacks(fromId, piece.color);
+                    break;
+                case 'king':
+                    attacks = getKingAttacks(fromId); // 🔥 SEM calculateKingMoves
+                    break;
+                default:
+                    attacks = getRawMoves(fromId, piece.type, piece.color);
             }
 
-            if (moves.includes(postoid(pos))) return true;
+            if (attacks.includes(postoid(pos))) {
+                return true;
+            }
         }
     }
     return false;
 }
+
+
 
 
 function wouldLeaveKingInCheck(fromCell, toCell, pieceColor) {
@@ -858,6 +865,31 @@ function wouldLeaveKingInCheck(fromCell, toCell, pieceColor) {
     return inCheck;
 }
 
+function getKingAttacks(coords) {
+    const attacks = [];
+    const startPos = idtopos(coords);
+
+    const directions = [
+        { dx: -1, dy: 0 }, { dx: 1, dy: 0 },
+        { dx: 0, dy: -1 }, { dx: 0, dy: 1 },
+        { dx: -1, dy: -1 }, { dx: -1, dy: 1 },
+        { dx: 1, dy: -1 }, { dx: 1, dy: 1 }
+    ];
+
+    for (const dir of directions) {
+        const pos = {
+            x: startPos.x + dir.dx,
+            y: startPos.y + dir.dy
+        };
+
+        if (posinbounds(pos)) {
+            attacks.push(postoid(pos));
+        }
+    }
+
+    return attacks;
+}
+
 
 function updateCheckVisuals() {
     document.querySelectorAll('.king-in-check')
@@ -876,16 +908,14 @@ function updateCheckVisuals() {
 
 function filterMovesThatExposeKing(moves, fromCell, color) {
     return moves.filter(coord => {
-        const toCell = document.querySelector(`[data-coordenada="${coord}"]`);
+        const toCell = document.querySelector(
+            `[data-coordenada="${coord}"]`
+        );
 
-        let valid = true;
-        simulateMove(fromCell, toCell, () => {
-            if (isKingInCheck(color)) valid = false;
-        });
-
-        return valid;
+        return !wouldLeaveKingInCheck(fromCell, toCell, color);
     });
 }
+
 
 function simulateMove(fromCell, toCell, callback) {
     const piece = fromCell.querySelector('img');
@@ -1488,14 +1518,16 @@ function botMove() {
                 captureMoves.push(move);
 
                 // verifica se a casa será atacada após a captura
-                if (!isSquareAttacked(to, enemyColor)) {
-                    safeCaptureMoves.push(move);
-                }
+                if (isSafeAfterMove(fromCell, toCell, color)) {
+    safeCaptureMoves.push(move);
+}
+
             } else {
                 // 👉 LANCE NORMAL SEGURO
-                if (!isSquareAttacked(to, enemyColor)) {
-                    safeMoves.push(move);
-                }
+                if (isSafeAfterMove(fromCell, toCell, color)) {
+    safeMoves.push(move);
+}
+
             }
         });
     });
@@ -1636,3 +1668,17 @@ const moves =
 
     return worst;
 }
+
+
+
+function getAttackMoves(coords, type, color) {
+    switch (type) {
+        case 'pawn':
+            return getPawnAttacks(coords, color);
+        case 'king':
+            return calculateKingMoves(coords, color, true);
+        default:
+            return getValidMoves(coords, type, color);
+    }
+}
+ 
