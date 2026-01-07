@@ -76,342 +76,55 @@ body {
     align-items: center;
     justify-content: center;
 }
+/* ====== ESTILO DO XADREZ ====== */
 
-
-
-.black {
-    background: #026666fb;
+.preta {
+    background-color: #31696b;
 }
 
-.white {
-    background: #f8f8f8;
+.branca {
+    background-color: #fff;
 }
 
-#board {
+body{
+    padding-left: 10px;
+}
+
+.tabuleiro {
     display: grid;
-    grid-template-columns: repeat(8, 1fr); 
-    grid-template-rows: repeat(8, 1fr);
-    width: 600px;
-    height: 600px; 
-    border: 1px solid #000;
-    transform-origin: center;
-    transition: transform 0.4s ease;
+    grid-template-columns: repeat(8, 50px);
+    grid-template-rows: repeat(8, 50px);
+    width: 400px;
+    height: 400px;
+    border: 2px solid #000;
 }
 
-.celula {
+.casa {
+    width: 50px;
+    height: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 10px;
-    pointer-events: auto;
+    position: relative; /* isso é necessário para o blur do xeque  e isso não afetara o */
 }
 
-img {
-    width: 55px;
-}
-
-.selected {
-    /* Exemplo simples de destaque */
-    border: 1px solid rgb(0, 255, 128); 
-    box-sizing: border-box; /* Garante que a borda não mude o tamanho da célula */
-}
-
-@keyframes checkPulse {
-    0% { box-shadow: 0 0 0px rgba(255,0,0,0.4); }
-    50% { box-shadow: 0 0 15px rgba(255,0,0,0.6); }
-    100% { box-shadow: 0 0 0px rgba(255,0,0,0.4); }
-}
-
-.king-in-check {
-    animation: checkPulse 1.2s infinite;
-    border-radius: 8px;
-}
-
-#board.flipped {
-  transform: rotate(180deg);
-}
-
-#board.flipped img {
-  transform: rotate(180deg);
-}
-
-
-.main-layout {
-  display: flex;
-  gap: 40px;
-  align-items: center;
-}
-
-#boardContainer {
-  flex-shrink: 0;
-}
-
-.home-screen-right {
-  width: 260px;
-}
-
-.home-screen-right h2 {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-
-.piece {
-  cursor: grab;
-    /* Evita que o navegador tente "selecionar" o texto da página ao arrastar */
+.peca {
+    width: 90%;
+    height: 90%;
+    cursor: grab;
     user-select: none;
 }
 
-.piece:active {
+.peca:active {
     cursor: grabbing;
 }
 
-/* Quando você arrasta algo sobre a célula, ela muda de cor */
-.celula:drag-over {
-    background-color: rgba(255, 255, 0, 0.4) !important;
-}
-
-.piece.dragging {
-  opacity: 0.5;
-  cursor: grabbing;
-}
-
-.color-btn.selected {
-  outline: 2px solid gold;
-  transform: scale(1.05);
-}
-
-.game-info {
-  display: none;
-  position: fixed;
-  right: 20px;
-  top: 20px;
-  background: #111;
-  color: #fff;
-  padding: 15px;
-  width: 250px;
-  border-radius: 10px;
-  font-family: monospace;
-}
-
-
-/* Garantir que o painel apareça como um bloco quando a classe hidden sair */
-.game-info-panel {
-    display: block; 
-}
-.notation {
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.hidden {
-  display: none;
-}
-
-
-.modal-content {
-  background: white;
-  padding: 30px;
-  border-radius: 15px;
-  text-align: center;
-  min-width: 280px;
-}
-
-
-
-.btn-choice {
-  background: #eee;
-}
-
-
-
-.btn-choice.selected {
-    border: 2px solid #2ecc71;
-    background-color: #d4edda;
-}
-
-.btn-confirm {
-  background: #999;
-  cursor: not-allowed;
-}
-
-.btn-confirm.enabled {
-  background: #3498db;
-  cursor: pointer;
-}
-
-
-
-
-/* Lógica de Rotação (Girar o tabuleiro) */
-/* Vira o tabuleiro 180 graus */
-#board.flipped {
-    transform: rotate(180deg);
-}
-
-/* Desvira as peças para elas ficarem em pé para o jogador */
-#board.flipped .piece, 
-#board.flipped img {
-    transform: rotate(180deg);
-}
-
-.mode-cards-column {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  width: 260px;
-}
-
-.mode-card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 12px;
-  cursor: pointer;
-  list-style: none;
-  font-weight: bold;
-  border: 1px solid black;
-}
-
-.mode-card:hover{
-  scale: 105%;
-}
-
-.mode-details summary {
-  list-style: none;
-}
-
-.mode-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.color-choice {
-  margin-top: 10px;
-  padding: 10px;
-  background: #f2f2f2;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: 1px solid black;
-}
-
-.color-choice p {
-    border: 1px solid rgba(0, 0, 0, 0.514);
+.xeque-blur {
+    position: absolute;
+    inset: 0;
     border-radius: 8px;
-    padding: 10px;
-}
-
-.color-choice button {
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-    border: 1px solid black;
-
-}
-
-.rating-selector {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    text-align: left;
-    font-size: 0.9em;
-}
-
-.rating-selector select {
-    padding: 8px;
-    font-family: Arial, Helvetica, sans-serif;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    background: white;
-    cursor: pointer;
-}
-
-.btn-group {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-#gameInfo.game-info-panel {
-    width: 260px;
-    background: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid black;
-}  
-.info-item {
-    margin-bottom: 15px;
-    font-size: 1.1em;
-}
-
-.notation-container {
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-}
-
-.notation-list {
-    max-height: 250px;
-    overflow-y: auto;
-    list-style: none;
-    padding: 0;
-    font-family: monospace;
-    text-align: left;
-    background: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.notation-list li {
-    padding: 4px 8px;
-    border-bottom: 1px solid #eee;
-}
-
-.btn-abandonar {
-    margin-top: 20px;
-    width: 100%;
-    padding: 10px;
-    background: #e74c3c;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-#promotion-menu {
-    position: fixed;           
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #222;
-    padding: 10px;
-    display: flex;
-    gap: 10px;
-    z-index: 1000;
-
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#promotion-menu.hidden {
-    opacity: 0;
+    background: rgba(255, 0, 0, 0.35);
+    filter: blur(14px);
     pointer-events: none;
-}
-
-
-#promotion-menu img {
-    width: 60px;
-    cursor: pointer;
+    z-index: 5;
 }

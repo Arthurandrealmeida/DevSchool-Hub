@@ -56,110 +56,67 @@
         </aside>
 
 
-        <main class="content">
-<div class="main-layout">
+          <main class="content">
+            <div class="controls" style="margin-bottom:12px;">
+            <label>Nível: <select id="bot-level">
+              <option value="1">1 - Aleatório</option>
+              <option value="2">2 - Prefere capturas</option>
+              <option value="3">3 - Sem mate1</option>
+              <option value="4">4 - Avaliação 1-ply</option>
+              <option value="5">5 - Minimax depth 2</option>
+              <option value="6">6 - Minimax + mobilidade</option>
+            </select></label>
 
-  <div id="boardContainer">
-    <div id="board" class="board"></div>
+            <label style="margin-left:12px;">Cor: <select id="bot-color">
+              <option value="black">Preto</option>
+              <option value="white">Branco</option>
+            </select></label>
 
-  </div>
+            <button id="bot-play" style="margin-left:12px;">Bot Jogar</button>
+            <label style="margin-left:8px;"><input type="checkbox" id="bot-auto"> Auto-play</label>
+          </div>
 
-  <div id="homeScreen" class="home-screen-right">
-    <h2>Modos de Jogo</h2>
+          <div id="board" class="tabuleiro">
+          </div>
+    </main>
 
-    <div class="mode-cards-column">
-  <div class="mode-group" data-mode="vs-bot">
-  <div class="mode-card">🤖 Jogar vs Bot</div>
-  
-  <div class="color-choice hidden">
-    <div class="rating-selector">
-      <label for="botRating">Dificuldade do Bot:</label>
-      <select id="botRating">
-        <option value="100">100 ELO</option>
-        <option value="300">300 ELO</option>
-        <option value="600">600 ELO</option>
-        <option value="800">800 ELO</option>
-        <option value="1000">1000 ELO</option>
-        <option value="1200">1200 ELO</option>
-        <option value="1600">1600 ELO</option>
-        <option value="2000">2000 ELO</option>
-        <option value="2200">2200 ELO</option>
-        <option value="2500">2500 ELO</option>
+  <script src="JS/TabuleiroXadrez.js"></script>
+  <script src="JS/bots.js"></script>
 
-      </select>
-    </div>
+<script>
+  // Liga controle UI ao engine
+  const levelSelect = document.getElementById('bot-level');
+  const colorSelect = document.getElementById('bot-color');
+  const playBtn = document.getElementById('bot-play');
+  const autoCheckbox = document.getElementById('bot-auto');
+  let botThinking = false;
 
-    <div class="btn-group">
-      <button class="btn-choice" data-color="white">⚪ Brancas</button>
-      <button class="btn-choice" data-color="black">⚫ Pretas</button>
-    </div>
-    
-    <button class="btn-confirm" disabled>Confirmar Bot</button>
-  </div>
-</div>
+  playBtn.addEventListener('click', () => {
+    const lvl = Number(levelSelect.value);
+    const color = colorSelect.value;
+    if (!window.playBot) { alert('Bots não carregados'); return; }
+    botThinking = true;
+    const ok = window.playBot(lvl, color);
+    botThinking = false;
+    if (!ok) console.log('Bot não realizou movimento (sem jogadas).');
+  });
 
-  <div class="mode-group" data-mode="local">
-    <div class="mode-card">👥 1v1 Local</div>
-    <div class="color-choice hidden">
-      <button class="btn-choice" data-color="white">⚪ Brancas</button>
-      <button class="btn-choice" data-color="black">⚫ Pretas</button>
-      <button class="btn-confirm" disabled>Confirmar Local</button>
-    </div>
-  </div>
-</div>
-
-  </div>
-
-  <div id="gameInfo" class="game-info-panel hidden">
-  <h2>Partida em Andamento</h2>
-  
-  <div class="info-item">
-    <strong>Vez de:</strong> <span id="turnDisplay">Brancas</span>
-  </div>
-  
-  <div class="info-item">
-    <strong>Total de Movimentos:</strong> <span id="moveCount">0</span>
-  </div>
-
-  <div class="notation-container">
-    <h3>Histórico de Lances</h3>
-    <ul id="notationList" class="notation-list"></ul>
-  </div>
-
-  <button id="btnAbandonar" class="btn-abandonar">Abandonar Partida</button>
-</div>
-
-</div>
-
-
-  </div>
-
-</div>
-        </main>
-
-
-    </div>
-
-    <div id="endGameModal" class="modal-overlay hidden">
-  <div class="modal-content">
-    <h2 id="endGameTitle"></h2>
-    <p id="endGameInfo"></p>
-
-    <div style="display:flex; gap:10px; justify-content:center;">
-      <button id="btnPlayAgain">Visualizar tabuleiro</button>
-      <button id="btnBackMenu">Voltar ao menu</button>
-    </div>
-  </div>
-</div>
-
-<div id="promotion-menu" class="hidden">
-    <img data-piece="queen">
-    <img data-piece="rook">
-    <img data-piece="bishop">
-    <img data-piece="knight">
-</div>
-
+  // Auto-play: verifica o turno e faz o bot jogar quando for sua vez
+  setInterval(() => {
+    if (!autoCheckbox.checked) return;
+    if (botThinking) return;
+    const lvl = Number(levelSelect.value);
+    const color = colorSelect.value;
+    if (typeof turnoAtual === 'undefined') return;
+    if (turnoAtual === color) {
+      botThinking = true;
+      setTimeout(() => {
+        window.playBot(lvl, color);
+        botThinking = false;
+      }, 120);
+    }
+  }, 700);
+</script>
 
 </body>
-    <script src="JS/TabuleiroXadrez.js"></script>
 </html>
