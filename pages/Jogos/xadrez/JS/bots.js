@@ -1290,6 +1290,132 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         return false;
     }
 
+    // Nível 5 (alternativo): cópia simplificada do botLevel6, porém limitada por tempo
+    async function botLevel5_stockfishSimple(color) {
+        if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
+        if (!stockfishReady || stockfishBusy) return false;
+
+        const state = buildStateFromDOM();
+        const fen = stateToFEN(state, color);
+
+        // tempo menor para limitar força
+        const moveStr = await getBestMoveFromStockfish(fen, 500);
+        if (!moveStr || moveStr === '(none)') return false;
+
+        const from = moveStr.slice(0,2);
+        const to = moveStr.slice(2,4);
+
+        const casaOrigem = document.querySelector(`.casa[data-coord="${from}"]`);
+        const casaDestino = document.querySelector(`.casa[data-coord="${to}"]`);
+        const peca = casaOrigem?.querySelector('.peca');
+
+        if (peca && casaDestino) {
+            moverPeca(casaOrigem, casaDestino, peca);
+            return true;
+        }
+        return false;
+    }
+
+    async function botLevel4_stockfishVeryLimited(color) {
+        if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
+        if (!stockfishReady || stockfishBusy) return false;
+
+        const state = buildStateFromDOM();
+        const fen = stateToFEN(state, color);
+        // tentativa com tempo MUITO curto; se falhar, escolhe movimento aleatório seguro
+        const moveStr = await getBestMoveFromStockfish(fen, 80);
+        if (moveStr && moveStr !== '(none)') {
+            const from = moveStr.slice(0,2);
+            const to = moveStr.slice(2,4);
+            const casaOrigem = document.querySelector(`.casa[data-coord="${from}"]`);
+            const casaDestino = document.querySelector(`.casa[data-coord="${to}"]`);
+            const peca = casaOrigem?.querySelector('.peca');
+            if (peca && casaDestino) {
+                moverPeca(casaOrigem, casaDestino, peca);
+                return true;
+            }
+        }
+
+        // fallback: escolha aleatória entre movimentos legais (muito fraco)
+        const allMoves = getAllLegalMoves(color);
+        if (!allMoves || allMoves.length === 0) return false;
+
+        // preferir movimentos que não percam material imediatamente
+        const safe = [];
+        for (const m of allMoves) {
+            const info = makeMoveState(state, m);
+            const enemy = color === 'white' ? 'black' : 'white';
+            const enemyReplies = getAllPseudoMovesFromState(state, enemy);
+            let losesMaterial = false;
+            for (const r of enemyReplies) {
+                if (r.to.x === m.to.x && r.to.y === m.to.y) {
+                    const attacker = state.board[r.from.y][r.from.x];
+                    const moved = state.board[m.from.y][m.from.x];
+                    const attackerVal = attacker ? (VALOR[attacker.type]||0) : 0;
+                    const movedVal = moved ? (VALOR[moved.type]||0) : 0;
+                    if (attackerVal >= movedVal) { losesMaterial = true; break; }
+                }
+            }
+            undoMoveState(state, m, info);
+            if (!losesMaterial) safe.push(m);
+        }
+
+        const pool = safe.length > 0 ? safe : allMoves;
+        const chosen = pool[Math.floor(Math.random() * pool.length)];
+        if (!chosen) return false;
+        const from = posicaoID(chosen.from);
+        const to = posicaoID(chosen.to);
+        const casaOrigem = document.querySelector(`.casa[data-coord="${from}"]`);
+        const casaDestino = document.querySelector(`.casa[data-coord="${to}"]`);
+        const peca = casaOrigem?.querySelector('.peca');
+        if (peca && casaDestino) {
+            moverPeca(casaOrigem, casaDestino, peca);
+            return true;
+        }
+        return false;
+    }
+
+    // Nível 5 (novo): versão limitada do Stockfish (menos skill, menos tempo, menos threads/hash)
+    async function botLevel5_limitedStockfish(color) {
+        if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
+        if (!stockfishReady || stockfishBusy) return false;
+
+        const state = buildStateFromDOM();
+        const fen = stateToFEN(state, color);
+
+        // Ajusta opções para versão limitada
+        try {
+            stockfish.postMessage('setoption name Skill Level value 6');
+            stockfish.postMessage('setoption name Threads value 1');
+            stockfish.postMessage('setoption name Hash value 16');
+        } catch (e){ console.warn('Erro ao ajustar opções do Stockfish (limitado)', e); }
+
+        // menos tempo que o level6
+        const moveStr = await getBestMoveFromStockfish(fen, 350);
+
+        // Restaura opções padrão (não bloqueante)
+        try {
+            stockfish.postMessage('setoption name Skill Level value 20');
+            stockfish.postMessage('setoption name Threads value 4');
+            stockfish.postMessage('setoption name Hash value 128');
+        } catch (e){ console.warn('Erro ao restaurar opções do Stockfish', e); }
+
+        if (!moveStr || moveStr === '(none)') return false;
+
+        const from = moveStr.slice(0,2);
+        const to = moveStr.slice(2,4);
+
+        const casaOrigem = document.querySelector(`.casa[data-coord="${from}"]`);
+        const casaDestino = document.querySelector(`.casa[data-coord="${to}"]`);
+        const peca = casaOrigem?.querySelector('.peca');
+
+        if (peca && casaDestino) {
+            moverPeca(casaOrigem, casaDestino, peca);
+            return true;
+        }
+        return false;
+    }
+
 
 
     // interface pública: executa o movimento caso o nível retorne {from,to}
@@ -1299,9 +1425,13 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         const fns = {
             1: botLevel1,
             2: botLevel2,
-            3: botLevel3,
-            4: botLevel4,
-            5: botLevel5,
+            // Agora 3 é o heurístico/minimax forte (era mapeado como 4 antes)
+            3: botLevel5,
+            // 4 é Stockfish muito limitado (tempo bem curto)
+            4: botLevel4_stockfishVeryLimited,
+            // 5 mantém a versão Stockfish simplificada/limitada previamente criada
+            5: botLevel5_stockfishSimple,
+            // 6: Stockfish full-power
             6: botLevel6
         };
 
