@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="estiloXadrez.css">
 </head>
 <body>
+    <div id="mode-modal" class="modal-overlay" style="display:none;">
+      <div class="modal">
+        <h2>Escolha o modo</h2>
+        <button id="mode-computer">Jogar contra computador</button>
+        <button id="mode-1v1">Jogar 1v1</button>
+      </div>
+    </div>
+
     <div class="layout">
 
         <!-- SIDEBAR MINIMALISTA -->
@@ -57,8 +65,9 @@
 
 
           <main class="content">
-            <div class="controls" style="margin-bottom:12px;">
-            <label>Nível: <select id="bot-level">
+            <h1>Xadrez devSchool</h1>
+            <div id="controls" class="controls" style="margin-bottom:12px; display:none;">
+              <label>Nível: <select id="bot-level">
               <option value="1">1 - Aleatório</option>
               <option value="2">2 - Prefere capturas</option>
               <option value="3">3 - Sem mate1</option>
@@ -67,13 +76,14 @@
               <option value="6">6 - Minimax + mobilidade</option>
             </select></label>
 
-            <label style="margin-left:12px;">Cor: <select id="bot-color">
+            <label style="margin-left:12px;">Cor do bot: <select id="bot-color">
               <option value="black">Preto</option>
               <option value="white">Branco</option>
             </select></label>
-
-            <button id="bot-play" style="margin-left:12px;">Bot Jogar</button>
-            <label style="margin-left:8px;"><input type="checkbox" id="bot-auto"> Auto-play</label>
+            <div id="bot-buttons" style="display:inline-block; margin-left:12px;">
+              <button id="bot-play">Bot Jogar</button>
+              <label style="margin-left:8px;"><input type="checkbox" id="bot-auto"> Auto-play</label>
+            </div>
           </div>
 
           <div id="board" class="tabuleiro">
@@ -82,6 +92,56 @@
 
   <script src="JS/TabuleiroXadrez.js"></script>
   <script src="JS/bots.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const modal = document.getElementById('mode-modal');
+  const compBtn = document.getElementById('mode-computer');
+  const p1Btn = document.getElementById('mode-1v1');
+  const controls = document.getElementById('controls');
+  const botButtons = document.getElementById('bot-buttons');
+  const autoCheckbox = document.getElementById('bot-auto');
+
+  // mostrar modal na entrada
+  modal.style.display = 'flex';
+
+  compBtn.addEventListener('click', () => {
+    // modo contra computador: mostrar controles, esconder botões e ativar auto-play
+    window.gameMode = 'computer';
+    // exibe controles
+    if (controls) controls.style.display = 'flex';
+    // esconde botões de controle manual (bot-play/auto) já que auto-play ficará ativo
+    if (botButtons) botButtons.style.display = 'none';
+    if (autoCheckbox) autoCheckbox.checked = true;
+    // define playerColor com base na cor selecionada para o bot (jogador = cor oposta)
+    const botColorSelect = document.getElementById('bot-color');
+    if (botColorSelect) {
+      const botColor = botColorSelect.value;
+      window.playerColor = (botColor === 'white') ? 'black' : 'white';
+    }
+    modal.style.display = 'none';
+  });
+
+  p1Btn.addEventListener('click', () => {
+    // modo 1v1: manter controles escondidos e limpar flags de modo/cores
+    window.gameMode = '1v1';
+    window.playerColor = null;
+    if (controls) controls.style.display = 'none';
+    modal.style.display = 'none';
+  });
+  
+  // atualiza playerColor sempre que o usuário muda a cor do bot
+  const botColorSelect = document.getElementById('bot-color');
+  if (botColorSelect) {
+    botColorSelect.addEventListener('change', () => {
+      if (window.gameMode === 'computer') {
+        const botColor = botColorSelect.value;
+        window.playerColor = (botColor === 'white') ? 'black' : 'white';
+      }
+    });
+  }
+});
+</script>
 
 <script>
   // Liga controle UI ao engine

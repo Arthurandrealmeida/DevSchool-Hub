@@ -9,6 +9,11 @@ let contador50Lances = 0; // Conta lances sem captura ou movimento de peão
 // flag global para indicar fim de jogo (xeque-mate, empate, etc.)
 window.gameOver = false;
 
+// modo de jogo: 'computer' ou '1v1' (default '1v1')
+window.gameMode = window.gameMode || '1v1';
+// cor do jogador humano quando em modo 'computer' ('white' ou 'black'), null se não definido
+window.playerColor = window.playerColor || null;
+
 
  const estadoJogo = {
         reiBrancoMoveu: false,
@@ -108,6 +113,11 @@ function tornarPecasArrastaveis() {
             const cor = corDaPeca(peca);
 
             // ❌ NÃO use preventDefault aqui
+            // Se estiver no modo contra computador, bloqueia seleção de peças que não sejam da cor do jogador humano
+            if (window.gameMode === 'computer' && window.playerColor && cor !== window.playerColor) {
+                return;
+            }
+
             if (cor !== turnoAtual || window.gameOver) {
                 return;
             }
@@ -253,6 +263,12 @@ tabuleiro.addEventListener('click', (e) => {
         // --- VERIFICAÇÃO DE TURNO ---
 
         const corPeca = corDaPeca(pecaNaCasa);
+        // Se modo computador: usuários só podem selecionar peças da sua cor escolhida
+        if (window.gameMode === 'computer' && window.playerColor && corPeca !== window.playerColor) {
+            console.log('Modo computador: não pode selecionar peças do adversário.');
+            return;
+        }
+
         if (corPeca !== turnoAtual) {
             console.log("Não é o seu turno! Vez das: " + (turnoAtual === 'white' ? "Brancas" : "Pretas"));
             return; 

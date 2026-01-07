@@ -64,7 +64,8 @@ body {
     padding: 20px;
     background: #f8f8f8;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
 }
 
@@ -92,16 +93,16 @@ body{
 
 .tabuleiro {
     display: grid;
-    grid-template-columns: repeat(8, 50px);
-    grid-template-rows: repeat(8, 50px);
-    width: 400px;
-    height: 400px;
+    grid-template-columns: repeat(8, 70px);
+    grid-template-rows: repeat(8, 70px);
+    width: 560px;
+    height: 560px;
     border: 2px solid #000;
 }
 
 .casa {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -128,3 +129,26 @@ body{
     pointer-events: none;
     z-index: 5;
 }
+
+/* Modal de escolha de modo */
+.modal-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal{
+    background: #fff;
+    padding: 20px 24px;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    text-align: center;
+}
+.modal h2{ margin: 0 0 12px 0; }
+.modal button{ margin: 6px; padding: 10px 14px; cursor: pointer; }
+
+/* Estilo das controls quando visível */
+.controls{ display:flex; align-items:center; gap:8px; }
