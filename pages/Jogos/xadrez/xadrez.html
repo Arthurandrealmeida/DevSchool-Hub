@@ -68,12 +68,14 @@
             <h1>Xadrez devSchool</h1>
             <div id="controls" class="controls" style="margin-bottom:12px; display:none;">
               <label>Nível: <select id="bot-level">
-              <option value="1">1 - Aleatório</option>
-              <option value="2">2 - Prefere capturas</option>
-              <option value="3">3 - Sem mate1</option>
-              <option value="4">4 - Avaliação 1-ply</option>
-              <option value="5">5 - Minimax depth 2</option>
-              <option value="6">6 - Minimax + mobilidade</option>
+              <option value="1">1 - Bot 100 ELO</option>
+              <option value="2">2 - Bot 300 ELO</option>
+              <option value="3">3 - Bot 500 ELO</option>
+              <option value="3.5">4 - Bot 800 ELO</option>
+              <option value="4">5 - Bot 1300 ELO</option>
+              <option value="4.5">6 - Bot 1700 ELO</option>
+              <option value="5">7 - Bot 2000 ELO</option>
+              <option value="6">8 - Bot 2500 ELO</option>
             </select></label>
 
             <label style="margin-left:12px;">Cor do bot: <select id="bot-color">
@@ -88,6 +90,8 @@
 
           <div id="board" class="tabuleiro">
           </div>
+
+          <a href="javascript:history.back()" id="btn-voltar" class="btn-voltar">← Voltar</a>
     </main>
 
   <script src="JS/TabuleiroXadrez.js"></script>

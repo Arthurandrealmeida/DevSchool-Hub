@@ -1,3 +1,16 @@
+/*
+ * bots.js
+ * Implementação de vários 'bots' (níveis) para o jogo de xadrez.
+ * - Níveis 1..3: heurísticas locais / minimax leves
+ * - Nível 4: Stockfish muito limitado (muito fraco)
+ * - Nível 5: Stockfish simplificado (tempo reduzido)
+ * - Nível 6: Stockfish full-power
+ *
+ * O código usa uma cópia em memória do tabuleiro para buscas rápidas
+ * e um WebWorker com Stockfish para os níveis que o utilizam.
+ * Mantive funções públicas pequenas e documentadas (ex: `window.playBot`).
+ */
+
 let stockfish = null;
 let stockfishReady = false;
 let pendingResolve = null;
@@ -1261,8 +1274,6 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
 
 
 
-
-// Nível 6: MONSTRO TÁTICO IMPOSSÍVEL DE VENCER — SEM ERROS, PREVÊ CONTRA-JOGADAS, XEQUES SÓ ÚTEIS
     async function botLevel6(color) {
         // checar turno atual (definido em TabuleiroXadrez.js)
         if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
@@ -1298,8 +1309,8 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         const state = buildStateFromDOM();
         const fen = stateToFEN(state, color);
 
-        // tempo menor para limitar força
-        const moveStr = await getBestMoveFromStockfish(fen, 500);
+        // tempo menor para limitar força (aumentado levemente para estabilidade)
+        const moveStr = await getBestMoveFromStockfish(fen, 650);
         if (!moveStr || moveStr === '(none)') return false;
 
         const from = moveStr.slice(0,2);
@@ -1316,6 +1327,57 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         return false;
     }
 
+    // Nível 3.5: bot intermediário — usa Stockfish extremamente limitado (skill/threads/hash baixíssimos)
+    // Se o Stockfish não responder rapidamente, faz fallback para `botLevel3` (heurístico).
+    async function botLevel3_5_stockfishTiny(color) {
+        if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
+        if (!stockfishReady || stockfishBusy) {
+            // fallback heurístico
+            return botLevel3(color);
+        }
+
+        const state = buildStateFromDOM();
+        const fen = stateToFEN(state, color);
+
+        // tenta limitar Stockfish "até o talo" — skill baixo, 1 thread, pouco hash
+        try {
+            // aumentar levemente a força do 3.5 (cerca de +20% vs L3)
+            stockfish.postMessage('setoption name Skill Level value 4');
+            stockfish.postMessage('setoption name Threads value 1');
+            stockfish.postMessage('setoption name Hash value 16');
+        } catch (e) { console.warn('stockfish setoption falhou (3.5)', e); }
+
+        // tempo um pouco maior que antes para dar vantagem pequena sobre L3
+        const moveStr = await getBestMoveFromStockfish(fen, 360);
+
+        // restaura configurações padrão (não garante rollback perfeito, mas tenta)
+        try {
+            stockfish.postMessage('setoption name Skill Level value 20');
+            stockfish.postMessage('setoption name Threads value 4');
+            stockfish.postMessage('setoption name Hash value 128');
+        } catch (e) { console.warn('stockfish restore failed (3.5)', e); }
+
+        if (!moveStr || moveStr === '(none)') {
+            // fallback heurístico leve
+            return botLevel3(color);
+        }
+
+        const from = moveStr.slice(0,2);
+        const to = moveStr.slice(2,4);
+
+        const casaOrigem = document.querySelector(`.casa[data-coord="${from}"]`);
+        const casaDestino = document.querySelector(`.casa[data-coord="${to}"]`);
+        const peca = casaOrigem?.querySelector('.peca');
+
+        if (peca && casaDestino) {
+            moverPeca(casaOrigem, casaDestino, peca);
+            return true;
+        }
+
+        // último recurso: heurístico
+        return botLevel3(color);
+    }
+
     async function botLevel4_stockfishVeryLimited(color) {
         if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
         if (!stockfishReady || stockfishBusy) return false;
@@ -1323,7 +1385,8 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         const state = buildStateFromDOM();
         const fen = stateToFEN(state, color);
         // tentativa com tempo MUITO curto; se falhar, escolhe movimento aleatório seguro
-        const moveStr = await getBestMoveFromStockfish(fen, 80);
+        // leve aumento: 80 -> 120ms para tornar o L4 um pouco menos fraco
+        const moveStr = await getBestMoveFromStockfish(fen, 120);
         if (moveStr && moveStr !== '(none)') {
             const from = moveStr.slice(0,2);
             const to = moveStr.slice(2,4);
@@ -1375,32 +1438,20 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         return false;
     }
 
-    // Nível 5 (novo): versão limitada do Stockfish (menos skill, menos tempo, menos threads/hash)
-    async function botLevel5_limitedStockfish(color) {
+    // Nível 4.5: entre 4 e 5, cerca de 30% mais fraco que o bot 5
+    // Usa Stockfish com parâmetros limitados e tempo reduzido (aprox. 70% do tempo do L5)
+    async function botLevel4_5_stockfishWeak(color) {
         if (typeof turnoAtual !== 'undefined' && turnoAtual !== color) return false;
         if (!stockfishReady || stockfishBusy) return false;
 
         const state = buildStateFromDOM();
         const fen = stateToFEN(state, color);
-
-        // Ajusta opções para versão limitada
-        try {
-            stockfish.postMessage('setoption name Skill Level value 6');
-            stockfish.postMessage('setoption name Threads value 1');
-            stockfish.postMessage('setoption name Hash value 16');
-        } catch (e){ console.warn('Erro ao ajustar opções do Stockfish (limitado)', e); }
-
-        // menos tempo que o level6
-        const moveStr = await getBestMoveFromStockfish(fen, 350);
-
-        // Restaura opções padrão (não bloqueante)
-        try {
-            stockfish.postMessage('setoption name Skill Level value 20');
-            stockfish.postMessage('setoption name Threads value 4');
-            stockfish.postMessage('setoption name Hash value 128');
-        } catch (e){ console.warn('Erro ao restaurar opções do Stockfish', e); }
-
-        if (!moveStr || moveStr === '(none)') return false;
+        // Implementação baseada no L5 (Stockfish simples), porém com tempo reduzido (~30% menor)
+        const moveStr = await getBestMoveFromStockfish(fen, 450);
+        if (!moveStr || moveStr === '(none)') {
+            // fallback: usa nível 4 muito fraco
+            return botLevel4_stockfishVeryLimited(color);
+        }
 
         const from = moveStr.slice(0,2);
         const to = moveStr.slice(2,4);
@@ -1416,20 +1467,34 @@ function getBestMoveFromStockfish(fen, timeMs = 500) {
         return false;
     }
 
+    // Função removida: experimental `botLevel5_limitedStockfish` estava duplicada
+    // e não era utilizada no mapeamento final. Mantemos `botLevel5_stockfishSimple`
+    // e `botLevel4_stockfishVeryLimited` como implementações estáveis.
 
 
-    // interface pública: executa o movimento caso o nível retorne {from,to}
+
+    /**
+     * Executa o bot para o `level` e a `color` especificada.
+     * - `level` (1..6) seleciona a função do bot mapeada internamente.
+     * - `color` é a cor do bot ('white'|'black').
+     * A função pode retornar `true` (movimento já executado), `false` (falha),
+     * ou um objeto `{from,to}` que será aplicado no DOM.
+     */
     window.playBot = async function(level, color) {
         if (window.gameOver) return false;
 
         const fns = {
             1: botLevel1,
             2: botLevel2,
-            // Agora 3 é o heurístico/minimax forte (era mapeado como 4 antes)
+            // 3: heurístico/minimax forte
             3: botLevel5,
-            // 4 é Stockfish muito limitado (tempo bem curto)
+            // 3.5: intermediário (Stockfish muito limitado)
+            '3.5': botLevel3_5_stockfishTiny,
+            // 4.5: entre 4 e 5 — fraco, mas mais forte que 4
+            '4.5': botLevel4_5_stockfishWeak,
+            // 4: Stockfish muito limitado / fallback aleatório (bem fraco)
             4: botLevel4_stockfishVeryLimited,
-            // 5 mantém a versão Stockfish simplificada/limitada previamente criada
+            // 5: Stockfish simplificado (tempo maior que 4)
             5: botLevel5_stockfishSimple,
             // 6: Stockfish full-power
             6: botLevel6

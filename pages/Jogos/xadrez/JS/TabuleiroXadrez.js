@@ -153,6 +153,8 @@ function tornarPecasArrastaveis() {
     });
 }
 
+
+
 // Adiciona eventos nas casas (será chamado APÓS a criação do tabuleiro)
 function adicionarEventosCasas() {
     document.querySelectorAll('.casa').forEach(casa => {
@@ -188,9 +190,9 @@ function alternarTurno() {
     
     // Verifica a regra dos 50 lances (100 "meios-lances")
     if (contador50Lances >= 100) {
-        alert("Empate pela regra dos 50 lances!");
-        // marca fim de jogo
+        alert("Empate pela regra dos 50 lances!"); 
         window.gameOver = true;
+        location.reload(); // reinicia o jogo
     }
 }
 
@@ -377,15 +379,21 @@ function verificarSituacaoJogo(cor) {
     const emXeque = estaEmXeque(cor);
 
     if (!temMovimentoLegal) {
+    window.gameOver = true; // Trava o jogo imediatamente
+    
+    setTimeout(() => {
         if (emXeque) {
             alert("XEQUE-MATE! Fim de jogo.");
-            window.gameOver = true;
+            location.reload();
         } else {
             alert("EMPATE por Afogamento!");
-            window.gameOver = true;
+            location.reload();
         }
-        return; // Sai da função
-    }
+        location.reload(); 
+    }, 200); // 0.6 segundos de delay para a peça terminar de mover
+    
+    return;
+}
 
     // 2. Xeque Normal
     if (emXeque) {
@@ -399,6 +407,7 @@ function verificarSituacaoJogo(cor) {
     if (verificarMaterialInsuficiente()) {
         alert("EMPATE por Material Insuficiente!");
         window.gameOver = true;
+        location.reload();
         return;
     }
 }
@@ -576,6 +585,7 @@ function moverPeca(casaOrigem, casaDestino, peca) { //move a peça no tabuleiro 
     if (historicoPosicoes[snapshotAtual] >= 3) {
         setTimeout(() => {
             alert("Empate por repetição de 3 posições!");
+            location.reload(); // reinicia o jogo
         }, 100);
     }
 }
