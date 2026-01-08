@@ -249,25 +249,10 @@ h5 {
     padding: 40px;
 }
 
-.card {
-    background-color: #1e293b;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 0 10px #0004;
-    transition: 0.3s;
-}
-
 .card:hover {
     transform: translateY(-5px);
 }
 
-.card-img {
-    width: 100%;
-    height: 330px;
-    object-fit: cover;
-
-    border-radius: 14px;
-}
 
 .badge {
     display: inline-block;
@@ -326,3 +311,22 @@ nav ul li a {
 .hidden {
     display: none;
 }
+
+
+.card-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.card {
+    background-color: #1e293b;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 10px #0004;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+}
+
