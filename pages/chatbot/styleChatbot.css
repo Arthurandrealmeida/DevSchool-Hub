@@ -212,3 +212,45 @@ nav ul li a {
     text-decoration: none;
     color: inherit;
 }
+
+/* ====== INSTRUÇÕES CHAT ====== */
+
+.chat-instructions {
+    max-width: 800px;
+    margin: 20px auto 0 auto;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    font-size: 14px;
+}
+
+.chat-instructions h3 {
+    margin-top: 0;
+    color: #333;
+}
+
+.chat-instructions ul {
+    padding-left: 20px;
+}
+
+.materias-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.materia-chip {
+    padding: 8px 12px;
+    background: #f0f2ff;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s;
+}
+
+.materia-chip:hover {
+    background: #7d4bff;
+    color: white;
+}

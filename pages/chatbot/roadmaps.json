@@ -1,0 +1,1592 @@
+{
+  "javascript": {
+    "title": "JavaScript",
+    "keywords": [
+      "javascript",
+      "js",
+      "dom"
+    ],
+    "steps": [
+      "1️⃣ Variáveis, tipos e operadores",
+      "2️⃣ Condições e loops",
+      "3️⃣ Funções e escopo",
+      "4️⃣ Arrays e objetos",
+      "5️⃣ DOM e eventos",
+      "6️⃣ Assíncrono (fetch, promises, async/await)",
+      "7️⃣ Projetos práticos"
+    ],
+    "tips": [
+      "Pratique todos os dias",
+      "Crie projetos pequenos",
+      "Não pule o DOM"
+    ]
+  },
+  "html": {
+    "title": "HTML",
+    "keywords": [
+      "html",
+      "estrutura",
+      "site"
+    ],
+    "steps": [
+      "1️⃣ Estrutura básica",
+      "2️⃣ Tags principais",
+      "3️⃣ Semântica",
+      "4️⃣ Formulários",
+      "5️⃣ Acessibilidade"
+    ],
+    "tips": [
+      "Use HTML semântico",
+      "Valide seu código"
+    ]
+  },
+  "css": {
+    "title": "CSS",
+    "keywords": [
+      "css",
+      "estilo",
+      "layout"
+    ],
+    "steps": [
+      "1️⃣ Seletores",
+      "2️⃣ Box model",
+      "3️⃣ Flexbox",
+      "4️⃣ Grid",
+      "5️⃣ Responsividade"
+    ],
+    "tips": [
+      "Treine layouts reais",
+      "Use o DevTools"
+    ]
+  },
+  "git": {
+    "title": "Git",
+    "keywords": [
+      "git",
+      "versionamento"
+    ],
+    "steps": [
+      "1️⃣ Git init / clone",
+      "2️⃣ Add e commit",
+      "3️⃣ Branches",
+      "4️⃣ Merge",
+      "5️⃣ Conflitos"
+    ],
+    "tips": [
+      "Commits pequenos",
+      "Mensagens claras"
+    ]
+  },
+  "github": {
+    "title": "GitHub",
+    "keywords": [
+      "github",
+      "repositorio"
+    ],
+    "steps": [
+      "1️⃣ Criar repositório",
+      "2️⃣ Push e pull",
+      "3️⃣ Issues",
+      "4️⃣ Pull requests",
+      "5️⃣ GitHub Pages"
+    ],
+    "tips": [
+      "Organize README",
+      "Use projetos"
+    ]
+  },
+  "logica": {
+    "title": "Lógica de Programação",
+    "keywords": [
+      "logica",
+      "algoritmo"
+    ],
+    "steps": [
+      "1️⃣ Variáveis",
+      "2️⃣ Condições",
+      "3️⃣ Repetições",
+      "4️⃣ Algoritmos simples",
+      "5️⃣ Exercícios"
+    ],
+    "tips": [
+      "Resolva muitos problemas"
+    ]
+  },
+  "python": {
+    "title": "Python",
+    "keywords": [
+      "python"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe básica",
+      "2️⃣ Condições e loops",
+      "3️⃣ Funções",
+      "4️⃣ Listas e dicionários",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Escreva código todos os dias"
+    ]
+  },
+  "java": {
+    "title": "Java",
+    "keywords": [
+      "java"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Orientação a objetos",
+      "3️⃣ Classes e métodos",
+      "4️⃣ Collections",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Entenda bem OOP"
+    ]
+  },
+  "c": {
+    "title": "C",
+    "keywords": [
+      "linguagem c"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe básica",
+      "2️⃣ Ponteiros",
+      "3️⃣ Estruturas",
+      "4️⃣ Alocação de memória",
+      "5️⃣ Exercícios"
+    ],
+    "tips": [
+      "Cuidado com memória"
+    ]
+  },
+  "cpp": {
+    "title": "C++",
+    "keywords": [
+      "c++"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ OOP",
+      "3️⃣ STL",
+      "4️⃣ Templates",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Domine STL"
+    ]
+  },
+  "sql": {
+    "title": "SQL",
+    "keywords": [
+      "sql",
+      "banco de dados"
+    ],
+    "steps": [
+      "1️⃣ SELECT",
+      "2️⃣ WHERE",
+      "3️⃣ JOIN",
+      "4️⃣ GROUP BY",
+      "5️⃣ Normalização"
+    ],
+    "tips": [
+      "Pratique queries"
+    ]
+  },
+  "mysql": {
+    "title": "MySQL",
+    "keywords": [
+      "mysql"
+    ],
+    "steps": [
+      "1️⃣ Instalação",
+      "2️⃣ CRUD",
+      "3️⃣ Índices",
+      "4️⃣ Relacionamentos",
+      "5️⃣ Backup"
+    ],
+    "tips": [
+      "Use EXPLAIN"
+    ]
+  },
+  "postgresql": {
+    "title": "PostgreSQL",
+    "keywords": [
+      "postgres"
+    ],
+    "steps": [
+      "1️⃣ SQL básico",
+      "2️⃣ Tipos",
+      "3️⃣ Views",
+      "4️⃣ Functions",
+      "5️⃣ Performance"
+    ],
+    "tips": [
+      "Leia documentação"
+    ]
+  },
+  "node": {
+    "title": "Node.js",
+    "keywords": [
+      "node",
+      "backend"
+    ],
+    "steps": [
+      "1️⃣ Módulos",
+      "2️⃣ NPM",
+      "3️⃣ Express",
+      "4️⃣ APIs",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Entenda async"
+    ]
+  },
+  "react": {
+    "title": "React",
+    "keywords": [
+      "react",
+      "frontend"
+    ],
+    "steps": [
+      "1️⃣ Componentes",
+      "2️⃣ Props",
+      "3️⃣ State",
+      "4️⃣ Hooks",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Pense em componentes"
+    ]
+  },
+  "vue": {
+    "title": "Vue.js",
+    "keywords": [
+      "vue"
+    ],
+    "steps": [
+      "1️⃣ Templates",
+      "2️⃣ Data",
+      "3️⃣ Methods",
+      "4️⃣ Components",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Aprenda reatividade"
+    ]
+  },
+  "angular": {
+    "title": "Angular",
+    "keywords": [
+      "angular"
+    ],
+    "steps": [
+      "1️⃣ Typescript",
+      "2️⃣ Components",
+      "3️⃣ Services",
+      "4️⃣ Routing",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Aprenda bem TS"
+    ]
+  },
+  "typescript": {
+    "title": "TypeScript",
+    "keywords": [
+      "typescript",
+      "ts"
+    ],
+    "steps": [
+      "1️⃣ Tipos",
+      "2️⃣ Interfaces",
+      "3️⃣ Generics",
+      "4️⃣ Classes",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Use TS sempre"
+    ]
+  },
+  "algoritmos": {
+    "title": "Algoritmos",
+    "keywords": [
+      "algoritmos"
+    ],
+    "steps": [
+      "1️⃣ Busca",
+      "2️⃣ Ordenação",
+      "3️⃣ Recursão",
+      "4️⃣ Complexidade",
+      "5️⃣ Exercícios"
+    ],
+    "tips": [
+      "Analise Big-O"
+    ]
+  },
+  "estruturas": {
+    "title": "Estruturas de Dados",
+    "keywords": [
+      "estrutura de dados"
+    ],
+    "steps": [
+      "1️⃣ Arrays",
+      "2️⃣ Listas",
+      "3️⃣ Pilhas",
+      "4️⃣ Filas",
+      "5️⃣ Árvores"
+    ],
+    "tips": [
+      "Implemente do zero"
+    ]
+  },
+  "linux": {
+    "title": "Linux",
+    "keywords": [
+      "linux",
+      "terminal"
+    ],
+    "steps": [
+      "1️⃣ Comandos básicos",
+      "2️⃣ Permissões",
+      "3️⃣ Processos",
+      "4️⃣ Shell script",
+      "5️⃣ Administração"
+    ],
+    "tips": [
+      "Use no dia a dia"
+    ]
+  },
+  "redes": {
+    "title": "Redes de Computadores",
+    "keywords": [
+      "redes",
+      "tcp ip"
+    ],
+    "steps": [
+      "1️⃣ TCP/IP",
+      "2️⃣ DNS",
+      "3️⃣ HTTP",
+      "4️⃣ Portas",
+      "5️⃣ Segurança"
+    ],
+    "tips": [
+      "Entenda protocolos"
+    ]
+  },
+  "ciberseguranca": {
+    "title": "Cibersegurança",
+    "keywords": [
+      "seguranca",
+      "ciberseguranca"
+    ],
+    "steps": [
+      "1️⃣ Conceitos básicos",
+      "2️⃣ Tipos de ataque",
+      "3️⃣ Criptografia",
+      "4️⃣ Redes seguras",
+      "5️⃣ Prática"
+    ],
+    "tips": [
+      "Aprenda ética hacker"
+    ]
+  },
+  "devops": {
+    "title": "DevOps",
+    "keywords": [
+      "devops"
+    ],
+    "steps": [
+      "1️⃣ CI/CD",
+      "2️⃣ Docker",
+      "3️⃣ Containers",
+      "4️⃣ Monitoramento",
+      "5️⃣ Automação"
+    ],
+    "tips": [
+      "Automatize tudo"
+    ]
+  },
+  "docker": {
+    "title": "Docker",
+    "keywords": [
+      "docker",
+      "containers"
+    ],
+    "steps": [
+      "1️⃣ Imagens",
+      "2️⃣ Containers",
+      "3️⃣ Dockerfile",
+      "4️⃣ Volumes",
+      "5️⃣ Compose"
+    ],
+    "tips": [
+      "Entenda isolamento"
+    ]
+  },
+  "kubernetes": {
+    "title": "Kubernetes",
+    "keywords": [
+      "kubernetes",
+      "k8s"
+    ],
+    "steps": [
+      "1️⃣ Pods",
+      "2️⃣ Services",
+      "3️⃣ Deployments",
+      "4️⃣ Scaling",
+      "5️⃣ Monitoramento"
+    ],
+    "tips": [
+      "Pratique muito"
+    ]
+  },
+  "go": {
+    "title": "Go",
+    "keywords": [
+      "go",
+      "golang"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe básica",
+      "2️⃣ Concorrência com goroutines",
+      "3️⃣ Canais e select",
+      "4️⃣ Pacotes e módulos",
+      "5️⃣ Projetos web"
+    ],
+    "tips": [
+      "Aproveite a simplicidade",
+      "Entenda concorrência"
+    ]
+  },
+  "ruby": {
+    "title": "Ruby",
+    "keywords": [
+      "ruby"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Objetos e classes",
+      "3️⃣ Blocos e iteradores",
+      "4️⃣ Gems",
+      "5️⃣ Rails básico"
+    ],
+    "tips": [
+      "Escreva código elegante"
+    ]
+  },
+  "php": {
+    "title": "PHP",
+    "keywords": [
+      "php"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Variáveis e arrays",
+      "3️⃣ Funções",
+      "4️⃣ Banco de dados",
+      "5️⃣ Frameworks como Laravel"
+    ],
+    "tips": [
+      "Segurança em web"
+    ]
+  },
+  "swift": {
+    "title": "Swift",
+    "keywords": [
+      "swift",
+      "ios"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Optionals",
+      "3️⃣ Closures",
+      "4️⃣ UIKit/SwiftUI",
+      "5️⃣ Apps iOS"
+    ],
+    "tips": [
+      "Pratique no Xcode"
+    ]
+  },
+  "kotlin": {
+    "title": "Kotlin",
+    "keywords": [
+      "kotlin",
+      "android"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Null safety",
+      "3️⃣ Coroutines",
+      "4️⃣ Android basics",
+      "5️⃣ Apps"
+    ],
+    "tips": [
+      "Migre de Java"
+    ]
+  },
+  "rust": {
+    "title": "Rust",
+    "keywords": [
+      "rust"
+    ],
+    "steps": [
+      "1️⃣ Ownership",
+      "2️⃣ Borrowing",
+      "3️⃣ Lifetimes",
+      "4️⃣ Traits",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Segurança de memória"
+    ]
+  },
+  "r": {
+    "title": "Analista de Dados",
+    "keywords": [
+      "analise de dados ",
+      "data"
+    ],
+    "steps": [
+      "1️⃣ Vetores",
+      "2️⃣ Data frames",
+      "3️⃣ Gráficos",
+      "4️⃣ Estatística",
+      "5️⃣ Pacotes"
+    ],
+    "tips": [
+      "Análise de dados"
+    ]
+  },
+  "matlab": {
+    "title": "MATLAB",
+    "keywords": [
+      "matlab"
+    ],
+    "steps": [
+      "1️⃣ Matrizes",
+      "2️⃣ Funções",
+      "3️⃣ Gráficos",
+      "4️⃣ Simulações",
+      "5️⃣ Toolboxes"
+    ],
+    "tips": [
+      "Engenharia"
+    ]
+  },
+  "perl": {
+    "title": "Perl",
+    "keywords": [
+      "perl"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Expressões regulares",
+      "3️⃣ Módulos",
+      "4️⃣ Scripts",
+      "5️⃣ Automação"
+    ],
+    "tips": [
+      "Processamento de texto"
+    ]
+  },
+  "scala": {
+    "title": "Scala",
+    "keywords": [
+      "scala"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Funcional",
+      "3️⃣ OOP",
+      "4️⃣ Akka",
+      "5️⃣ Spark"
+    ],
+    "tips": [
+      "Big Data"
+    ]
+  },
+  "haskell": {
+    "title": "Haskell",
+    "keywords": [
+      "haskell"
+    ],
+    "steps": [
+      "1️⃣ Funções puras",
+      "2️⃣ Tipos",
+      "3️⃣ Monads",
+      "4️⃣ Recursão",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Programação funcional"
+    ]
+  },
+  "elixir": {
+    "title": "Elixir",
+    "keywords": [
+      "elixir"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Processos",
+      "3️⃣ OTP",
+      "4️⃣ Phoenix",
+      "5️⃣ Apps"
+    ],
+    "tips": [
+      "Concorrência"
+    ]
+  },
+  "dart": {
+    "title": "Dart",
+    "keywords": [
+      "dart",
+      "flutter"
+    ],
+    "steps": [
+      "1️⃣ Sintaxe",
+      "2️⃣ Classes",
+      "3️⃣ Async",
+      "4️⃣ Flutter basics",
+      "5️⃣ Apps mobile"
+    ],
+    "tips": [
+      "Desenvolvimento cross-platform"
+    ]
+  },
+  "express": {
+    "title": "Express.js",
+    "keywords": [
+      "express",
+      "node"
+    ],
+    "steps": [
+      "1️⃣ Setup",
+      "2️⃣ Rotas",
+      "3️⃣ Middleware",
+      "4️⃣ Templates",
+      "5️⃣ APIs"
+    ],
+    "tips": [
+      "Web servers"
+    ]
+  },
+  "django": {
+    "title": "Django",
+    "keywords": [
+      "django",
+      "python"
+    ],
+    "steps": [
+      "1️⃣ Models",
+      "2️⃣ Views",
+      "3️⃣ Templates",
+      "4️⃣ Admin",
+      "5️⃣ Deploy"
+    ],
+    "tips": [
+      "Web framework"
+    ]
+  },
+  "flask": {
+    "title": "Flask",
+    "keywords": [
+      "flask",
+      "python"
+    ],
+    "steps": [
+      "1️⃣ Rotas",
+      "2️⃣ Templates",
+      "3️⃣ Forms",
+      "4️⃣ Banco de dados",
+      "5️⃣ Extensões"
+    ],
+    "tips": [
+      "Micro framework"
+    ]
+  },
+  "spring": {
+    "title": "Spring",
+    "keywords": [
+      "spring",
+      "java"
+    ],
+    "steps": [
+      "1️⃣ Core",
+      "2️⃣ Boot",
+      "3️⃣ MVC",
+      "4️⃣ Security",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Enterprise"
+    ]
+  },
+  "dotnet": {
+    "title": ".NET",
+    "keywords": [
+      "dotnet",
+      "c#"
+    ],
+    "steps": [
+      "1️⃣ C# basics",
+      "2️⃣ ASP.NET",
+      "3️⃣ Entity Framework",
+      "4️⃣ Blazor",
+      "5️⃣ Apps"
+    ],
+    "tips": [
+      "Microsoft stack"
+    ]
+  },
+  "laravel": {
+    "title": "Laravel",
+    "keywords": [
+      "laravel",
+      "php"
+    ],
+    "steps": [
+      "1️⃣ Rotas",
+      "2️⃣ Controllers",
+      "3️⃣ Models",
+      "4️⃣ Views",
+      "5️⃣ Artisan"
+    ],
+    "tips": [
+      "Elegante"
+    ]
+  },
+  "mongodb": {
+    "title": "MongoDB",
+    "keywords": [
+      "mongodb",
+      "nosql"
+    ],
+    "steps": [
+      "1️⃣ Documentos",
+      "2️⃣ Collections",
+      "3️⃣ Queries",
+      "4️⃣ Aggregation",
+      "5️⃣ Indexes"
+    ],
+    "tips": [
+      "NoSQL"
+    ]
+  },
+  "redis": {
+    "title": "Redis",
+    "keywords": [
+      "redis",
+      "cache"
+    ],
+    "steps": [
+      "1️⃣ Chaves",
+      "2️⃣ Estruturas",
+      "3️⃣ Pub/Sub",
+      "4️⃣ Persistência",
+      "5️⃣ Clusters"
+    ],
+    "tips": [
+      "In-memory"
+    ]
+  },
+  "oracle": {
+    "title": "Oracle",
+    "keywords": [
+      "oracle",
+      "db"
+    ],
+    "steps": [
+      "1️⃣ SQL",
+      "2️⃣ PL/SQL",
+      "3️⃣ Tablespaces",
+      "4️⃣ Backup",
+      "5️⃣ Performance"
+    ],
+    "tips": [
+      "Enterprise DB"
+    ]
+  },
+  "sqlite": {
+    "title": "SQLite",
+    "keywords": [
+      "sqlite"
+    ],
+    "steps": [
+      "1️⃣ CREATE TABLE",
+      "2️⃣ INSERT/SELECT",
+      "3️⃣ Indexes",
+      "4️⃣ Transactions",
+      "5️⃣ Embed"
+    ],
+    "tips": [
+      "Leve"
+    ]
+  },
+  "aws": {
+    "title": "AWS",
+    "keywords": [
+      "aws",
+      "cloud"
+    ],
+    "steps": [
+      "1️⃣ EC2",
+      "2️⃣ S3",
+      "3️⃣ Lambda",
+      "4️⃣ IAM",
+      "5️⃣ VPC"
+    ],
+    "tips": [
+      "Certificações"
+    ]
+  },
+  "azure": {
+    "title": "Azure",
+    "keywords": [
+      "azure",
+      "microsoft"
+    ],
+    "steps": [
+      "1️⃣ Virtual Machines",
+      "2️⃣ Storage",
+      "3️⃣ Functions",
+      "4️⃣ Active Directory",
+      "5️⃣ Networking"
+    ],
+    "tips": [
+      "Integração MS"
+    ]
+  },
+  "gcp": {
+    "title": "Google Cloud Platform",
+    "keywords": [
+      "gcp",
+      "google"
+    ],
+    "steps": [
+      "1️⃣ Compute Engine",
+      "2️⃣ Cloud Storage",
+      "3️⃣ App Engine",
+      "4️⃣ BigQuery",
+      "5️⃣ Kubernetes Engine"
+    ],
+    "tips": [
+      "Dados"
+    ]
+  },
+  "machinelearning": {
+    "title": "Machine Learning",
+    "keywords": [
+        "machine learning",
+        "aprendizado de maquina",
+        "aprendizado de máquina",
+        "ml engineer",
+        "modelos preditivos"
+        ],
+    "steps": [
+      "1️⃣ Dados",
+      "2️⃣ Modelos",
+      "3️⃣ Treinamento",
+      "4️⃣ Avaliação",
+      "5️⃣ Deploy"
+    ],
+    "tips": [
+      "Pratique datasets"
+    ]
+  },
+  "datascience": {
+    "title": "Data Science",
+    "keywords": [
+        "data science",
+        "cientista de dados",
+        "ciencia de dados",
+        "ciência de dados",
+        "analise de dados com python",
+        "big data analytics"
+    ],
+    "steps": [
+        "1️⃣ Python/R",
+        "2️⃣ Estatística",
+        "3️⃣ Visualização",
+        "4️⃣ ML",
+        "5️⃣ Projetos"
+    ],
+    "tips": [
+        "Análise"
+    ]
+    },
+  "blockchain": {
+    "title": "Blockchain",
+    "keywords": [
+      "blockchain",
+      "crypto"
+    ],
+    "steps": [
+      "1️⃣ Conceitos",
+      "2️⃣ Ethereum",
+      "3️⃣ Smart contracts",
+      "4️⃣ DApps",
+      "5️⃣ Segurança"
+    ],
+    "tips": [
+      "Entenda cripto"
+    ]
+  },
+  "iot": {
+    "title": "IoT",
+    "keywords": [
+      "iot",
+      "internet das coisas"
+    ],
+    "steps": [
+      "1️⃣ Sensores",
+      "2️⃣ Comunicação",
+      "3️⃣ Plataformas",
+      "4️⃣ Segurança",
+      "5️⃣ Projetos"
+    ],
+    "tips": [
+      "Hardware"
+    ]
+  },
+  "desenvolvedorfrontend": {
+    "title": "Desenvolvedor Frontend",
+    "keywords": [
+      "frontend",
+      "dev"
+    ],
+    "steps": [
+      "1️⃣ HTML/CSS/JS",
+      "2️⃣ Frameworks (React/Vue)",
+      "3️⃣ Responsividade",
+      "4️⃣ Performance",
+      "5️⃣ Portfólio"
+    ],
+    "tips": [
+      "Foco em UX"
+    ]
+  },
+  "desenvolvedorbackend": {
+    "title": "Desenvolvedor Backend",
+    "keywords": [
+      "backend",
+      "dev"
+    ],
+    "steps": [
+      "1️⃣ Linguagens (Node/Python)",
+      "2️⃣ APIs",
+      "3️⃣ Bancos de dados",
+      "4️⃣ Segurança",
+      "5️⃣ Escalabilidade"
+    ],
+    "tips": [
+      "Entenda servidores"
+    ]
+  },
+  "fullstack": {
+    "title": "Desenvolvedor Fullstack",
+    "keywords": [
+      "fullstack"
+    ],
+    "steps": [
+      "1️⃣ Frontend",
+      "2️⃣ Backend",
+      "3️⃣ Integração",
+      "4️⃣ DevOps básico",
+      "5️⃣ Projetos completos"
+    ],
+    "tips": [
+      "Versatilidade"
+    ]
+  },
+  "engenheirosoftware": {
+    "title": "Engenheiro de Software",
+    "keywords": [
+      "software engineer"
+    ],
+    "steps": [
+      "1️⃣ Graduação",
+      "2️⃣ Design patterns",
+      "3️⃣ Testes",
+      "4️⃣ Arquitetura",
+      "5️⃣ Liderança"
+    ],
+    "tips": [
+      "Boas práticas"
+    ]
+  },
+  "analistaseguranca": {
+    "title": "Analista de Segurança",
+    "keywords": [
+    "analista de segurança",
+    "analista seguranca",
+    "segurança da informação",
+    "seguranca da informacao",
+    "security analyst",
+    "cybersecurity analyst",
+    "cibersegurança",
+    "ciberseguranca"
+  ],
+    "steps": [
+      "1️⃣ Cibersegurança basics",
+      "2️⃣ Ferramentas (Wireshark)",
+      "3️⃣ Certificações (CISSP)",
+      "4️⃣ Monitoramento",
+      "5️⃣ Incident response"
+    ],
+    "tips": [
+      "Ética"
+    ]
+  },
+  "devopsengineer": {
+    "title": "Engenheiro DevOps",
+    "keywords": [
+      "devops engineer"
+    ],
+    "steps": [
+      "1️⃣ CI/CD",
+      "2️⃣ Containers",
+      "3️⃣ Cloud",
+      "4️⃣ Monitoramento",
+      "5️⃣ Automação"
+    ],
+    "tips": [
+      "Colaboração"
+    ]
+  },
+  "uxdesigner": {
+    "title": "Designer UX/UI",
+    "keywords": [
+      "ux",
+      "ui"
+    ],
+    "steps": [
+      "1️⃣ Princípios de design",
+      "2️⃣ Ferramentas (Figma)",
+      "3️⃣ Pesquisa usuário",
+      "4️⃣ Protótipos",
+      "5️⃣ Testes"
+    ],
+    "tips": [
+      "Usuário centrado"
+    ]
+  },
+  "gerenteproduto": {
+    "title": "Gerente de Produto",
+    "keywords": [
+      "product manager"
+    ],
+    "steps": [
+      "1️⃣ Mercado",
+      "2️⃣ Roadmaps",
+      "3️⃣ Agile",
+      "4️⃣ Stakeholders",
+      "5️⃣ Métricas"
+    ],
+    "tips": [
+      "Visão"
+    ]
+  },
+  "qaengineer": {
+    "title": "Engenheiro QA",
+    "keywords": [
+      "qa",
+      "testes"
+    ],
+    "steps": [
+      "1️⃣ Testes manuais",
+      "2️⃣ Automatizados (Selenium)",
+      "3️⃣ Plano de testes",
+      "4️⃣ Bugs",
+      "5️⃣ Qualidade"
+    ],
+    "tips": [
+      "Atenção detalhes"
+    ]
+  },
+  "matematica": {
+    "title": "Matemática",
+    "keywords": [
+    "matematica",
+    "matemática",
+    "calculo",
+    "cálculo",
+    "algebra",
+    "álgebra",
+    "geometria",
+    "trigonometria",
+    "estatistica",
+    "estatística"
+  ],
+    "steps": [
+      "1️⃣ Aritmética",
+      "2️⃣ Álgebra",
+      "3️⃣ Geometria",
+      "4️⃣ Trigonometria",
+      "5️⃣ Cálculo"
+    ],
+    "tips": [
+      "Pratique exercícios"
+    ]
+  },
+  "fisica": {
+    "title": "Física",
+    "keywords": [
+    "fisica",
+    "física",
+    "mecanica",
+    "mecânica",
+    "termodinamica",
+    "termodinâmica",
+    "eletricidade",
+    "eletromagnetismo",
+    "optica",
+    "óptica"
+  ],
+    "steps": [
+      "1️⃣ Mecânica",
+      "2️⃣ Termodinâmica",
+      "3️⃣ Eletromagnetismo",
+      "4️⃣ Óptica",
+      "5️⃣ Física moderna"
+    ],
+    "tips": [
+      "Entenda conceitos"
+    ]
+  },
+  "quimica": {
+    "title": "Química",
+    "keywords": [
+    "quimica",
+    "química",
+    "quimica geral",
+    "química geral",
+    "quimica organica",
+    "química orgânica",
+    "quimica inorganica",
+    "química inorgânica",
+    "reacoes quimicas",
+    "reações químicas"
+  ],
+    "steps": [
+      "1️⃣ Átomos",
+      "2️⃣ Tabela periódica",
+      "3️⃣ Reações",
+      "4️⃣ Orgânica",
+      "5️⃣ Inorgânica"
+    ],
+    "tips": [
+      "Laboratório"
+    ]
+  },
+  "biologia": {
+    "title": "Biologia",
+    "keywords": [
+    "biologia",
+    "genetica",
+    "genética",
+    "ecologia",
+    "anatomia",
+    "citologia",
+    "evolucao",
+    "evolução",
+    "biologia celular"
+  ],
+    "steps": [
+      "1️⃣ Células",
+      "2️⃣ Genética",
+      "3️⃣ Evolução",
+      "4️⃣ Ecologia",
+      "5️⃣ Anatomia"
+    ],
+    "tips": [
+      "Observação"
+    ]
+  },
+  "historia": {
+    "title": "História",
+     "keywords": [
+    "historia",
+    "história",
+    "historia geral",
+    "história geral",
+    "historia do brasil",
+    "história do brasil",
+    "idade media",
+    "idade média",
+    "historia contemporanea"
+  ],
+    "steps": [
+      "1️⃣ Antiguidade",
+      "2️⃣ Idade Média",
+      "3️⃣ Moderna",
+      "4️⃣ Contemporânea",
+      "5️⃣ Brasil"
+    ],
+    "tips": [
+      "Contextos"
+    ]
+  },
+  "geografia": {
+    "title": "Geografia",
+    "keywords": [
+    "geografia",
+    "geografia fisica",
+    "geografia humana",
+    "clima",
+    "relevo",
+    "mapas",
+    "cartografia",
+    "geopolitica",
+    "geopolítica"
+  ],
+    "steps": [
+      "1️⃣ Física",
+      "2️⃣ Humana",
+      "3️⃣ Econômica",
+      "4️⃣ Política",
+      "5️⃣ Ambiental"
+    ],
+    "tips": [
+      "Mapas"
+    ]
+  },
+  "portugues": {
+    "title": "Português",
+    "keywords": [
+    "portugues",
+    "português",
+    "lingua portuguesa",
+    "língua portuguesa",
+    "gramatica",
+    "gramática",
+    "redacao",
+    "redação",
+    "literatura",
+    "interpretacao de texto"
+  ],
+    "steps": [
+      "1️⃣ Gramática",
+      "2️⃣ Interpretação",
+      "3️⃣ Redação",
+      "4️⃣ Literatura",
+      "5️⃣ Comunicação"
+    ],
+    "tips": [
+      "Leitura"
+    ]
+  },
+  "ingles": {
+    "title": "Inglês",
+     "keywords": [
+    "ingles",
+    "inglês",
+    "idioma ingles",
+    "idioma inglês",
+    "english",
+    "ingles basico",
+    "ingles intermediario",
+    "ingles avancado",
+    "conversacao em ingles"
+  ],
+    "steps": [
+      "1️⃣ Vocabulário",
+      "2️⃣ Gramática",
+      "3️⃣ Conversação",
+      "4️⃣ Leitura",
+      "5️⃣ Escrita"
+    ],
+    "tips": [
+      "Prática diária"
+    ]
+  },
+  "educacaofisica": {
+    "title": "Educação Física",
+    "keywords": [
+    "educacao fisica",
+    "educação física",
+    "educacao fisica escolar",
+    "atividade fisica",
+    "atividade física",
+    "esporte",
+    "fitness",
+    "exercicio fisico",
+    "exercício físico"
+  ],
+    "steps": [
+      "1️⃣ Esportes",
+      "2️⃣ Fitness",
+      "3️⃣ Saúde",
+      "4️⃣ Jogos",
+      "5️⃣ Bem-estar"
+    ],
+    "tips": [
+      "Atividade"
+    ]
+  },
+  "artes": {
+    "title": "Artes",
+     "keywords": [
+    "artes",
+    "artes visuais",
+    "desenho",
+    "pintura",
+    "musica",
+    "música",
+    "teatro",
+    "historia da arte",
+    "história da arte"
+  ],
+    "steps": [
+      "1️⃣ Desenho",
+      "2️⃣ Pintura",
+      "3️⃣ Música",
+      "4️⃣ Teatro",
+      "5️⃣ História da arte"
+    ],
+    "tips": [
+      "Criatividade"
+    ]
+  },
+  "csharp": {
+  "title": "C#",
+  "keywords": ["c#", "csharp", ".net", "dotnet"],
+  "steps": [
+    "1️⃣ Sintaxe e tipos",
+    "2️⃣ Orientação a Objetos",
+    "3️⃣ .NET e CLR",
+    "4️⃣ ASP.NET",
+    "5️⃣ APIs e projetos"
+  ],
+  "tips": [
+    "Aprenda OOP bem",
+    "Use Visual Studio"
+  ]
+},
+"bash": {
+  "title": "Bash / Shell Script",
+  "keywords": ["bash", "shell", "shell script"],
+  "steps": [
+    "1️⃣ Comandos básicos",
+    "2️⃣ Pipes e redirecionamento",
+    "3️⃣ Scripts",
+    "4️⃣ Variáveis e loops",
+    "5️⃣ Automação"
+  ],
+  "tips": [
+    "Pratique no terminal",
+    "Leia scripts reais"
+  ]
+},
+"powershell": {
+  "title": "PowerShell",
+  "keywords": ["powershell", "windows scripting"],
+  "steps": [
+    "1️⃣ Cmdlets",
+    "2️⃣ Objetos",
+    "3️⃣ Scripts",
+    "4️⃣ Automação",
+    "5️⃣ Administração Windows"
+  ],
+  "tips": [
+    "Pense em objetos",
+    "Use para automação"
+  ]
+},
+"assembly": {
+  "title": "Assembly",
+  "keywords": ["assembly", "asm", "low level"],
+  "steps": [
+    "1️⃣ Arquitetura de CPU",
+    "2️⃣ Registradores",
+    "3️⃣ Instruções",
+    "4️⃣ Stack e memória",
+    "5️⃣ Integração com C"
+  ],
+  "tips": [
+    "Não é para pressa",
+    "Entenda hardware"
+  ]
+},
+"nextjs": {
+  "title": "Next.js",
+  "keywords": ["nextjs", "next", "react ssr"],
+  "steps": [
+    "1️⃣ Fundamentos React",
+    "2️⃣ Rotas",
+    "3️⃣ SSR e SSG",
+    "4️⃣ APIs",
+    "5️⃣ Deploy"
+  ],
+  "tips": [
+    "Entenda SSR",
+    "Use projetos reais"
+  ]
+},
+"svelte": {
+  "title": "Svelte / SvelteKit",
+  "keywords": ["svelte", "sveltekit"],
+  "steps": [
+    "1️⃣ Componentes",
+    "2️⃣ Reatividade",
+    "3️⃣ Rotas",
+    "4️⃣ Stores",
+    "5️⃣ Build e deploy"
+  ],
+  "tips": [
+    "Menos código",
+    "Alta performance"
+  ]
+},
+"nestjs": {
+  "title": "NestJS",
+  "keywords": ["nestjs", "backend node"],
+  "steps": [
+    "1️⃣ TypeScript",
+    "2️⃣ Controllers",
+    "3️⃣ Services",
+    "4️⃣ Modules",
+    "5️⃣ APIs REST"
+  ],
+  "tips": [
+    "Arquitetura importa",
+    "Use DTOs"
+  ]
+},
+"fastapi": {
+  "title": "FastAPI",
+  "keywords": ["fastapi", "python api"],
+  "steps": [
+    "1️⃣ Python",
+    "2️⃣ Rotas",
+    "3️⃣ Pydantic",
+    "4️⃣ Async",
+    "5️⃣ Deploy"
+  ],
+  "tips": [
+    "Use async",
+    "Leia a doc oficial"
+  ]
+},
+"terraform": {
+  "title": "Terraform",
+  "keywords": ["terraform", "iac"],
+  "steps": [
+    "1️⃣ Conceitos de IaC",
+    "2️⃣ Providers",
+    "3️⃣ Resources",
+    "4️⃣ State",
+    "5️⃣ Infra em nuvem"
+  ],
+  "tips": [
+    "Versione o state",
+    "Automatize infra"
+  ]
+},
+    "ansible": {
+        "title": "Ansible",
+        "keywords": ["ansible", "automacao"],
+        "steps": [
+            "1️⃣ YAML",
+            "2️⃣ Inventories",
+            "3️⃣ Playbooks",
+            "4️⃣ Roles",
+            "5️⃣ Automação completa"
+        ],
+        "tips": [
+            "Idempotência é chave",
+            "Automatize tudo"
+        ]
+        },
+        "kafka": {
+        "title": "Kafka",
+        "keywords": ["kafka", "streaming"],
+        "steps": [
+            "1️⃣ Conceitos",
+            "2️⃣ Topics",
+            "3️⃣ Producers",
+            "4️⃣ Consumers",
+            "5️⃣ Streaming em escala"
+        ],
+        "tips": [
+            "Entenda eventos",
+            "Use para escala"
+        ]
+    },
+    "tensorflow": {
+  "title": "TensorFlow",
+  "keywords": ["tensorflow", "deep learning"],
+  "steps": [
+    "1️⃣ Python",
+    "2️⃣ Tensores",
+    "3️⃣ Modelos",
+    "4️⃣ Treinamento",
+    "5️⃣ Deploy"
+  ],
+  "tips": [
+    "Entenda matemática",
+    "Use GPU se possível"
+  ]
+},
+"pytorch": {
+  "title": "PyTorch",
+  "keywords": ["pytorch", "deep learning"],
+  "steps": [
+    "1️⃣ Tensores",
+    "2️⃣ Autograd",
+    "3️⃣ Redes neurais",
+    "4️⃣ Treinamento",
+    "5️⃣ Experimentação"
+  ],
+  "tips": [
+    "Muito usado em pesquisa",
+    "Código flexível"
+  ]
+},"analista_devops": {
+  "title": "Analista DevOps",
+  "keywords": ["devops", "analista devops"],
+  "steps": [
+    "1️⃣ Linux",
+    "2️⃣ CI/CD",
+    "3️⃣ Docker",
+    "4️⃣ Cloud",
+    "5️⃣ Monitoramento"
+  ],
+  "tips": [
+    "Automação é tudo"
+  ]
+},
+"pentester": {
+  "title": "Pentester",
+  "keywords": ["pentester", "ethical hacker"],
+  "steps": [
+    "1️⃣ Redes",
+    "2️⃣ Linux",
+    "3️⃣ Web hacking",
+    "4️⃣ Exploits",
+    "5️⃣ Relatórios"
+  ],
+  "tips": [
+    "Sempre ético",
+    "Treine em labs"
+  ]
+},
+"engenheiro_ml": {
+  "title": "Engenheiro de Machine Learning",
+  "keywords": ["ml engineer", "engenheiro ml"],
+  "steps": [
+    "1️⃣ Matemática",
+    "2️⃣ Python",
+    "3️⃣ ML",
+    "4️⃣ Deploy",
+    "5️⃣ Escala"
+  ],
+  "tips": [
+    "Produção é diferente de estudo"
+  ]
+}
+
+
+  
+}
