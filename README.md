@@ -4,7 +4,7 @@ DevSchool Hub é uma plataforma web focada em estudantes e desenvolvedores inici
 
 O projeto reúne ferramentas educacionais, jogos interativos e recursos de estudo com uma interface moderna, simples e intuitiva, facilitando o aprendizado contínuo de lógica e desenvolvimento web.
 
-link --> https://devschool-hub.netlify.app
+link --> https://arthurandrealmeida.github.io/DevSchool-Hub/index.html
 
 ## 📸 Screenshots
 <img width="1860" height="921" alt="{3376A54A-0C9F-44CC-9A06-DC1241B2BB2A}" src="https://github.com/user-attachments/assets/457ccfb0-8289-4ea9-b89e-d387e78fa5e3" />
