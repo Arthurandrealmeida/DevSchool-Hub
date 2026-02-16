@@ -92,8 +92,7 @@ async function startGame() {
 
         lastShownIndex = currentIndex; // Registra o índice que acabou de ser mostrado
 
-        // Pausa: espera 1200ms antes de avançar para o próximo passo
-        await new Promise(r => setTimeout(r, 1200));
+        await new Promise(r => setTimeout(r, 1600));
 
         currentIndex++; // Avança o índice (contador de passos)
 
