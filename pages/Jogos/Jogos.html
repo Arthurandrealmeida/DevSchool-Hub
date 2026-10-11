@@ -6,248 +6,146 @@
     <title>Jogos do DevSchool</title>
     <link rel="shortcut icon" href="../../imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="styleJogos.css">
+<link rel="stylesheet" href="../../assets/hub.css">
+<script defer src="../../assets/hub.js"></script>
 </head>
 <body>
-    <div class="layout">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
 
-    <aside class="sidebar">
-        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
+<div class="layout">
 
-        <div class ="menu">
-        <nav>
-            <ul>
-                <h5>Menu Principal</h5>
-                <li>
-                    <a href="../../index.html">
-                        <img id="imagem-icones" src="../../imagens/dashboard.png" alt="">Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="../Anotações/Anotação.html">
-                        <img id="imagem-icones" src="../../imagens/livroIMAGEM.png" alt="">Anotações
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../Jogos/Jogos.html">
-                        <img id="imagem-icones" src="../../imagens/Jogos.png" alt="">Jogos
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../leetCode/lettcode.html">
-                        <img id="imagem-icones" src="../../imagens/lam2.png" alt="">LeetCode
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../tarefas/Tarefas.html">
-                        <img id="imagem-icones" src="../../imagens/tarefa.png" alt="">Tarefas
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="../chatbot/chatbot.html">
-                        <img id="imagem-icones" src="../../imagens/RoboPequeno.png" alt="">IA
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4414467269498579"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4414467269498579"
-     data-ad-slot="6843456896"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-    </div>
-    </aside>
+    <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="../Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="Jogos.html" aria-current="page"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="../leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
 
     <div class="main-area">
 
         <header class="topbar">
-            <div class="logo-area">
-                <img src="../../imagens/LogoDeEstudante.png" alt="logo" class="logo-img">
-                <h1>DevSchool Hub</h1>
-            </div>
-
-            <div class="divider"></div>
-        </header>
-
-        <main class="content">
-            <h1>Jogos</h1>
-            <p class="texto-jogos">Jogos de navegadores e Jogos para download</p>
-        <div class="card-grande">
-
-                <div class="card-grande-topo">
-                    <img src="../../imagens/JogoDoDinossouro.png" class="card-grande-img">
-                    <h2 class="card-grande-titulo">Jogos para Navegador</h2>
-                </div>
-
-            <p class="card-grande-desc">Temos um total de 10 jogos</p>
-            
-        </div>
-
-        <div class="cards-menores-container">
-
-            <div class="card-menor">
-                <img src="../../imagens/jogoDamemoria.png" class="card-menor-img">
-                <h3>Jogo da Memoria</h3>
-                <p>Treine sua memoria em diferentes niveis aqui.</p>
-                <button class="btn-jogar" onclick="location.href='./JogoDaMemoria/JogoDAmemoria.html'">Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/xadrezPNG.png" class="card-menor-img">
-                <h3>Xadrez</h3>
-                <p>Jogue Xadrez de alto nivel aqui</p>
-                <button class="btn-jogar" onclick="location.href='./xadrez/xadrez.html'">Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/JogoTempoDeReação.png" class="card-menor-img">
-                <h3>tempo de reação</h3>
-                <p>Será que voce é rapido no gatilho ? teste aqui.</p>
-                <button class="btn-jogar" onclick="location.href='Tempo de Reação/TempoDereação.html'" >Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/memoriaVisual.png" class="card-menor-img">
-                <h3>Memoria Visual</h3>
-                <p>Qual o nivel da sua memoria visual ? teste aqui.</p>
-                <button class="btn-jogar" onclick="location.href='MemoriaVisual/JogoDaMemoriaVisual.html'">Jogar</button>
-
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/termo.png" class="card-menor-img">
-                <h3>Lermo</h3>
-                <p>Você consegue acertar antes que acabe suas tentativas ?</p>
-                <button class="btn-jogar" onclick="location.href='Termoo/termo.html'">Jogar</button>          
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/acheOerro.png" class="card-menor-img">
-                <h3>Debug Challenge</h3>
-                <p>Encontre e corrija bugs no código o mais rápido possível</p>
-                <button class="btn-jogar" onclick="location.href='DebugChallenge/debug.html'">Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/dualBack.png" class="card-menor-img">
-                <h3>Dual N-back</h3>
-                <p> Se o Atual estimulo for igual ao de N Passos Atrás, marque-o.</p>
-                <button class="btn-jogar" onclick="location.href='DualNback/jogoDuanNback.html'">Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/wordGuess.png" class="card-menor-img">
-                <h3>Countries</h3>
-                <p> Quantos paises voce consegue se lembrar, teste aqui.</p>
-                <button class="btn-jogar" onclick ="location.href='WordGuess/word.html'">Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/iconMath.png" class="card-menor-img">
-                <h3>Jogo matematico</h3>
-                <p> Você é bom mesmo em matematica ? teste aqui.</p>
-                <button class="btn-jogar" onclick ="location.href='jogoMatematico/jogoMatematico.html'">Jogar</button>
-            </div>
-
-            <div class="card-menor">
-                <img src="../../imagens/wordMatch.png" class="card-menor-img">
-                <h3>Word Matching</h3>
-                <p>Arraste as palavras ao vocabulario correto.</p>
-                <button class="btn-jogar" onclick = "location.href='WordMatching/matching.html'">Jogar</button>
-            </div>
-
-        </div>
-            <div class="linha-separadora"></div>
-
-        <div class="card-grande2">
-                <div class="card-grande-topo">
-                    <img src="../../imagens/gameOnline.png" class="card-grande-img2">
-                    <h2 class="card-grande-titulo">Jogos Online</h2>
-                </div>
-            <p class="card-grande-desc">Temos 6 jogos para se fazer download</p>
-            
-        </div>
-
-    <div class="cards-container hidden">
-        <div class="card">
-            <img src="../../imagens/darksouls.png" class="card-img">
-            <h2 class="card-title">Dark Souls</h2>
-            <p class="card-desc">é um RPG de ação de fantasia sombria conhecido por sua jogabilidade desafiadora.</p>
-
-
-            <button class="card-btn">Download</button>
-        </div>
-
-            <div class="card">
-                <img src="../../imagens/SleepingDogs.png" class="card-img">
-
-                <h2 class="card-title">Sleeping Dogs</h2>
-                <p class="card-desc">o jogador controla um policial disfarçado que se infiltra na organização criminosa .</p>
-
-                <a href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16454_fiap_com_br/IQDlvVG5tyfaT66Ms2H-ms-2AdFrne6dY6FW18mQY3wFvEg?e=ijY3Pu">
-                    <button class="card-btn">Download</button>
-                </a>
-            </div>
-
-            <div class="card">
-                <img src="../../imagens/hollowK.png" class="card-img">
-
-                <h2 class="card-title">Hollow Knight silksong</h2>
-                <p class="card-desc">jogo de ação e aventura em estilo metroidvania 2D.</p>
-
-                <a href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16491_fiap_com_br/IQCYkSb4myxRTLruwOFK1BvSAXV-GC9bd0wraBPwjWZK1vA?e=uU1RCs">
-                    <button class="card-btn">Download</button>
-                </a>
-            </div>
-
-            <div class="card">
-                <img src="../../imagens/littleN.png" class="card-img">
-
-                <h2 class="card-title">Little-Nightmares</h2>
-                <p class="card-desc">um fantástico conto sombrio que o fará enfrentar seus medos de infância.</p>
-
-                <a href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16698_fiap_com_br/IQBPfqWjrms3SoorA0fcA1pnAYZaRdbGEUV96eMfUWCBZkg?e=fYIZ39">
-                    <button class="card-btn">Download</button>
-                </a>
-            </div>
-
-            <div class="card">
-                <img src="../../imagens/cuphead.png" class="card-img">
-
-                <h2 class="card-title">Cuphead</h2>
-                <p class="card-desc">é um clássico jogo de ação de corridas e armas altamente focalizado em batalhas de chefeso.</p>
-
-                <a href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16454_fiap_com_br/IQDZN2sEIm56Q50-K4PHCqCUAW0Qh1S5MgMT3L7SA17jMaQ?e=9VlQNR">
-                    <button class="card-btn">Download</button>
-                </a>
-            </div>
-
-            <div class="card">
-                <img src="../../imagens/image.png" class="card-img">
-
-                <h2 class="card-title">Cast-n-Chill</h2>
-                <p class="card-desc">é um jogo idle relaxante onde é possível explorar oceanos, rios e lagos tranquilos.</p>
-
-                <a href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16662_fiap_com_br/IQAQIGSKo6TqQYLlhJR7-81jAcMhwmdgSGmi_vJmXmc09vc?e=CWkUJN">
-                    <button class="card-btn">Download</button>
-                </a>
-            </div>
-    </div>
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="../Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../index.html">Voltar ao dashboard</a></div></details>
 </div>
+</header>
 
+        <main class="content" id="main-content">
+<div class="page-heading games-heading">
+                <div><h1>Jogos</h1><p class="texto-jogos">Aprenda praticando com jogos de navegador e jogos para download.</p></div>
+                <span class="games-heading-badge"><span data-icon="gamepad" aria-hidden="true"></span> Uma pausa para evoluir</span>
+            </div>
 
+            <section aria-labelledby="browser-games-title">
+                <div class="card-grande">
+                    <div class="card-grande-topo"><span class="games-section-icon"><span data-icon="gamepad" aria-hidden="true"></span></span><div><h2 class="card-grande-titulo" id="browser-games-title">Jogos para navegador</h2><p class="card-grande-desc">Exercite memória, lógica e atenção no seu ritmo.</p></div></div>
+                    <span class="games-count">10 jogos</span>
+                </div>
+                <div class="cards-menores-container">
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/jogoDamemoria.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Memória</span></div>
+                    <h3>Jogo da Memória</h3>
+                    <p>Treine sua memória em diferentes níveis aqui.</p>
+                    <a class="btn-jogar" href="./JogoDaMemoria/JogoDAmemoria.html" aria-label="Jogar Jogo da Memória">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/xadrezPNG.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Estratégia</span></div>
+                    <h3>Xadrez</h3>
+                    <p>Jogue xadrez de alto nível aqui.</p>
+                    <a class="btn-jogar" href="./xadrez/xadrez.html" aria-label="Jogar Xadrez">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/JogoTempoDeReação.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Atenção</span></div>
+                    <h3>Tempo de reação</h3>
+                    <p>Será que você é rápido no gatilho? Teste aqui.</p>
+                    <a class="btn-jogar" href="Tempo de Reação/TempoDereação.html" aria-label="Jogar Tempo de reação">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/memoriaVisual.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Memória</span></div>
+                    <h3>Memória Visual</h3>
+                    <p>Qual o nível da sua memória visual? Teste aqui.</p>
+                    <a class="btn-jogar" href="MemoriaVisual/JogoDaMemoriaVisual.html" aria-label="Jogar Memória Visual">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/termo.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Palavras</span></div>
+                    <h3>Lermo</h3>
+                    <p>Você consegue acertar antes que acabem suas tentativas?</p>
+                    <a class="btn-jogar" href="Termoo/termo.html" aria-label="Jogar Lermo">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/acheOerro.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Programação</span></div>
+                    <h3>Debug Challenge</h3>
+                    <p>Encontre e corrija bugs no código o mais rápido possível.</p>
+                    <a class="btn-jogar" href="DebugChallenge/debug.html" aria-label="Jogar Debug Challenge">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/dualBack.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Memória</span></div>
+                    <h3>Dual N-back</h3>
+                    <p>Se o estímulo atual for igual ao de N passos atrás, marque-o.</p>
+                    <a class="btn-jogar" href="DualNback/jogoDuanNback.html" aria-label="Jogar Dual N-back">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/wordGuess.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Conhecimento</span></div>
+                    <h3>Countries</h3>
+                    <p>Quantos países você consegue lembrar? Teste aqui.</p>
+                    <a class="btn-jogar" href="WordGuess/word.html" aria-label="Jogar Countries">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/iconMath.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Lógica</span></div>
+                    <h3>Jogo matemático</h3>
+                    <p>Você é bom mesmo em matemática? Teste aqui.</p>
+                    <a class="btn-jogar" href="JogoMatematico/jogoMatematico.html" aria-label="Jogar Jogo matemático">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                <article class="card-menor">
+                    <div class="game-card-top"><span class="game-art"><img src="../../imagens/wordMatch.png" class="card-menor-img" alt="" loading="lazy"></span><span class="game-category">Palavras</span></div>
+                    <h3>Word Matching</h3>
+                    <p>Arraste as palavras ao vocabulário correto.</p>
+                    <a class="btn-jogar" href="WordMatching/matching.html" aria-label="Jogar Word Matching">Jogar <span data-icon="arrow-right" aria-hidden="true"></span></a>
+                </article>
+                </div>
+            </section>
+
+            <section class="downloads-section" aria-labelledby="download-games-title">
+                <h2 class="downloads-heading"><button type="button" class="card-grande2" aria-controls="download-games" aria-expanded="false">
+                    <span class="card-grande-topo"><span class="games-section-icon downloads-icon"><span data-icon="gamepad" aria-hidden="true"></span></span><span><span class="card-grande-titulo" id="download-games-title">Jogos Online</span><span class="card-grande-desc">6 jogos para download. Clique para explorar.</span></span></span>
+                    <span class="downloads-toggle-icon" data-icon="chevron-down" aria-hidden="true"></span>
+                </button></h2>
+                <div class="cards-container hidden" id="download-games">
+                <article class="card">
+                    <img src="../../imagens/darksouls.png" class="card-img" alt="" loading="lazy">
+                    <div class="download-card-content"><h3 class="card-title">Dark Souls</h3><p class="card-desc">Um RPG de ação de fantasia sombria conhecido por sua jogabilidade desafiadora.</p><button type="button" class="card-btn">Download <span data-icon="arrow-right" aria-hidden="true"></span></button></div>
+                </article>
+                <article class="card">
+                    <img src="../../imagens/SleepingDogs.png" class="card-img" alt="" loading="lazy">
+                    <div class="download-card-content"><h3 class="card-title">Sleeping Dogs</h3><p class="card-desc">O jogador controla um policial disfarçado que se infiltra em uma organização criminosa.</p><a class="card-btn" href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16454_fiap_com_br/IQDlvVG5tyfaT66Ms2H-ms-2AdFrne6dY6FW18mQY3wFvEg?e=ijY3Pu" aria-label="Download de Sleeping Dogs">Download <span data-icon="arrow-right" aria-hidden="true"></span></a></div>
+                </article>
+                <article class="card">
+                    <img src="../../imagens/hollowK.png" class="card-img" alt="" loading="lazy">
+                    <div class="download-card-content"><h3 class="card-title">Hollow Knight Silksong</h3><p class="card-desc">Jogo de ação e aventura em estilo metroidvania 2D.</p><a class="card-btn" href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16491_fiap_com_br/IQCYkSb4myxRTLruwOFK1BvSAXV-GC9bd0wraBPwjWZK1vA?e=uU1RCs" aria-label="Download de Hollow Knight Silksong">Download <span data-icon="arrow-right" aria-hidden="true"></span></a></div>
+                </article>
+                <article class="card">
+                    <img src="../../imagens/littleN.png" class="card-img" alt="" loading="lazy">
+                    <div class="download-card-content"><h3 class="card-title">Little Nightmares</h3><p class="card-desc">Um fantástico conto sombrio que o fará enfrentar seus medos de infância.</p><a class="card-btn" href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16698_fiap_com_br/IQBPfqWjrms3SoorA0fcA1pnAYZaRdbGEUV96eMfUWCBZkg?e=fYIZ39" aria-label="Download de Little Nightmares">Download <span data-icon="arrow-right" aria-hidden="true"></span></a></div>
+                </article>
+                <article class="card">
+                    <img src="../../imagens/cuphead.png" class="card-img" alt="" loading="lazy">
+                    <div class="download-card-content"><h3 class="card-title">Cuphead</h3><p class="card-desc">Um clássico jogo de ação de corridas e armas focado em batalhas de chefes.</p><a class="card-btn" href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16454_fiap_com_br/IQDZN2sEIm56Q50-K4PHCqCUAW0Qh1S5MgMT3L7SA17jMaQ?e=9VlQNR" aria-label="Download de Cuphead">Download <span data-icon="arrow-right" aria-hidden="true"></span></a></div>
+                </article>
+                <article class="card">
+                    <img src="../../imagens/image.png" class="card-img" alt="" loading="lazy">
+                    <div class="download-card-content"><h3 class="card-title">Cast-n-Chill</h3><p class="card-desc">Um jogo idle relaxante para explorar oceanos, rios e lagos tranquilos.</p><a class="card-btn" href="https://fiapcom-my.sharepoint.com/:u:/g/personal/rm16662_fiap_com_br/IQAQIGSKo6TqQYLlhJR7-81jAcMhwmdgSGmi_vJmXmc09vc?e=CWkUJN" aria-label="Download de Cast-n-Chill">Download <span data-icon="arrow-right" aria-hidden="true"></span></a></div>
+                </article>
+                </div>
+            </section>
         </main>
     </div>
 </div>
-</body>
 <script src="script.js"></script>
+</body>
 </html>
