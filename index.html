@@ -1,144 +1,95 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DevSchool Hub é uma plataforma educacional para estudar programação, lógica e Descontrair com Jogos educacionais.">
-    <title>DevSchool Hub</title>
-    <link rel="stylesheet" href="style.css">
-
-    <link rel="icon" type="image/png" href="imagens/IconDevSchool.png" sizes="512x512">
-    
-    <link rel="apple-touch-icon" href="imagens/IconDevSchool.png">
-
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-
-  <meta name="google-site-verification" content="yzx9FqUNIPTijAvfgQjGvfAnHz7nsq0hYZkoXYHMpAg" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NB1RH9XXPL"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-NB1RH9XXPL');
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Seu espaço pessoal para organizar estudos, praticar programação e aprender um pouco mais todos os dias.">
+<title>Dashboard | DevSchool Hub</title>
+<link rel="icon" href="imagens/IconDevSchool.png" type="image/png">
+<link rel="stylesheet" href="style.css">
+<meta name="google-site-verification" content="yzx9FqUNIPTijAvfgQjGvfAnHz7nsq0hYZkoXYHMpAg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NB1RH9XXPL"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-NB1RH9XXPL');</script>
+<link rel="stylesheet" href="assets/hub.css">
+<script defer src="assets/hub.js"></script>
 </head>
-<body>
+<body class="dashboard-page">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
 
 <div class="layout">
-
-    <aside class="sidebar">
-        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
-
-        <div class ="menu">
-        <nav>
-            <ul>
-                <h5>Menu Principal</h5>
-                <li>
-                    <a href="index.html">
-                        <img id="imagem-icones" src="../imagens/dashboard.png" alt="">Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="pages/Anotações/Anotação.html">
-                        <img id="imagem-icones" src="../imagens/livroIMAGEM.png" alt="">Anotações
-                    </a>
-                </li>
-
-                <li>
-                    <a href="pages/Jogos/Jogos.html">
-                        <img id="imagem-icones" src="../imagens/Jogos.png" alt="">Jogos
-                    </a>
-                </li>
-
-                <li>
-                    <a href="pages/leetCode/lettcode.html">
-                        <img id="imagem-icones" src="imagens/lam2.png" alt="">LeetCode
-                    </a>
-                </li>
-
-                <li>
-                    <a href="pages/tarefas/Tarefas.html">
-                        <img id="imagem-icones" src="../imagens/tarefa.png" alt="">Tarefas
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="pages/chatbot/chatbot.html">
-                        <img id="imagem-icones" src="../imagens/RoboPequeno.png" alt="">IA
-                    </a>
-                </li>
-            </ul>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4414467269498579"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4414467269498579"
-     data-ad-slot="6843456896"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-        </nav>
-    </div>
-    </aside>
-
-    <div class="main-area">
-
-        <header class="topbar">
-            <div class="logo-area">
-                <img src="imagens/LogoDeEstudante.png" alt="logo" class="logo-img">
-                <h1>DevSchool Hub</h1>
-            </div>
-
-            <div class="divider"></div>
-        </header>
-
-        <main class="content">
-            <P class="escolha">escolha uma área para começar</P>
-
-              <div class="cards">
-
-                <a href="pages/Anotações/Anotação.html"class="card card-anotacoes">
-                    <img src="imagens/anotações2.png" class="card-icon">
-                    <h2>Anotações</h2>
-                    <p>Acesse seu caderno digital.</p>
-                </a>
-
-                <a href ="pages/Jogos/Jogos.html"   class="card card-jogos">
-                    <img src="imagens/controledejogos2.png" class="card-icon">
-                    <h2>Jogos</h2>
-                    <p>Treine e se divirta.</p>
-                </a>
-
-                <a href = "pages/tarefas/Tarefas.html"class="card card-tarefas">
-                    <img src="imagens/iconeTarefas2.png" class="card-icon">
-                    <h2>Tarefas</h2>
-                    <p>Gerencie suas atividades.</p>
-                </a>
-
-
-                <a href="pages/leetCode/lettcode.html" class="card card-Projetos">
-                    <img src="imagens/ProjetosPessoais.png" class="card-icon">
-                    <h2>LeetCode</h2>
-                    <p>Voce consegue resolver os problemas ?</p>
-                </a>
-
-                <a href="pages/chatbot/chatbot.html" class="card card-IA">
-                    <img src="imagens/RoboComCores.png" class="card-icon">
-                    <h2>ChatBot</h2>
-                    <p>Converse com nossa simples IA</p>
-                </a>
-
-                
-
-            </div>
-
-        </main>
-    </div>
+<aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="index.html" aria-current="page"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="pages/Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="pages/Jogos/Jogos.html"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="pages/tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="pages/leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="pages/tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
+<div class="main-area">
+<header class="topbar">
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="pages/Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="index.html">Voltar ao dashboard</a></div></details>
 </div>
-
+</header>
+<main class="content" id="main-content">
+  <div class="dashboard-intro">
+    <div class="dashboard-welcome"><h1>DevSchool <span>Hub</span></h1><h2>Bom dia, Dev! <span aria-hidden="true">👋</span></h2><p>Mais um passo hoje para a sua evolução como dev.</p></div>
+    <div class="dashboard-date-wrap"><p class="dashboard-date" data-today></p></div>
+  </div>
+  <div class="dashboard-grid">
+    <div class="dashboard-primary">
+      <section class="daily-plan hub-panel" aria-labelledby="plan-title">
+        <div class="dashboard-panel-heading"><div class="dashboard-section-title"><span class="plan-heading-icon" data-icon="check" aria-hidden="true"></span><div><h2 id="plan-title">Plano de hoje</h2><p>3 sugestões para manter o foco</p></div></div><a class="dashboard-text-link" href="pages/tarefas/Tarefas.html">Ver todas</a></div>
+        <ul class="plan-list">
+          <li class="plan-item">
+            <label class="plan-checkbox"><input type="checkbox" aria-label="Marcar estudo de JavaScript como feito"><span data-icon="check" aria-hidden="true"></span></label><span class="plan-icon tone-purple" data-icon="book" aria-hidden="true"></span>
+            <div class="plan-item-content"><h3 class="plan-item-title">Estudar fundamentos de JavaScript</h3><div class="plan-item-meta"><span><i data-icon="book" aria-hidden="true"></i>Estudos</span><span><i data-icon="clock" aria-hidden="true"></i>45 min</span></div></div>
+            <a class="hub-button" href="pages/Anotações/Anotação.html"><span data-icon="play" aria-hidden="true"></span>Iniciar</a>
+          </li>
+          <li class="plan-item">
+            <label class="plan-checkbox"><input type="checkbox" aria-label="Marcar exercícios de lógica como feitos"><span data-icon="check" aria-hidden="true"></span></label><span class="plan-icon tone-mint" data-icon="code" aria-hidden="true"></span>
+            <div class="plan-item-content"><h3 class="plan-item-title">Resolver exercícios de lógica</h3><div class="plan-item-meta"><span><i data-icon="check-square" aria-hidden="true"></i>Desafios</span><span><i data-icon="clock" aria-hidden="true"></i>30 min</span></div></div>
+            <a class="hub-button secondary" href="pages/leetCode/lettcode.html">Resolver<span data-icon="chevron-right" aria-hidden="true"></span></a>
+          </li>
+          <li class="plan-item">
+            <label class="plan-checkbox"><input type="checkbox" aria-label="Marcar revisão de anotações como feita"><span data-icon="check" aria-hidden="true"></span></label><span class="plan-icon tone-peach" data-icon="file" aria-hidden="true"></span>
+            <div class="plan-item-content"><h3 class="plan-item-title">Revisar minhas anotações de CSS</h3><div class="plan-item-meta"><span><i data-icon="file" aria-hidden="true"></i>Anotações</span><span><i data-icon="clock" aria-hidden="true"></i>20 min</span></div></div>
+            <a class="hub-button secondary" href="pages/Anotações/Anotação.html">Revisar<span data-icon="chevron-right" aria-hidden="true"></span></a>
+          </li>
+        </ul>
+      </section>
+      <section class="continue-section" aria-labelledby="continue-title">
+        <div class="dashboard-panel-heading"><div class="dashboard-section-title"><span data-icon="grid" aria-hidden="true"></span><h2 id="continue-title">Continue estudando</h2></div><a class="dashboard-text-link" href="#ferramentas">Explorar todos</a></div>
+        <div class="tool-grid" id="ferramentas">
+          <a class="tool-card tone-purple" href="pages/Anotações/Anotação.html"><span class="tool-card-icon" data-icon="book" aria-hidden="true"></span><h3>Anotações</h3><p>Organize seus estudos</p><span data-icon="chevron-right" aria-hidden="true"></span></a>
+          <a class="tool-card tone-mint" href="pages/Jogos/Jogos.html"><span class="tool-card-icon" data-icon="gamepad" aria-hidden="true"></span><h3>Jogos</h3><p>Aprenda praticando</p><span data-icon="chevron-right" aria-hidden="true"></span></a>
+          <a class="tool-card tone-peach" href="pages/tarefas/Tarefas.html"><span class="tool-card-icon" data-icon="check-square" aria-hidden="true"></span><h3>Tarefas</h3><p>Mantenha o foco</p><span data-icon="chevron-right" aria-hidden="true"></span></a>
+          <a class="tool-card tone-blue" href="pages/leetCode/lettcode.html"><span class="tool-card-icon" data-icon="trophy" aria-hidden="true"></span><h3>Desafios</h3><p>Supere seus limites</p><span data-icon="chevron-right" aria-hidden="true"></span></a>
+        </div>
+      </section>
+    </div>
+    <div class="dashboard-secondary">
+      <section class="quick-access hub-panel" aria-labelledby="space-title">
+        <div class="dashboard-panel-heading"><div class="dashboard-section-title"><span data-icon="clock" aria-hidden="true"></span><h2 id="space-title">Seu espaço de estudo</h2></div><a class="dashboard-text-link" href="#ferramentas">Ver tudo</a></div>
+        <div class="activity-list">
+          <a class="activity-item" href="pages/Anotações/Anotação.html"><span class="activity-icon tone-peach" data-icon="file" aria-hidden="true"></span><div class="activity-copy"><strong>Uma nova ideia merece uma anotação</strong><p>Guarde o que você está aprendendo</p></div><span data-icon="chevron-right" aria-hidden="true"></span></a>
+          <a class="activity-item" href="pages/tarefas/Tarefas.html"><span class="activity-icon tone-mint" data-icon="check-square" aria-hidden="true"></span><div class="activity-copy"><strong>Organize sua próxima conquista</strong><p>Transforme objetivos em tarefas</p></div><span data-icon="chevron-right" aria-hidden="true"></span></a>
+          <a class="activity-item" href="pages/Jogos/Jogos.html"><span class="activity-icon tone-purple" data-icon="gamepad" aria-hidden="true"></span><div class="activity-copy"><strong>Uma pausa para treinar a lógica</strong><p>Aprenda se divertindo com os jogos</p></div><span data-icon="chevron-right" aria-hidden="true"></span></a>
+        </div>
+      </section>
+      <section class="next-steps hub-panel" aria-labelledby="next-title">
+        <div class="next-steps-heading"><span class="next-steps-icon" data-icon="target" aria-hidden="true"></span><div><h2 id="next-title">Próximos passos</h2><p>Continue sua jornada</p></div><span data-icon="chevron-right" aria-hidden="true"></span></div>
+        <ol><li><a href="pages/tarefas/Tarefas.html">Planejar os estudos desta semana</a></li><li><a href="pages/leetCode/lettcode.html">Resolver um desafio de lógica</a></li><li><a href="pages/Anotações/Anotação.html">Organizar suas anotações de CSS</a></li></ol>
+      </section>
+    </div>
+  </div>
+</main>
+</div>
+</div>
 </body>
 </html>
