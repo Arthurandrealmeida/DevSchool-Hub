@@ -3,85 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA do DevSchool Hub</title>
-    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <title>Jogo Matemático - DevSchool Hub</title>
+    <link rel="shortcut icon" href="../../../imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="estiloJogoMatematico.css">
+<link rel="stylesheet" href="../../../assets/hub.css">
+<link rel="stylesheet" href="../game-hub.css">
+<script defer src="../../../assets/hub.js"></script>
 </head>
-<body>
-    <div class="layout">
+<body class="game-page game--math">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
+
+<div class="layout">
 
         <!-- SIDEBAR MINIMALISTA -->
-        <aside class="sidebar">
-            <div class="logo"></div>
-
-            <nav class="menu">
-                <ul>
-                    <li>
-                        <a href="/index.html">
-                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/Anotação.html">
-                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/jogos.html">
-                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/lettcode.html">
-                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/tarefas.html">
-                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/chatbot.html">
-                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+        <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="../../Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="../Jogos.html" aria-current="page"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="../../leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
 
         <div class="main-area">
-            <main class="content">
-               <h1 class="tituloDoJoguin">Jogo Matematico</h1>
-                    <div id="math-game" style="margin-top: 30px; text-align:center;">
+<header class="topbar">
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="../../Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../../index.html">Voltar ao dashboard</a></div></details>
+</div>
+</header>
+            <main class="content" id="main-content">
+               <h1 class="tituloDoJoguin">Jogo Matemático</h1>
+                    <div id="math-game">
+    <p class="math-instructions">Escolha a dificuldade e a operação. Cada acerto vale 1 ponto. Confirme com Enter ou pelo botão; mudar a dificuldade ou a operação inicia um novo treino.</p>
 
     <!-- Escolher dificuldade -->
     <div class="difficulty-box">
-        <button class="diff-btn" data-diff="easy">Fácil</button>
-        <button class="diff-btn" data-diff="medium">Médio</button>
-        <button class="diff-btn" data-diff="hard">Difícil</button>
+        <button class="diff-btn" data-diff="easy" aria-pressed="false">Fácil</button>
+        <button class="diff-btn" data-diff="medium" aria-pressed="false">Médio</button>
+        <button class="diff-btn" data-diff="hard" aria-pressed="false">Difícil</button>
     </div>
 
     <!-- Escolher operação -->
     <div class="operations-box">
-        <button class="op-btn" data-op="+">+</button>
-        <button class="op-btn" data-op="-">-</button>
-        <button class="op-btn" data-op="*">×</button>
-        <button class="op-btn" data-op="/">÷</button>
+        <button class="op-btn" data-op="+" aria-label="Adição" aria-pressed="false">+</button>
+        <button class="op-btn" data-op="-" aria-label="Subtração" aria-pressed="false">-</button>
+        <button class="op-btn" data-op="*" aria-label="Multiplicação" aria-pressed="false">×</button>
+        <button class="op-btn" data-op="/" aria-label="Divisão" aria-pressed="false">÷</button>
     </div>
 
     <h2 id="operation-title"></h2>
     <h2 id="difficulty-title"></h2>
 
-    <div style="font-size: 2em; margin: 20px;" id="question">Escolha a operação ↑</div>
+    <div style="font-size: 2em; margin: 20px;" id="question" aria-live="polite" aria-atomic="true">Escolha a dificuldade e a operação ↑</div>
 
-    <input id="answer" type="number" placeholder="Digite a resposta"
+    <label for="answer">Sua resposta</label>
+    <input id="answer" type="number" placeholder="Digite a resposta" disabled aria-describedby="math-feedback"
         style="padding:10px; font-size:1.2em; width:200px;">
+    <div class="math-actions">
+        <button id="confirm-answer" type="button" disabled>Confirmar resposta</button>
+        <button id="stop-training" type="button" disabled>Parar treino</button>
+    </div>
+    <p id="math-feedback" role="status" aria-live="polite" aria-atomic="true">Escolha a dificuldade para começar.</p>
 
     <div style="margin-top: 10px; font-size: 1.3em;">
         ⏳ <span id="timer">0</span>s
@@ -89,9 +76,10 @@
 
     <h3>Pontos: <span id="score">0</span></h3>
 </div>
+                <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
+            </main>
+        </div>
     </div>
-
-    <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
 </body>
 <script src="JSdoJOGOdaMath.js"></script>
 </html>
