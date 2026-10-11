@@ -1,8 +1,8 @@
 # DevSchool Hub
 
-[![Demonstração do DevSchool Hub](docs/media/devschool-demo.gif)](docs/media/devschool-demo.mp4)
+https://github.com/user-attachments/assets/918de547-142a-4689-872a-3ede65f6cf4f
 
-[Assistir ao vídeo](docs/media/devschool-demo.mp4) · [Abrir o site](https://arthurandrealmeida.github.io/DevSchool-Hub/)
+[Assistir ao vídeo](https://arthurandrealmeida.github.io/DevSchool-Hub/docs/media/devschool-demo.mp4) · [Abrir o site](https://arthurandrealmeida.github.io/DevSchool-Hub/)
 
 Um espaço pessoal para organizar os estudos de programação e praticar lógica, memória e atenção no navegador.
 
