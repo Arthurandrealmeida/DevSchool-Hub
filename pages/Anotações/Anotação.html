@@ -1,104 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anotações do DevSchool</title>
+    <title>Anotações | DevSchool Hub</title>
     <link rel="shortcut icon" href="../../imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="styleAnotação.css">
+<link rel="stylesheet" href="../../assets/hub.css">
+<script defer src="../../assets/hub.js"></script>
 </head>
+<body class="notes-page">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
 
-<body>
 <div class="layout">
-
-    <aside class="sidebar">
-        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
-
-        <div class="menu">
-            <nav>
-                <ul>
-                    <h5>Menu Principal</h5>
-                    <li><a href="../../index.html"><img id="imagem-icones" src="../../imagens/dashboard.png"> Dashboard</a></li>
-                    <li><a href="../Anotações/Anotação.html"><img id="imagem-icones" src="../../imagens/livroIMAGEM.png"> Anotações</a></li>
-                    <li><a href="../Jogos/Jogos.html"><img id="imagem-icones" src="../../imagens/Jogos.png"> Jogos</a></li>
-                    <li><a href="../leetCode/lettcode.html"><img id="imagem-icones" src="../../imagens/lam2.png"> LeetCode</a></li>
-                    <li><a href="../tarefas/Tarefas.html"><img id="imagem-icones" src="../../imagens/tarefa.png"> Tarefas</a></li>
-                    <li><a href="../chatbot/chatbot.html"><img id="imagem-icones" src="../../imagens/RoboPequeno.png"> IA</a></li>
-                </ul>
-            </nav>
-            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4414467269498579"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4414467269498579"
-     data-ad-slot="6843456896"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-        </div>
-    </aside>
-
+    <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="Anotação.html" aria-current="page"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="../Jogos/Jogos.html"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="../leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
     <div class="main-area">
-
         <header class="topbar">
-            <div class="logo-area">
-                <img src="../../imagens/LogoDeEstudante.png" class="logo-img">
-                <h1>DevSchool Hub</h1>
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../index.html">Voltar ao dashboard</a></div></details>
+</div>
+</header>
+        <main class="content" id="main-content">
+            <div class="page-heading notes-heading">
+                <div>
+                    <h1>Suas anotações<span class="notes-title-dot">.</span></h1>
+                    <p>Guarde suas ideias, organize seus estudos e volte ao que importa.</p>
+                </div>
+                <button type="button" class="new-note-btn hub-button"><span data-icon="plus" aria-hidden="true"></span>Nova anotação</button>
             </div>
 
-            <div class="divider"></div>
-        </header>
-
-        <main class="content">
-            <h1>Suas Anotações</h1>
-            <p class="Texto-anotação">Organize e revise suas anotações</p>
-
-            <div class="top-tools">
-                <input type="text" class="search-bar" placeholder="Pesquisar anotações...">
-                <button class="new-note-btn">Nova Anotação</button>
+            <section class="notes-library hub-panel" aria-labelledby="notes-library-title">
+                <div class="notes-library-header">
+                    <div class="notes-section-title">
+                        <span class="notes-section-icon" data-icon="book" aria-hidden="true"></span>
+                        <div>
+                            <h2 id="notes-library-title">Seu caderno de estudos</h2>
+                            <p>Um lugar para tudo o que você está aprendendo.</p>
+                        </div>
+                    </div>
+                    <div class="top-tools">
+                        <label class="notes-search">
+                            <span data-icon="search" aria-hidden="true"></span>
+                            <input type="search" class="search-bar" aria-label="Pesquisar anotações" placeholder="Pesquisar anotações...">
+                        </label>
+                    </div>
+                </div>
+                <div class="notes-area" id="notes-area" aria-live="polite">
+                    <div class="notes-empty">
+                        <span class="notes-empty-icon" data-icon="book" aria-hidden="true"></span>
+                        <h3>Suas próximas ideias começam aqui</h3>
+                        <p>Crie sua primeira anotação para guardar resumos, conceitos e descobertas dos seus estudos.</p>
+                        <span class="notes-empty-hint"><span data-icon="arrow-right" aria-hidden="true"></span>Comece em “Nova anotação”</span>
+                    </div>
+                </div>
+            </section>
+            <div class="notes-study-tip">
+                <span class="notes-tip-icon" data-icon="sparkles" aria-hidden="true"></span>
+                <p><strong>Aprender também é registrar.</strong> Escreva com suas palavras para lembrar melhor depois.</p>
             </div>
-
-            <!-- ÁREA ONDE OS CARDS SERÃO ADICIONADOS -->
-            <div class="notes-area" id="notes-area"></div>
         </main>
     </div>
 </div>
 
-
-<div class="modal" id="modal-create">
+<div class="modal" id="modal-create" role="dialog" aria-modal="true" aria-labelledby="create-note-title">
     <div class="modal-content">
-        <h2>Nova Anotação</h2>
-
+        <span class="notes-modal-icon" data-icon="book" aria-hidden="true"></span>
+        <h2 id="create-note-title">Nova anotação</h2>
+        <p class="notes-modal-description">Dê um nome à sua ideia e registre o que aprendeu.</p>
         <div class="form-field">
-    <label for="titulo">Título:</label>
-    <input type="text" id="titulo">
-</div>
-
-<div class="form-field">
-    <label for="conteudo">Conteúdo:</label>
-    <textarea id="conteudo"></textarea>
-</div>
-
-
-
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" placeholder="Ex.: O que aprendi sobre JavaScript" autocomplete="off">
+        </div>
+        <div class="form-field">
+            <label for="conteudo">Conteúdo</label>
+            <textarea id="conteudo" placeholder="Escreva suas ideias, resumos e descobertas..."></textarea>
+        </div>
         <div class="modal-buttons">
-            <button id="cancelar">Cancelar</button>
-            <button id="criar">Criar</button>
+            <button type="button" id="cancelar" class="hub-button secondary">Cancelar</button>
+            <button type="button" id="criar" class="hub-button">Criar anotação</button>
         </div>
     </div>
 </div>
-
-
-<div class="modal" id="modal-view">
+<div class="modal" id="modal-view" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
     <div class="modal-content">
+        <span class="notes-modal-icon" data-icon="book" aria-hidden="true"></span>
         <h2 id="modal-titulo"></h2>
         <p id="modal-texto"></p>
-        <button id="fechar-view">Fechar</button>
+        <div class="modal-buttons">
+            <button type="button" id="fechar-view" class="hub-button">Fechar anotação</button>
+        </div>
     </div>
 </div>
-
 <script src="anotações.js"></script>
 </body>
 </html>
