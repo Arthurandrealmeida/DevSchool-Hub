@@ -43,11 +43,15 @@ function startGame() {
 
     timeoutID = setTimeout(() => {
         setState('ready', 'CLIQUE!');
-        startTime = Date.now();
+        startTime = performance.now();
     }, randomDelay);
 }
 
 // Clique no quadrado
+gameBox.addEventListener('keydown', (event) => {
+    if (event.repeat && (event.key === 'Enter' || event.key === ' ')) event.preventDefault();
+});
+
 gameBox.addEventListener('click', () => {
     const state = gameBox.classList[1];
 
@@ -66,7 +70,7 @@ gameBox.addEventListener('click', () => {
 
     // Caso 3: Verde → medir tempo
     if (state === 'ready') {
-        const reaction = Date.now() - startTime;
+        const reaction = Math.round(performance.now() - startTime);
 
         reactionTimes.push(reaction);
 
@@ -82,6 +86,13 @@ gameBox.addEventListener('click', () => {
         historySection.classList.remove('hidden');
 
         updateStats();
+    }
+});
+
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden && (gameBox.classList.contains('waiting') || gameBox.classList.contains('ready'))) {
+        clearTimeout(timeoutID);
+        setState('idle', 'Tentativa pausada. Clique para começar novamente.');
     }
 });
 
