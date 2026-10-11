@@ -14,6 +14,8 @@
       const foundListEl = document.getElementById("found-list");
       const showListBtn = document.getElementById("showListBtn");
       const namesContainer = document.getElementById("namesContainer");
+      const guessStatus = document.getElementById("guessStatus");
+      markBtn.disabled = true;
 
       let svg, g, projection, path;
       let countries = []; // geo features
@@ -21,6 +23,7 @@
       let enToFeature = new Map(); // english name -> feature
       let foundSet = new Set(); // ids (feature.id or name) of found countries
       let totalCountries = 0;
+      let flashTimer = null;
 
       /* Traduções PT + variantes problemáticas
    Map EN name -> array of acceptable PT variants (and common aliases).
@@ -249,6 +252,7 @@
           .replace(/[\u0300-\u036f]/g, "")
           .toLowerCase()
           .replace(/[^a-z0-9 ]/g, "")
+          .replace(/\s+/g, " ")
           .trim();
       }
 
@@ -269,6 +273,7 @@
       /* fetch topojson and draw */
       async function init() {
         const res = await fetch(TOPO_URL);
+        if (!res.ok) throw new Error(`Mapa indisponível (${res.status})`);
         const topo = await res.json();
         const geo = feature(topo, topo.objects.countries);
         countries = geo.features;
@@ -304,6 +309,8 @@
 
         drawMap();
         buildNamesList();
+        markBtn.disabled = false;
+        guessStatus.textContent = "Mapa pronto. Digite o nome completo de um país.";
       }
 
       /* draw map with d3 */
@@ -337,20 +344,19 @@
             const name = (d.properties && d.properties.name) || "";
             guessInput.value = variants[name]
               ? variants[name][0] || name
-              : translationsPT && translationsPT[name]
-              ? translationsPT[name]
               : name;
             guessInput.focus();
           })
           .append("title") // native tooltip with English name
           .text((d) => (d.properties && d.properties.name) || "");
 
-        // resize handler
-        window.addEventListener("resize", () => {
-          drawMap(); // simpler re-render (reapply found below)
-          reapplyFound();
-        });
       }
+
+      window.addEventListener("resize", () => {
+        if (!countries.length) return;
+        drawMap();
+        reapplyFound();
+      });
 
       /* Build list of all country names (click to fill input) below the map */
       function buildNamesList() {
@@ -360,7 +366,12 @@
           .map((f) => (f.properties && f.properties.name) || "")
           .sort((a, b) => a.localeCompare(b));
         arr.forEach((enName) => {
-          const div = document.createElement("div");
+          const div = document.createElement("button");
+          div.type = "button";
+          div.className = "country-name";
+          div.style.display = "block";
+          div.style.width = "100%";
+          div.style.textAlign = "left";
           div.style.padding = "6px 4px";
           div.style.borderBottom = "1px solid #f1f1f1";
           div.style.cursor = "pointer";
@@ -383,7 +394,7 @@
         });
       }
 
-      /* find matches by a user-provided string (tolerant) */
+      /* Aceita nomes e aliases completos, sem premiar fragmentos de nomes. */
       function findMatches(raw) {
         const q = normalize(raw);
         if (!q) return [];
@@ -405,16 +416,7 @@
           return uniqueFeatures(nameIndex.get(q));
         }
 
-        // 3) substring includes on nameIndex keys (fuzzy)
-        const matches = [];
-        for (const [k, flist] of nameIndex.entries()) {
-          if (k.includes(q) || q.includes(k)) {
-            flist.forEach((f) => matches.push(f));
-          }
-        }
-        if (matches.length) return uniqueFeatures(matches);
-
-        // 4) try find by exact english match ignoring diacritics
+        // try find by exact english match ignoring diacritics
         for (const [en, f] of enToFeature.entries()) {
           if (normalize(en) === q) return [f];
         }
@@ -440,6 +442,7 @@
         if (!features || features.length === 0) {
           flashNoMatch();
           addLog(raw, []);
+          guessStatus.textContent = "País não encontrado. Use o nome completo em português ou inglês.";
           return;
         }
 
@@ -461,8 +464,11 @@
 
         // update UI
         updateScore();
-        addLog(raw, addedNames);
+        addLog(raw, addedNames, addedNames.length === 0);
         renderFoundList();
+        guessStatus.textContent = addedNames.length
+          ? (foundSet.size === totalCountries ? "Parabéns! Você encontrou todos os países do mapa." : "País encontrado!")
+          : "Você já encontrou esse país. Tente outro.";
       }
 
       /* update score element */
@@ -471,9 +477,11 @@
       }
 
       /* add log entry */
-      function addLog(raw, matchedNames) {
+      function addLog(raw, matchedNames, repeated = false) {
         const li = document.createElement("li");
-        if (matchedNames.length) {
+        if (repeated) {
+          li.textContent = `"${raw}" → (país já encontrado)`;
+        } else if (matchedNames.length) {
           const pretty = matchedNames.map((n) =>
             variants[n] && variants[n][0] ? variants[n][0] : n
           );
@@ -511,9 +519,9 @@
 
       /* flash input when no match */
       function flashNoMatch() {
-        const old = guessInput.style.border;
+        clearTimeout(flashTimer);
         guessInput.style.border = "2px solid var(--wrong)";
-        setTimeout(() => (guessInput.style.border = old), 600);
+        flashTimer = setTimeout(() => (guessInput.style.border = ""), 600);
       }
 
       /* reapply found classes after re-render */
@@ -537,8 +545,14 @@
         updateScore();
         renderFoundList();
         logEl.innerHTML = "";
+        guessInput.value = "";
+        clearTimeout(flashTimer);
+        guessInput.style.border = "";
+        guessStatus.textContent = "Progresso reiniciado.";
+        guessInput.focus();
         d3.selectAll("path.country").classed("correct", false);
       }
+      resetBtn.addEventListener("click", resetAll);
 
       /* show/hide names list */
       let namesVisible = false;
@@ -550,12 +564,17 @@
         showListBtn.textContent = namesVisible
           ? "Ocultar lista de nomes"
           : "Mostrar lista de nomes";
+        showListBtn.setAttribute("aria-expanded", String(namesVisible));
       });
 
       /* mark button / enter */
       markBtn.addEventListener("click", () => {
         const v = guessInput.value.trim();
-        if (!v) return;
+        if (!v) {
+          guessStatus.textContent = "Digite o nome de um país antes de marcar.";
+          guessInput.focus();
+          return;
+        }
         const matches = findMatches(v);
         applyMatches(matches, v);
         guessInput.value = "";
@@ -572,4 +591,5 @@
       init().catch((err) => {
         console.error("Erro ao iniciar mapa", err);
         mapContainer.text("Erro ao carregar mapa.");
+        guessStatus.textContent = "Não foi possível carregar o mapa. Verifique a conexão e recarregue a página.";
       });

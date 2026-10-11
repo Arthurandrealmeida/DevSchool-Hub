@@ -241,6 +241,18 @@ h1 {
       button.secondary {
         background: #666;
       }
+      #namesContainer .country-name {
+        background: transparent;
+        color: inherit;
+        border-radius: 0;
+        font: inherit;
+      }
+      #namesContainer .country-name:hover,
+      #namesContainer .country-name:focus-visible {
+        background: #f0efff;
+        outline: 2px solid #5490ff;
+        outline-offset: -2px;
+      }
       .map-row {
   display: grid;
   grid-template-columns: 1fr 320px;

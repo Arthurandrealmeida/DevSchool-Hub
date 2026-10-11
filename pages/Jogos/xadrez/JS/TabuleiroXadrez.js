@@ -255,6 +255,7 @@ function corDaPeca(peca) { //retorna a cor da peça ('white' ou 'black')
 
 
 tabuleiro.addEventListener('click', (e) => {
+    if (window.gameOver) return;
     const casaClicada = e.target.closest('.casa');
     if (!casaClicada) return;
     const pecaNaCasa = casaClicada.querySelector('.peca');

@@ -13,7 +13,12 @@ let acceptingInput = false; //quando o jogo está na fase de memorização, o va
 
 let isAnimating = false; //Quando o tabuleiro está acendendo a sequência (o SHOW_TIME_MS), a variável isAnimating é definida como true. Assim como acceptingInput, ela também é usada para bloquear cliques e outras ações enquanto o jogo está exibindo a sequência. O código usa a condição if (!acceptingInput || isAnimating) return; para garantir que o jogador não possa clicar nem durante a exibição nem durante o breve intervalo de transição entre a exibição e o início da jogada.
 
-let bestLevel = localStorage.getItem("bestLevel") || 0; // Esta linha tenta recuperar o valor do seu recorde salvo no navegador. localStorage.getItem("bestLevel") busca o dado associado à chave "bestLevel".Se este for o primeiro acesso (e nada foi salvo ainda), o resultado é null. O operador || 0 (OR Lógico) garante que, se for null ou indefinido, a variável bestLevel comece com o valor 0
+let bestLevel = 0;
+try {
+  bestLevel = Math.max(0, Number(localStorage.getItem("bestLevel")) || 0);
+} catch {
+  // O jogo continua quando o navegador bloqueia o armazenamento local.
+}
 document.getElementById("best-level").textContent = bestLevel; //Após carregar o valor (seja o recorde salvo ou 0), esta linha busca o elemento HTML com o ID "best-level" e define seu conteúdo de texto para exibir o recorde na tela do jogo.
 
 
@@ -24,7 +29,11 @@ function updateBestLevel() { //Esta função é chamada pelo jogo a cada nível 
 
         bestLevel = level; //Se a condição for verdadeira, o novo recorde é atribuído à variável bestLevel
 
-        localStorage.setItem("bestLevel", bestLevel); //Esta é a linha que efetivamente salva o novo recorde no seu navegador, garantindo que ele não será perdido mesmo após o fechamento da página.
+        try {
+          localStorage.setItem("bestLevel", bestLevel);
+        } catch {
+          // O recorde da sessão continua visível mesmo sem persistência.
+        }
 
         document.getElementById("best-level").textContent = bestLevel; //Atualização de Visual
     }
@@ -115,9 +124,13 @@ function buildGridForLevel() {
   // build via fragment to avoid reflow per element
   const frag = document.createDocumentFragment();
   for (let i = 0; i < total; i++) {
-    const sq = document.createElement("div");
+    const sq = document.createElement("button");
+    sq.type = "button";
+    sq.disabled = true;
     sq.className = "grid-square";
     sq.dataset.index = i;
+    sq.setAttribute("aria-label", `Linha ${Math.floor(i / cols) + 1}, coluna ${i % cols + 1}`);
+    sq.setAttribute("aria-pressed", "false");
     // lightweight handler (arrow capturing index)
     sq.addEventListener("click", () => handleSquareClick(i));
     frag.appendChild(sq);
@@ -167,6 +180,7 @@ function clearGridHighlights() {
     const el = children[i];
     // remove known classes — fewer tokens than replace
     el.classList.remove("active-showing", "active-clicked", "active-wrong", "disabled");
+    el.setAttribute("aria-pressed", "false");
   }
 }
 
@@ -175,6 +189,7 @@ function updateSelectable(enable) {
   const children = gridContainer.children;
   for (let i = 0, len = children.length; i < len; i++) {
     const el = children[i];
+    el.disabled = !enable;
     if (enable) el.classList.remove("disabled");
     else el.classList.add("disabled");
   }
@@ -193,6 +208,7 @@ function handleSquareClick(index) {
   if (userSet.has(index)) {
     userSet.delete(index);
     el.classList.remove("active-clicked");
+    el.setAttribute("aria-pressed", "false");
     return;
   }
 
@@ -204,6 +220,7 @@ function handleSquareClick(index) {
 
   // correct click
   userSet.add(index);
+  el.setAttribute("aria-pressed", "true");
   // use rAF to add class so browser batches paint
   requestAnimationFrame(() => el.classList.add("active-clicked"));
 
@@ -233,6 +250,9 @@ function wrongClickFeedback(el) {
   }, 600);
 
   if (lives <= 0) {
+    acceptingInput = false;
+    isAnimating = true;
+    updateSelectable(false);
     // give a tiny pause so player sees last effect
     window.setTimeout(() => gameOver(), 650);
   }
@@ -288,6 +308,8 @@ function evaluateAttempt() {
 }
 
 function gameOver() {
+  acceptingInput = false;
+  isAnimating = true;
   statusText.textContent = "Você errou 2 vezes — reiniciando...";
   showCorrectOnWrong();
 

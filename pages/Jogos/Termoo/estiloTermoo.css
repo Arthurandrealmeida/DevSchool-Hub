@@ -27,6 +27,16 @@ body {
     background: var(--bg-primary);
 }
 
+.game-instructions {
+    max-width: 48ch;
+    margin: 0 0 20px;
+    padding: 0 12px;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.6;
+    text-align: center;
+}
+
 /* ====== LAYOUT GERAL ====== */
 .layout {
     display: flex;

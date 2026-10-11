@@ -1,4 +1,4 @@
-const WORD_LIST = [
+const WORD_LIST = [...new Set([
     "ABRIR", "ACESO", "ACRES", "AGORA", "AINDA", "ALMAS", "ALTAR", "ALTOS",
     "AMIGO", "ANDAR", "ANTES", "APOIO", "AREIA", "ATUAR", "AUDIO", "AULAS",
     "BANCO", "BANDA", "BARCO", "BASTA", "BATOM", "BEBER", "BEIJO", "BELOS",
@@ -111,7 +111,11 @@ const WORD_LIST = [
     "FARDO","FARDA","DROPA","PILHA","PILAR","MOLAR","SOLAR","SOBRA",
     "LAGOA","LAGAR","MOGNO","NITRO","TOTEM","CASCA","PINTO","PINGA",
     "RITMO","TORNO","VIGOR",
-];
+].map(normalizeWord).filter(word => /^[A-Z]{5}$/.test(word)))];
+
+function normalizeWord(word) {
+    return word.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+}
 
 const KEYBOARD_ROWS = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
@@ -127,6 +131,17 @@ let currentRow = 0;
 let gameOver = false;
 let isRevealing = false;
 let keyStatuses = {};
+const pendingTimers = new Set();
+let messageTimer = null;
+
+function schedule(callback, delay) {
+    const timer = setTimeout(() => {
+        pendingTimers.delete(timer);
+        callback();
+    }, delay);
+    pendingTimers.add(timer);
+    return timer;
+}
 
 // Elementos DOM
 const gameBoard = document.getElementById("game-board");
@@ -137,6 +152,9 @@ const playAgainBtn = document.getElementById("play-again-btn");
 
 // Inicialização
 function init() {
+    pendingTimers.forEach(clearTimeout);
+    pendingTimers.clear();
+    messageTimer = null;
     targetWord = getRandomWord();
     guesses = [];
     currentGuess = "";
@@ -149,8 +167,7 @@ function init() {
     createKeyboard();
     hideMessage();
     playAgainBtn.classList.add("hidden");
-    
-    console.log("Palavra secreta:", targetWord); // Para debug
+    gameBoard.focus({ preventScroll: true });
 }
 
 function getRandomWord() {
@@ -158,7 +175,7 @@ function getRandomWord() {
 }
 
 function isValidWord(word) {
-    return WORD_LIST.includes(word.toUpperCase());
+    return WORD_LIST.includes(normalizeWord(word));
 }
 
 // Criar tabuleiro
@@ -324,6 +341,7 @@ function handleKeyClick(key) {
 // Adicionar letra
 function addLetter(letter) {
     if (currentGuess.length < 5) {
+        hideMessage();
         currentGuess += letter;
         updateBoard();
     }
@@ -332,6 +350,7 @@ function addLetter(letter) {
 // Deletar letra
 function deleteLetter() {
     if (currentGuess.length > 0) {
+        hideMessage();
         currentGuess = currentGuess.slice(0, -1);
         updateBoard();
     }
@@ -339,6 +358,7 @@ function deleteLetter() {
 
 // Submeter tentativa
 function submitGuess() {
+    if (gameOver || isRevealing) return;
     if (currentGuess.length !== 5) {
         shakeRow();
         showMessage("Palavra precisa ter 5 letras!", "error");
@@ -362,7 +382,7 @@ function submitGuess() {
             gameOver = true;
             const messages = ["Genial!", "Magnífico!", "Impressionante!", "Esplêndido!", "Muito bem!", "Ufa!"];
             showMessage(messages[currentRow] || "Parabéns!", "success");
-            celebrateWin();
+            celebrateWin(currentRow);
             playAgainBtn.classList.remove("hidden");
         } else if (currentRow >= 5) {
             gameOver = true;
@@ -385,14 +405,14 @@ function revealRow(row, callback) {
     }
     
     tiles.forEach((tile, index) => {
-        setTimeout(() => {
+        schedule(() => {
             const letter = guesses[row][index];
             const status = getTileStatus(letter, index, guesses[row]);
             
             // Adiciona a classe 'reveal' que faz o flip
             tile.classList.add("reveal");
             
-            setTimeout(() => {
+            schedule(() => {
                 // Remove a classe 'reveal' e aplica a classe de cor (correct/present/absent)
                 tile.classList.remove("reveal");
                 tile.classList.remove("filled"); // Remove a classe filled
@@ -401,7 +421,7 @@ function revealRow(row, callback) {
             
             if (index === 4) {
                 // Chama o callback após a última animação terminar
-                setTimeout(callback, 300);
+                schedule(callback, 300);
             }
         }, index * 300); // 300ms de atraso entre cada tile
     });
@@ -411,14 +431,14 @@ function revealRow(row, callback) {
 function shakeRow() {
     const row = document.getElementById(`row-${currentRow}`);
     row.classList.add("shake");
-    setTimeout(() => row.classList.remove("shake"), 500);
+    schedule(() => row.classList.remove("shake"), 500);
 }
 
 // Celebração de vitória (bounce)
-function celebrateWin() {
+function celebrateWin(row) {
     for (let col = 0; col < 5; col++) {
-        const tile = document.getElementById(`tile-${currentRow-1}-${col}`); // Usa currentRow - 1 para pegar a linha vencedora
-        setTimeout(() => {
+        const tile = document.getElementById(`tile-${row}-${col}`);
+        schedule(() => {
             tile.classList.add("win");
         }, col * 100);
     }
@@ -426,10 +446,12 @@ function celebrateWin() {
 
 // Mostrar mensagem
 function showMessage(text, type) {
+    clearTimeout(messageTimer);
+    pendingTimers.delete(messageTimer);
     gameMessage.textContent = text;
     gameMessage.className = "game-message " + type;
     
-    setTimeout(hideMessage, type === "info" ? 5000 : 2000);
+    if (!gameOver) messageTimer = schedule(hideMessage, 2000);
 }
 
 // Esconder mensagem
@@ -443,15 +465,20 @@ playAgainBtn.addEventListener("click", init);
 
 // Teclado físico
 document.addEventListener("keydown", (e) => {
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.ctrlKey || e.metaKey || e.altKey || e.isComposing) return;
+    if (e.target.closest?.('input, textarea, select, [contenteditable="true"]')) return;
+    if (e.target.closest?.("button") && !e.target.classList.contains("key")) return;
     
-    const key = e.key.toUpperCase();
+    const key = normalizeWord(e.key);
 
     if (key === "ENTER") {
+        e.preventDefault();
         handleKeyClick("ENTER");
     } else if (key === "BACKSPACE") {
+        e.preventDefault();
         handleKeyClick("⌫");
     } else if (/^[A-Z]$/.test(key) && key.length === 1) {
+        e.preventDefault();
         handleKeyClick(key);
     }
 });

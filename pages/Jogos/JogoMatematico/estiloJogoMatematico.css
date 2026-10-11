@@ -105,6 +105,60 @@ body {
     box-shadow: 0px 2px 0px #000;
 }
 
+.game-page.game--math .op-btn.active,
+.game-page.game--math .diff-btn.active {
+    background: #e0edff;
+    border-color: #1677ff;
+}
+
+.math-instructions,
+#math-feedback {
+    max-width: 640px;
+    margin: 12px auto;
+    text-align: center;
+    line-height: 1.6;
+}
+
+#math-feedback {
+    min-height: 1.6em;
+}
+
+.math-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.math-actions button {
+    padding: 12px 18px;
+    border: 1px solid var(--hub-line, #e9edf5);
+    border-radius: 9px;
+    background: #ffffff;
+    color: var(--hub-primary, #4f5cf7);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+}
+
+.math-actions #confirm-answer {
+    background: var(--hub-primary, #4f5cf7);
+    color: #fff;
+}
+
+.math-actions button:focus-visible {
+    outline: 3px solid #4f5cf72b;
+    outline-offset: 3px;
+}
+
+.math-actions button:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
 .btn-voltar {
     position: fixed;     /* fixa na tela */
     top: 15px;           /* distância do topo */

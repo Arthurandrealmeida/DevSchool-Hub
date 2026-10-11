@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>GeoGuess — Globo 3D</title>
+  <title>GeoGuess - DevSchool Hub</title>
   <link rel="stylesheet" href="estiloDoWordGuess.css" />
-  <link rel="shortcut icon" href="/imagens/IconDevSchool.png">
+  <link rel="shortcut icon" href="../../../imagens/IconDevSchool.png">
 
   <script type="importmap">
   {
@@ -16,30 +16,40 @@
   }
 </script>
 
+<link rel="stylesheet" href="../../../assets/hub.css">
+<link rel="stylesheet" href="../game-hub.css">
+<script defer src="../../../assets/hub.js"></script>
 </head>
-<body>
-  <div class="layout">
+<body class="game-page game--geoguess">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
+
+<div class="layout">
     <!-- SIDEBAR MINIMALISTA -->
-    <aside class="sidebar">
-      <div class="logo"></div>
-      <nav class="menu">
-        <ul>
-          <li><a href="/index.html"><img class="icon" src="/imagens/dashboard.png" alt="Dashboard"></a></li>
-          <li><a href="/hiperLinks/Anotação.html"><img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações"></a></li>
-          <li><a href="/hiperLinks/jogos.html"><img class="icon" src="/imagens/Jogos.png" alt="Jogos"></a></li>
-          <li><a href="/hiperLinks/lettcode.html"><img class="icon" src="/imagens/lam2.png" alt="LeetCode"></a></li>
-          <li><a href="/hiperLinks/tarefas.html"><img class="icon" src="/imagens/tarefa.png" alt="Tarefas"></a></li>
-          <li><a href="/hiperLinks/chatbot.html"><img class="icon" src="/imagens/RoboPequeno.png" alt="IA"></a></li>
-        </ul>
-      </nav>
-    </aside>
+    <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="../../Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="../Jogos.html" aria-current="page"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="../../leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
 
     <div class="main-area">
-          <main class="content">
-                <h1 class="tituloDoJoguin">countries</h1>
+<header class="topbar">
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="../../Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../../index.html">Voltar ao dashboard</a></div></details>
+</div>
+</header>
+          <main class="content" id="main-content">
+                <h1 class="tituloDoJoguin">GeoGuess</h1>
            <div class="wrap">
       <div class="panel">
-        <div class="topbar">
+        <div class="game-meta-bar">
           <div>
             <div class="meta">
               Digite o nome do país e pressione Enter / botão para marcar.
@@ -66,14 +76,18 @@
           <input
             id="guessInput"
             type="text"
+            aria-label="Nome do país"
+            aria-describedby="guessStatus"
+            autocomplete="off"
             placeholder="Digite o país (ex: Brasil ou Brazil)"
           />
-          <button id="markBtn">Marcar</button>
+          <button id="markBtn" disabled>Marcar</button>
           <button id="resetBtn" class="secondary">Resetar</button>
-          <button id="showListBtn" class="secondary">
+          <button id="showListBtn" class="secondary" aria-controls="namesList" aria-expanded="false">
             Mostrar lista de nomes
           </button>
         </div>
+            <p id="guessStatus" class="small" role="status" aria-live="polite">Carregando mapa...</p>
             
 
             <div id="namesList" style="margin-top: 12px; display: none">
@@ -94,14 +108,14 @@
             </div>
           </div>
         </div>
-        <div id="found-panel">
+        <div id="guess-log-panel">
               <div style="font-weight: 700">Últimos palpites</div>
               <ol id="log" style="padding-left: 16px; margin: 8px 0 0 0"></ol>
 
               <div style="height: 10px"></div>
               <div class="hint">
                 Observações: clicar em um país preenche o input (útil em mobile)
-                — **clicar NÃO marca** automaticamente.
+                — clicar <strong>não marca</strong> automaticamente.
               </div>
             </div> 
 
@@ -111,10 +125,10 @@
         </div>
       </div>
     </div>      
+            <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
           </main>
         </div>
     </div>
-    <a href="javascript:history.back()" class="btn-voltar">← Voltar</a>
 
 <script type="module" src="JSdoWordGuess.js"></script>
 

@@ -1,247 +1,45 @@
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-}
-
-/* ====== LAYOUT GERAL ====== */
-.layout {
-    display: flex;
-    height: 100vh;
-}
-
-/* ====== SIDEBAR ====== */
-.sidebar {
-    width: 240px;
-    height: 100vh;
-    background: #ffffff;
-    padding: 20px 15px;
-    border-right: 1px solid #99999954;
-    display: flex;
-    flex-direction: column;
-}
-
-.logo {
-    height: 40px;
-    border-radius: 6px;
-    background: linear-gradient(90deg, #3f8cff, #c568ff);
-    display: flex;              
-    justify-content: center;    
-    align-items: center;       
-}
-
-.texto-logo {                
-    color: rgb(0, 255, 76);               
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.menu ul {
-    list-style: none;
-    padding: 0;
-}
-
-.menu ul li {
-    padding: 12px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #000000;
-    transition: 0.4s;
-}
-
-.menu ul li:hover {
-    background: #f3f5ff;
-}
-
-h5 {
-    font-size: medium;
-}
-
-#imagem-icones {
-    width: 20px;
-}
-
-.icone-do-Dashboard {
-    width: 25px;
-}
-
-
-.main-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-
-.topbar {
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 20px;
-    background: white;
-    border-bottom: 1px solid #ddd;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-img {
-    width: 55px;
-}
-
-.content {
-    flex: 1;
-    padding: 20px;
-    background: #f8f8f8;
-}
-
-.escolha {
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bolder;
-    font-size: larger;
-    color: #6b6a6a;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
-
-
-
-.leetcode-layout {
-  display: flex;
-  flex-direction: row-reverse; /* Mantém o menu à direita */
-  gap: 40px;
-
-  width: 100%;
-  padding: 30px;
-  box-sizing: border-box;
-
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-
-  margin-top: 20px;
-}
-
-/* CATEGORIAS */
-.leetcode-categories {
-  width: 440px;
-  background: #ffffff;
-  padding: 25px;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  border: 1px solid #dfdddd;
-}
-
-
-.leetcode-categories ul {
-  list-style: none;
-  padding: 0;
-}
-
-.leetcode-categories a {
-  display: block;
-  padding: 12px 0;
-  text-decoration: none;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  font-size: 20px;
-}
-
-.leetcode-categories a:hover {
-  color: #7d4bff;
-}
-
-/* ÁREA DE PROBLEMAS */
-.leetcode-problems {
-  flex: 1;
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 14px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-  border: 1px solid #dfdddd;
-}
-
-
-/* SEÇÕES (FACIL, MEDIO, DIFICIL) */
-.problem-section {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 2px solid #e5e5e5;
-  scroll-margin-top: 80px;
-}
-
-.section-title {
-  font-size: 22px;
-  margin-bottom: 20px;
-  padding: 8px 16px;
-  border-radius: 10px;
-  display: inline-block;
-  color: white;
-}
-
-.easy {
-  background: #4CAF50;
-}
-
-.medium {
-  background: #FF9800;
-}
-
-.hard {
-  background: #e53935;
-}
-
-/* PROBLEMAS */
-.problem {
-  background: white;
-  padding: 15px 20px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  border: 1px solid #ececec;
-}
-
-.leetcode-problems pre {
-    white-space: pre-wrap;     /* quebra linha automaticamente */
-    word-wrap: break-word;     /* evita texto gigante causar scroll */
-    overflow-x: auto;          /* só mostra scroll se realmente precisar */
-    max-width: 100%;           /* impede de ultrapassar o card */
-    font-family: "Consolas", monospace; /* deixa padrão de código */
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-
-.problem h3 {
-  margin: 0 0 8px 0;
-}
-
-details summary {
-  cursor: pointer;
-  font-weight: bold;
-  color: #7d4bff;
-}
-
-details pre {
-  background: #f9f9f9;
-  padding: 12px;
-  border-radius: 8px;
-  margin-top: 10px;
-  border: 1px solid #eee;
-}
-
-nav ul li a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: inherit;
-}
+/* Programming challenges; the page frame comes from assets/hub.css. */
+.challenges-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.challenge-total { display: inline-flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 8px; background: #edf5ff; color: #2789da; font-size: 12px; font-weight: 600; flex-shrink: 0; }
+.challenge-total svg { width: 17px; height: 17px; }
+.leetcode-layout { display: grid; grid-template-columns: minmax(0, 1fr) 245px; gap: 24px; align-items: start; }
+.leetcode-problems { min-width: 0; }
+.leetcode-categories { padding: 24px 20px; position: sticky; top: 98px; }
+.categories-icon { width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; background: #edf5ff; color: #2789da; border-radius: 12px; margin-bottom: 16px; }
+.categories-icon svg { width: 24px; height: 24px; }
+.leetcode-categories h2 { margin: 0 0 5px; color: var(--hub-text, #101426); font-size: 17px; }
+.leetcode-categories > p { margin: 0; color: var(--hub-muted, #7e87a4); font-size: 12px; line-height: 1.6; }
+.leetcode-categories ul { list-style: none; padding: 0; margin: 20px 0; }
+.leetcode-categories li + li { margin-top: 8px; }
+.leetcode-categories a { display: flex; align-items: center; gap: 10px; padding: 12px; border: 1px solid var(--hub-line, #e9edf5); border-radius: 9px; text-decoration: none; color: #4e5877; font-size: 13px; transition: background .18s, border-color .18s; }
+.leetcode-categories a:hover { background: #f8f9ff; border-color: #d8dcfc; }
+.leetcode-categories a > span:nth-child(2) { flex: 1; font-weight: 600; }
+.leetcode-categories a small { display: block; margin-top: 4px; color: var(--hub-muted, #7e87a4); font-size: 10px; font-weight: 400; }
+.leetcode-categories a svg { width: 15px; height: 15px; color: var(--hub-muted, #7e87a4); }
+.difficulty-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.difficulty-dot.easy { background: #00ad8d; }
+.difficulty-dot.medium { background: #f3a336; }
+.difficulty-dot.hard { background: #f2797f; }
+.challenge-tip { padding: 15px; border-radius: 10px; background: #f3f1ff; color: #7764cc; }
+.challenge-tip > span { display: flex; width: 21px; height: 21px; margin-bottom: 9px; }
+.challenge-tip svg { width: 21px; height: 21px; }
+.challenge-tip p { margin: 0; font-size: 12px; line-height: 1.7; }
+.problem-section { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; scroll-margin-top: 98px; }
+.problem-section + .problem-section { margin-top: 25px; }
+.section-title { display: flex; align-items: center; gap: 9px; grid-column: 1 / -1; margin: 0 0 1px; color: var(--hub-text, #101426); font-size: 17px; font-weight: 700; }
+.section-title::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.section-title.easy::before { color: #00ad8d; }
+.section-title.medium::before { color: #f3a336; }
+.section-title.hard::before { color: #f2797f; }
+.problem { display: flex; flex-direction: column; min-width: 0; padding: 21px; background: #fff; border: 1px solid var(--hub-line, #e9edf5); border-radius: 14px; }
+.problem h3 { margin: 0 0 10px; color: var(--hub-text, #101426); font-size: 14px; line-height: 1.5; }
+.problem > p { margin: 0 0 18px; color: var(--hub-muted, #7e87a4); font-size: 12px; line-height: 1.75; flex: 1; }
+.problem details { border-top: 1px solid #f0f2f8; padding-top: 13px; }
+.problem summary { width: fit-content; cursor: pointer; color: var(--hub-primary, #4f5cf7); font-size: 12px; font-weight: 600; line-height: 1.5; }
+.problem summary::marker { font-size: 10px; }
+.problem details[open] summary { margin-bottom: 13px; }
+.problem pre { margin: 0; padding: 13px; background: #f7f8fe; color: #535e7b; border: 1px solid #eceef8; border-radius: 8px; white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; font-family: inherit; font-size: 12px; line-height: 1.8; }
+.problem summary:focus-visible, .leetcode-categories a:focus-visible { outline: 3px solid #b6bcfc; outline-offset: 4px; border-radius: 5px; }
+@media (max-width: 1150px) { .leetcode-layout { grid-template-columns: minmax(0, 1fr) 220px; gap: 20px; } .problem-section { grid-template-columns: 1fr; } .challenge-total { display: none; } }
+@media (max-width: 850px) { .leetcode-layout { grid-template-columns: 1fr; } .leetcode-categories { position: static; grid-row: 1; padding: 20px; } .categories-icon, .challenge-tip { display: none; } .leetcode-categories ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 16px 0 0; } .leetcode-categories li + li { margin: 0; } .problem-section { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .problem-section { grid-template-columns: 1fr; } .problem { padding: 20px; } .leetcode-categories ul { gap: 7px; } .leetcode-categories a { padding: 10px 8px; gap: 6px; } .leetcode-categories a > span:last-child { display: none; } .leetcode-categories a small { font-size: 9px; } }

@@ -183,6 +183,21 @@ body {
 
 .palavra {
     user-select: none;
+    font: inherit;
+    color: inherit;
+}
+
+.palavra:focus-visible {
+    outline: 3px solid #5490ff;
+    outline-offset: 3px;
+}
+
+.matching-instructions {
+    max-width: 65ch;
+    margin: 0 auto 20px;
+    text-align: center;
+    line-height: 1.6;
+    color: #64748b;
 }
 
 .palavraSelecionada {

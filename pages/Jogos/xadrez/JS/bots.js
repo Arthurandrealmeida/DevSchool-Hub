@@ -754,13 +754,9 @@ function getAttackers(state, pos, color) {
         const state = buildStateFromDOM();
         const moves = getAllPseudoMovesFromState(state, color);
         if (moves.length === 0) return null;
-        // se o rei está em xeque, filtra apenas movimentos que resolvem o xeque
-        let pool = moves;
-        if (isKingInCheckState(state, color)){
-            const resolving = filterMovesResolvingCheck(state, moves, color);
-            if (resolving.length === 0) return null; // mate — sem jogadas legais
-            pool = resolving;
-        }
+        // Mesmo fora de xeque, uma peça cravada não pode expor o próprio rei.
+        const pool = filterMovesResolvingCheck(state, moves, color);
+        if (pool.length === 0) return null;
         const mv = pool[Math.floor(Math.random()*pool.length)];
         return { from: posicaoID(mv.from), to: posicaoID(mv.to) };
     }
@@ -771,11 +767,8 @@ function getAttackers(state, pos, color) {
         const state = buildStateFromDOM();
         let moves = getAllPseudoMovesFromState(state, color);
         if (moves.length === 0) return null;
-        if (isKingInCheckState(state, color)){
-            const resolving = filterMovesResolvingCheck(state, moves, color);
-            if (resolving.length === 0) return null;
-            moves = resolving;
-        }
+        moves = filterMovesResolvingCheck(state, moves, color);
+        if (moves.length === 0) return null;
         // prefer captures
         moves.sort((a,b)=> getCapturedValueState(state, b) - getCapturedValueState(state, a));
         const top = moves.slice(0, Math.min(8, moves.length));

@@ -6,97 +6,43 @@
     <title>leetCode DevSchool Hub</title>
     <link rel="shortcut icon" href="../../imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="stylelettcode.css">
+<link rel="stylesheet" href="../../assets/hub.css">
+<script defer src="../../assets/hub.js"></script>
 </head>
 <body>
-    <div class="layout">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
 
-    <aside class="sidebar">
-        <div class="logo"> <p class="texto-logo">DevSchool Hub</p> </div>
+<div class="layout">
 
-        <div class ="menu">
-        <nav>
-            <ul>
-                <h5>Menu Principal</h5>
-                <li>
-                    <a href="../../index.html">
-                        <img id="imagem-icones" src="../../imagens/dashboard.png" alt="">Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="../Anotações/Anotação.html">
-                        <img id="imagem-icones" src="../../imagens/livroIMAGEM.png" alt="">Anotações
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../Jogos/Jogos.html">
-                        <img id="imagem-icones" src="../../imagens/Jogos.png" alt="">Jogos
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../leetCode/lettcode.html">
-                        <img id="imagem-icones" src="../../imagens/lam2.png" alt="">LeetCode
-                    </a>
-                </li>
-
-                <li>
-                    <a href="../tarefas/Tarefas.html">
-                        <img id="imagem-icones" src="../../imagens/tarefa.png" alt="">Tarefas
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="../chatbot/chatbot.html">
-                        <img id="imagem-icones" src="../../imagens/RoboPequeno.png" alt="">IA
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4414467269498579"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-4414467269498579"
-     data-ad-slot="6843456896"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-    </div>
-    </aside>
+    <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="../Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="../Jogos/Jogos.html"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="lettcode.html" aria-current="page"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
 
     <div class="main-area">
 
         <header class="topbar">
-            <div class="logo-area">
-                <img src="../../imagens/LogoDeEstudante.png" alt="logo" class="logo-img">
-                <h1>DevSchool Hub</h1>
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="../Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../index.html">Voltar ao dashboard</a></div></details>
+</div>
+</header>
+
+        <main class="content" id="main-content">
+<div class="page-heading challenges-heading">
+                <div><h1>Desafios</h1><p>Pratique sua lógica e dê o próximo passo na programação.</p></div>
+                <span class="challenge-total"><span data-icon="trophy" aria-hidden="true"></span> 6 desafios para explorar</span>
             </div>
-
-            <div class="divider"></div>
-        </header>
-
-        <main class="content">
-           <div class="leetcode-layout">
-
-  <aside class="leetcode-categories">
-    <h2>Categorias</h2>
-    <ul>
-      <li><a href="#facil">Fácil</a></li>
-      <li><a href="#medio">Médio</a></li>
-      <li><a href="#dificil">Difícil</a></li>
-    </ul>
-  </aside>
-
-  <section class="leetcode-problems">
-
-    <h1>Escolha uma categoria →</h1>
-
-    <!-- ==========================
-             F Á C I L
-    =============================-->
+            <div class="leetcode-layout">
+                <section class="leetcode-problems" aria-label="Desafios de programação">
     <div id="facil" class="problem-section">
       <h2 class="section-title easy">Problemas Fáceis</h2>
 
@@ -171,12 +117,23 @@
       </article>
     </div>
 
-  </section>
-</div>
 
+                </section>
+                <aside class="leetcode-categories hub-panel" aria-labelledby="categories-title">
+                    <span class="categories-icon" data-icon="trophy" aria-hidden="true"></span>
+                    <h2 id="categories-title">Escolha seu nível</h2>
+                    <p>Um desafio de cada vez.</p>
+                    <nav aria-label="Níveis dos desafios"><ul>
+                        <li><a href="#facil"><span class="difficulty-dot easy"></span><span>Fácil<small>2 desafios</small></span><span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+                        <li><a href="#medio"><span class="difficulty-dot medium"></span><span>Médio<small>2 desafios</small></span><span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+                        <li><a href="#dificil"><span class="difficulty-dot hard"></span><span>Difícil<small>2 desafios</small></span><span data-icon="arrow-right" aria-hidden="true"></span></a></li>
+                    </ul></nav>
+                    <div class="challenge-tip"><span data-icon="sparkles" aria-hidden="true"></span><p>Tente resolver primeiro. Depois, abra a resposta para comparar seu raciocínio.</p></div>
+                </aside>
+            </div>
         </main>
     </div>
 </div>
+
 </body>
 </html>
-

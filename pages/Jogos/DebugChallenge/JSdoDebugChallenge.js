@@ -24,12 +24,15 @@ const timeProgress = document.getElementById("time-progress");
 const finalScore = document.getElementById("final-score");
 const finalLevel = document.getElementById("final-level");
 const hintsUsedText = document.getElementById("hints-used");
+const feedback = document.getElementById("answer-feedback");
 
 let index = 0;
 let score = 0;
 let streak = 0;
-let time = 0;
 let timer;
+let transitionTimer;
+let playing = false;
+let questionLocked = false;
 let currentChallenge;
 let hintsUsed = 0;
 let challenges = [];
@@ -46,8 +49,12 @@ const modeButtons = document.querySelectorAll(".mode-btn");
 
 modeButtons.forEach(btn => {
     btn.addEventListener("click", () => {
-        modeButtons.forEach(b => b.classList.remove("active"));
+        modeButtons.forEach(b => {
+            b.classList.remove("active");
+            b.setAttribute("aria-pressed", "false");
+        });
         btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
 
         gameMode = btn.classList.contains("easy") ? "easy" :
                    btn.classList.contains("medium") ? "medium" :
@@ -101,7 +108,7 @@ print "Olá mundo"
         },
         {
             title: "Soma simples",
-            description: "Qual é a correção?",
+            description: "Como somar os valores e imprimir o número 8?",
             code: `
 x = 5
 y = "3"
@@ -155,7 +162,7 @@ if x = 10:
         },
         {
             title: "Laço infinito",
-            description: "Qual opção corrige?",
+            description: "Como exibir todos os números de 0 a 4 e terminar o laço?",
             code: `
 i = 0
 while i < 5:
@@ -163,7 +170,7 @@ while i < 5:
             `,
             options: [
                 "Adicionar i += 1",
-                "Trocar while por for",
+                "Trocar a condição por i < 10",
                 "Colocar break",
                 "Trocar 5 por 10"
             ],
@@ -172,7 +179,7 @@ while i < 5:
         },
         {
             title: "Erro de lista",
-            description: "Qual solução?",
+            description: "Como imprimir o último valor (3) sem alterar a lista?",
             code: `
 lista = [1,2,3]
 print(lista[3])
@@ -270,6 +277,9 @@ challenges = challenges.map(processChallenge);
 // ============================
 function loadChallenge() {
     currentChallenge = challenges[index];
+    questionLocked = false;
+    btnHint.disabled = false;
+    feedback.textContent = "";
 
     statLevel.textContent = index + 1;
 
@@ -288,10 +298,10 @@ function loadChallenge() {
 function renderOptions() {
     const quizHTML = `
         <div class="quiz">
-            <h3 class="quiz-title">Qual é a correção?</h3>
+            <h3 class="quiz-title">Escolha uma resposta</h3>
             <div class="quiz-options">
                 ${currentChallenge.options
-                    .map((opt, i) => `<div class="quiz-option" data-index="${i}">${opt}</div>`)
+                    .map((opt, i) => `<button type="button" class="quiz-option" data-index="${i}">${opt}</button>`)
                     .join("")}
             </div>
         </div>
@@ -307,6 +317,7 @@ function renderOptions() {
     document.querySelectorAll(".quiz-option").forEach(op => {
         op.addEventListener("click", handleAnswer);
     });
+    document.querySelector(".quiz-option")?.focus();
 }
 
 // ============================
@@ -314,20 +325,25 @@ function renderOptions() {
 // ============================
 function handleAnswer(e) {
 
-    const element = e.target;
+    if (!playing || questionLocked) return;
+
+    const element = e.currentTarget;
     const i = Number(element.dataset.index);
 
     // evita duplo clique no MESMO elemento
     if (element.dataset.clicked === "true") return;
     element.dataset.clicked = "true";
-    element.style.pointerEvents = "none";
+    element.disabled = true;
 
     let earned = 0;
 
     if (i === currentChallenge.correct) {
+        questionLocked = true;
+        clearInterval(timer);
+        btnHint.disabled = true;
         // desativa todas as opções quando acertar (impede múltiplos envios)
         document.querySelectorAll(".quiz-option").forEach(op => {
-            op.style.pointerEvents = "none";
+            op.disabled = true;
             op.dataset.clicked = "true";
         });
 
@@ -360,12 +376,14 @@ function handleAnswer(e) {
 
         statScore.textContent = score;
         statStreak.textContent = streak;
+        feedback.textContent = `Correto! +${earned} pontos. ${currentChallenge.hint}`;
 
-        setTimeout(nextChallenge, 600);
+        transitionTimer = setTimeout(nextChallenge, 600);
     } else {
         element.classList.add("wrong");
         streak = 0;
         statStreak.textContent = 0;
+        feedback.textContent = "Essa opção não resolve o desafio. Tente outra ou use uma dica.";
         // aqui NÃO desativamos as outras opções: o jogador pode tentar novamente em outra opção
     }
 }
@@ -375,6 +393,8 @@ function handleAnswer(e) {
 // PRÓXIMO DESAFIO
 // ============================
 function nextChallenge() {
+    if (!playing) return;
+    clearGameTimers();
     const quiz = document.querySelector(".quiz");
     if (quiz) quiz.remove();
 
@@ -388,8 +408,8 @@ function nextChallenge() {
     hintBox.classList.add("hidden");
     hintText.textContent = "";
 
-    resetTimer();
     loadChallenge();
+    resetTimer();
 }
 
 
@@ -412,7 +432,16 @@ function resetTimer() {
 
         if (remaining <= 0) {
             clearInterval(timer);
-            nextChallenge();
+            questionLocked = true;
+            btnHint.disabled = true;
+            streak = 0;
+            statStreak.textContent = "0";
+            document.querySelectorAll(".quiz-option").forEach((option, i) => {
+                option.disabled = true;
+                if (i === currentChallenge.correct) option.classList.add("correct");
+            });
+            feedback.textContent = `Tempo esgotado. Resposta: ${currentChallenge.options[currentChallenge.correct]}. ${currentChallenge.hint}`;
+            transitionTimer = setTimeout(nextChallenge, 1600);
         }
     }, 1000);
 }
@@ -422,6 +451,8 @@ function resetTimer() {
 // INICIAR JOGO
 // ============================
 function startGame() {
+    clearGameTimers();
+    playing = true;
     screenIdle.classList.add("hidden");
     screenGameOver.classList.add("hidden");
     screenPlaying.classList.remove("hidden");
@@ -447,29 +478,26 @@ function startGame() {
 
 btnStart.onclick = startGame;
 
-btnReset.onclick = () => {
+function clearGameTimers() {
     clearInterval(timer);
+    clearTimeout(transitionTimer);
+}
 
+function returnToMenu() {
+    playing = false;
+    questionLocked = true;
+    clearGameTimers();
     screenPlaying.classList.add("hidden");
     screenGameOver.classList.add("hidden");
     screenIdle.classList.remove("hidden");
-};
+    btnStart.focus();
+}
+
+btnReset.onclick = returnToMenu;
 // Reinicia o jogo a partir da tela de Game Over
 btnRestart.onclick = startGame;
 
-btnRestartGameOver.onclick = () => {
-    clearInterval(timer);
-
-    screenPlaying.classList.add("hidden");
-    screenGameOver.classList.add("hidden");
-    screenIdle.classList.remove("hidden");
-
-    // reset visual básico
-    statScore.textContent = "0";
-    statStreak.textContent = "0";
-    hintBox.classList.add("hidden");
-    hintText.textContent = "";
-};
+btnRestartGameOver.onclick = returnToMenu;
 
 
 
@@ -477,7 +505,7 @@ btnRestartGameOver.onclick = () => {
 // DICA
 // ============================
 btnHint.onclick = () => {
-    if (!currentChallenge) return;
+    if (!playing || questionLocked || !currentChallenge) return;
 
     if (!hintBox.classList.contains("hidden")) return;
 
@@ -493,7 +521,9 @@ btnHint.onclick = () => {
 // GAME OVER
 // ============================
 function endGame() {
-    clearInterval(timer);
+    playing = false;
+    questionLocked = true;
+    clearGameTimers();
 
     screenPlaying.classList.add("hidden");
     screenGameOver.classList.remove("hidden");
@@ -501,4 +531,7 @@ function endGame() {
     finalScore.textContent = score;
     finalLevel.textContent = index;
     hintsUsedText.textContent = `Você usou ${hintsUsed} dicas durante o jogo.`;
+    btnRestart.focus();
 }
+
+window.addEventListener("pagehide", returnToMenu);

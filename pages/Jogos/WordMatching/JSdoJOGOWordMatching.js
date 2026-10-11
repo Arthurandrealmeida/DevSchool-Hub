@@ -379,6 +379,15 @@ const frasesPorNivel = {
 let nivelAtual = "A1";
 let fraseAtual = {};
 let palavrasSelecionadas = [];
+let proximaFraseTimer = null;
+let palavraArrastada = null;
+
+function limparFeedback() {
+    clearTimeout(proximaFraseTimer);
+    proximaFraseTimer = null;
+    document.getElementById("btnVerificar").disabled = false;
+    document.getElementById("feedback").textContent = "";
+}
 
 // =================== CRIAÇÃO DO SELETOR DE NÍVEL ===================
 function criarSelecaoNivel() {
@@ -409,6 +418,8 @@ function criarSelecaoNivel() {
 
 // =================== FUNÇÃO PRINCIPAL: NOVA FRASE ===================
 function novaFrase() {
+    limparFeedback();
+    palavraArrastada = null;
 
     const lista = frasesPorNivel[nivelAtual];
     fraseAtual = lista[Math.floor(Math.random() * lista.length)];
@@ -431,38 +442,36 @@ function novaFrase() {
 
     limparResultado();
     palavrasSelecionadas = [];
-    document.getElementById("feedback").textContent = "";
 }
 
 // =================== CRIA PALAVRA NO BANCO ===================
 function criarPalavra(word) {
-    const span = document.createElement("span");
+    const span = document.createElement("button");
+    span.type = "button";
     span.textContent = word;
     span.classList.add("palavra");
     span.draggable = true;
 
-    span.onclick = () => moverParaResultado(span);
-
-    span.ondragstart = (e) => {
-        e.dataTransfer.setData("text", word);
-        e.dataTransfer.setData("from", "banco");
+    span.onclick = () => {
+        if (span.parentNode === resultadoContainer) removerPalavra(span);
+        else moverParaResultado(span);
     };
 
-    return span;
-}
-
-// =================== CRIA PALAVRA NO RESULTADO ===================
-function criarPalavraSelecionada(word) {
-    const span = document.createElement("span");
-    span.textContent = word;
-    span.classList.add("palavraSelecionada", "palavra");
-    span.draggable = true;
-
-    span.onclick = () => removerPalavra(word, span);
-
     span.ondragstart = (e) => {
-        e.dataTransfer.setData("text", word);
-        e.dataTransfer.setData("from", "resultado");
+        palavraArrastada = span;
+        e.dataTransfer.setData("text/plain", word);
+    };
+    span.ondragend = () => { palavraArrastada = null; };
+    span.onkeydown = (e) => {
+        if (span.parentNode !== resultadoContainer || !["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+        e.preventDefault();
+        const palavras = Array.from(resultadoContainer.querySelectorAll(".palavraSelecionada"));
+        const index = palavras.indexOf(span);
+        if (e.key === "ArrowLeft" && index > 0) resultadoContainer.insertBefore(span, palavras[index - 1]);
+        if (e.key === "ArrowRight" && index < palavras.length - 1) resultadoContainer.insertBefore(span, palavras[index + 1].nextSibling);
+        atualizarArraySelecionadas();
+        limparFeedback();
+        span.focus();
     };
 
     return span;
@@ -470,21 +479,24 @@ function criarPalavraSelecionada(word) {
 
 // =================== ADICIONAR PALAVRA À FRASE ===================
 function moverParaResultado(el) {
-    const word = el.textContent;
-    palavrasSelecionadas.push(word);
-
-    const destino = document.getElementById("resultadoContainer");
-    destino.appendChild(criarPalavraSelecionada(word));
-
-    document.querySelector(".placeholder")?.remove();
+    if (!el || el.parentNode !== palavrasContainer) return;
+    resultadoContainer.querySelector(".placeholder")?.remove();
+    el.classList.add("palavraSelecionada");
+    resultadoContainer.appendChild(el);
+    atualizarArraySelecionadas();
+    limparFeedback();
+    el.focus();
 }
 
 // =================== REMOVER PALAVRA ===================
-function removerPalavra(word, el) {
-    palavrasSelecionadas = palavrasSelecionadas.filter(w => w !== word);
-    el.remove();
-
+function removerPalavra(el) {
+    if (!el || el.parentNode !== resultadoContainer) return;
+    el.classList.remove("palavraSelecionada");
+    palavrasContainer.appendChild(el);
+    atualizarArraySelecionadas();
     if (palavrasSelecionadas.length === 0) limparResultado();
+    limparFeedback();
+    el.focus();
 }
 
 function limparResultado() {
@@ -495,29 +507,12 @@ function limparResultado() {
 const resultadoContainer = document.getElementById("resultadoContainer");
 const palavrasContainer = document.getElementById("palavrasContainer");
 
-// =========================
-//     ⬇ NOVO SISTEMA ⬇
-//     REORDENAR NO RESULTADO
-// =========================
-
-// referência do item sendo arrastado
-let palavraArrastada = null;
-
-// arrastar DENTRO do resultado
-resultadoContainer.addEventListener("dragstart", (e) => {
-    if (e.target.classList.contains("palavraSelecionada")) {
-        palavraArrastada = e.target;
-        e.dataTransfer.setData("text/plain", e.target.textContent);
-        e.dataTransfer.setData("from", "resultado");
-    }
-});
-
 resultadoContainer.addEventListener("dragover", (e) => {
     e.preventDefault();
 
     const alvo = e.target;
 
-    if (alvo.classList.contains("palavraSelecionada")) {
+    if (palavraArrastada?.parentNode === resultadoContainer && alvo.classList.contains("palavraSelecionada") && alvo !== palavraArrastada) {
         const box = alvo.getBoundingClientRect();
         const offset = e.clientX - box.left;
 
@@ -528,6 +523,7 @@ resultadoContainer.addEventListener("dragover", (e) => {
         }
 
         atualizarArraySelecionadas();
+        limparFeedback();
     }
 });
 
@@ -535,14 +531,8 @@ resultadoContainer.addEventListener("dragover", (e) => {
 resultadoContainer.addEventListener("drop", (e) => {
     e.preventDefault();
 
-    const word = e.dataTransfer.getData("text");
-    const from = e.dataTransfer.getData("from");
-
-    if (from === "banco") {
-        resultadoContainer.appendChild(criarPalavraSelecionada(word));
-        document.querySelector(".placeholder")?.remove();
-        atualizarArraySelecionadas();
-    }
+    moverParaResultado(palavraArrastada);
+    palavraArrastada = null;
 });
 
 // atualiza array baseado na ordem visual
@@ -558,28 +548,13 @@ palavrasContainer.ondragover = (e) => e.preventDefault();
 palavrasContainer.ondrop = (e) => {
     e.preventDefault();
 
-    const word = e.dataTransfer.getData("text");
-    const from = e.dataTransfer.getData("from");
-
-    if (from === "resultado") {
-        palavrasSelecionadas = palavrasSelecionadas.filter(w => w !== word);
-        atualizarResultado();
-    }
+    removerPalavra(palavraArrastada);
+    palavraArrastada = null;
 };
-
-function atualizarResultado() {
-    const resultado = document.getElementById("resultadoContainer");
-    resultado.innerHTML = "";
-
-    if (palavrasSelecionadas.length === 0) return limparResultado();
-
-    palavrasSelecionadas.forEach(word => {
-        resultado.appendChild(criarPalavraSelecionada(word));
-    });
-}
 
 // =================== VERIFICAR E PASSAR PARA A PRÓXIMA ===================
 document.getElementById("btnVerificar").onclick = () => {
+    if (proximaFraseTimer !== null) return;
     const fraseMontada = palavrasSelecionadas.join(" ").trim();
     const feedback = document.getElementById("feedback");
 
@@ -587,7 +562,8 @@ document.getElementById("btnVerificar").onclick = () => {
         feedback.style.color = "green";
         feedback.textContent = "✔ Correto! Próxima frase...";
         
-        setTimeout(() => {
+        document.getElementById("btnVerificar").disabled = true;
+        proximaFraseTimer = setTimeout(() => {
             novaFrase();
         }, 800); 
 
@@ -598,6 +574,12 @@ document.getElementById("btnVerificar").onclick = () => {
 };
 
 document.getElementById("btnReset").onclick = () => {
+    limparFeedback();
+    palavraArrastada = null;
+    resultadoContainer.querySelectorAll(".palavraSelecionada").forEach(el => {
+        el.classList.remove("palavraSelecionada");
+        palavrasContainer.appendChild(el);
+    });
     palavrasSelecionadas = [];
     limparResultado();
 };

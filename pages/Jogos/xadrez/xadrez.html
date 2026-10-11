@@ -3,14 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xadrez do DevSchool</title>
-    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <title>Xadrez - DevSchool Hub</title>
+    <link rel="shortcut icon" href="../../../imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="estiloXadrez.css">
+<link rel="stylesheet" href="../../../assets/hub.css">
+<link rel="stylesheet" href="../game-hub.css">
+<script defer src="../../../assets/hub.js"></script>
 </head>
-<body>
-    <div id="mode-modal" class="modal-overlay" style="display:none;">
+<body class="game-page game--chess">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
+
+<div id="mode-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="mode-title" style="display:none;">
       <div class="modal">
-        <h2>Escolha o modo</h2>
+        <h2 id="mode-title">Escolha o modo</h2>
         <button id="mode-computer">Jogar contra computador</button>
         <button id="mode-1v1">Jogar 1v1</button>
       </div>
@@ -19,63 +24,41 @@
     <div class="layout">
 
         <!-- SIDEBAR MINIMALISTA -->
-        <aside class="sidebar">
-            <div class="logo"></div>
-
-            <nav class="menu">
-                <ul>
-                    <li>
-                        <a href="/index.html">
-                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="../../Anotações/Anotação.html">
-                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="../../Jogos/Jogos.html">
-                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="../../leetCode/lettcode.html">
-                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="../../tarefas/Tarefas.html">
-                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="../../chatbot/chatbot.html">
-                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+        <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="../../Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="../Jogos.html" aria-current="page"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="../../leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
 
 
-          <main class="content">
-            <h1>Xadrez devSchool</h1>
+        <div class="main-area">
+<header class="topbar">
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="../../Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../../index.html">Voltar ao dashboard</a></div></details>
+</div>
+</header>
+          <main class="content" id="main-content">
+            <h1>Xadrez</h1>
+            <p class="chess-instructions">Clique em uma peça e depois na casa de destino. Use as setas e Enter para jogar pelo teclado.</p>
+            <p id="chess-status" role="status" aria-live="polite">Escolha um modo para começar.</p>
             <div id="controls" class="controls" style="margin-bottom:12px; display:none;">
               <label>Nível: <select id="bot-level">
-              <option value="1">1 - Bot 100 ELO</option>
-              <option value="2">2 - Bot 300 ELO</option>
-              <option value="3">3 - Bot 500 ELO</option>
-              <option value="3.5">4 - Bot 800 ELO</option>
-              <option value="4">5 - Bot 1300 ELO</option>
-              <option value="4.5">6 - Bot 1700 ELO</option>
-              <option value="5">7 - Bot 2000 ELO</option>
-              <option value="6">8 - Bot 2500 ELO</option>
+              <option value="1">Iniciante</option>
+              <option value="2">Básico</option>
+              <option value="3">Intermediário</option>
+              <option value="3.5">Intermediário +</option>
+              <option value="4">Avançado</option>
+              <option value="4.5">Avançado +</option>
+              <option value="5">Especialista</option>
+              <option value="6">Desafio máximo</option>
             </select></label>
 
             <label style="margin-left:12px;">Cor do bot: <select id="bot-color">
@@ -88,99 +71,21 @@
             </div>
           </div>
 
-          <div id="board" class="tabuleiro">
+          <div id="board" class="tabuleiro" aria-label="Tabuleiro de xadrez">
           </div>
 
-          <a href="javascript:history.back()" id="btn-voltar" class="btn-voltar">← Voltar</a>
+          <div class="chess-actions"><a href="../Jogos.html" id="btn-voltar" class="btn-voltar">← Voltar aos jogos</a><a class="btn-voltar" href="xadrez.html">Nova partida</a></div>
     </main>
+        </div>
+    </div>
 
   <script src="JS/TabuleiroXadrez.js"></script>
   <script src="JS/bots.js"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('mode-modal');
-  const compBtn = document.getElementById('mode-computer');
-  const p1Btn = document.getElementById('mode-1v1');
-  const controls = document.getElementById('controls');
-  const botButtons = document.getElementById('bot-buttons');
-  const autoCheckbox = document.getElementById('bot-auto');
 
-  // mostrar modal na entrada
-  modal.style.display = 'flex';
 
-  compBtn.addEventListener('click', () => {
-    // modo contra computador: mostrar controles, esconder botões e ativar auto-play
-    window.gameMode = 'computer';
-    // exibe controles
-    if (controls) controls.style.display = 'flex';
-    // esconde botões de controle manual (bot-play/auto) já que auto-play ficará ativo
-    if (botButtons) botButtons.style.display = 'none';
-    if (autoCheckbox) autoCheckbox.checked = true;
-    // define playerColor com base na cor selecionada para o bot (jogador = cor oposta)
-    const botColorSelect = document.getElementById('bot-color');
-    if (botColorSelect) {
-      const botColor = botColorSelect.value;
-      window.playerColor = (botColor === 'white') ? 'black' : 'white';
-    }
-    modal.style.display = 'none';
-  });
 
-  p1Btn.addEventListener('click', () => {
-    // modo 1v1: manter controles escondidos e limpar flags de modo/cores
-    window.gameMode = '1v1';
-    window.playerColor = null;
-    if (controls) controls.style.display = 'none';
-    modal.style.display = 'none';
-  });
-  
-  // atualiza playerColor sempre que o usuário muda a cor do bot
-  const botColorSelect = document.getElementById('bot-color');
-  if (botColorSelect) {
-    botColorSelect.addEventListener('change', () => {
-      if (window.gameMode === 'computer') {
-        const botColor = botColorSelect.value;
-        window.playerColor = (botColor === 'white') ? 'black' : 'white';
-      }
-    });
-  }
-});
-</script>
 
-<script>
-  // Liga controle UI ao engine
-  const levelSelect = document.getElementById('bot-level');
-  const colorSelect = document.getElementById('bot-color');
-  const playBtn = document.getElementById('bot-play');
-  const autoCheckbox = document.getElementById('bot-auto');
-  let botThinking = false;
-
-  playBtn.addEventListener('click', () => {
-    const lvl = Number(levelSelect.value);
-    const color = colorSelect.value;
-    if (!window.playBot) { alert('Bots não carregados'); return; }
-    botThinking = true;
-    const ok = window.playBot(lvl, color);
-    botThinking = false;
-    if (!ok) console.log('Bot não realizou movimento (sem jogadas).');
-  });
-
-  // Auto-play: verifica o turno e faz o bot jogar quando for sua vez
-  setInterval(() => {
-    if (!autoCheckbox.checked) return;
-    if (botThinking) return;
-    const lvl = Number(levelSelect.value);
-    const color = colorSelect.value;
-    if (typeof turnoAtual === 'undefined') return;
-    if (turnoAtual === color) {
-      botThinking = true;
-      setTimeout(() => {
-        window.playBot(lvl, color);
-        botThinking = false;
-      }, 120);
-    }
-  }, 700);
-</script>
-
+<script src="JS/chess-ui.js"></script>
 </body>
 </html>
