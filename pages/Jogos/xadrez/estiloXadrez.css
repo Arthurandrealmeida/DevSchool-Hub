@@ -171,3 +171,10 @@ body{
     background-color: #e2e2e2;
     transform: translateX(-3px);
 }
+/* Instruções e controles da partida */
+.game--chess .chess-instructions { max-width:560px; margin:0 auto 10px; color:var(--hub-muted); font-size:13px; line-height:1.7; }
+.game--chess #chess-status { margin:0 0 18px; color:var(--hub-primary); font-size:14px; font-weight:600; min-height:22px; }
+.game--chess .chess-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; }
+.game--chess .casa:focus-visible { outline:3px solid #f4b33e; outline-offset:-4px; z-index:1; }
+.game--chess .controls { flex-wrap:wrap; justify-content:center; }
+.game--chess .controls select:disabled { opacity:.6; }
