@@ -8,6 +8,13 @@ let score = 0; // A pontuação atual do jogador
 let running = false; // Flag booleana: true se o jogo estiver em andamento, false caso contrário
 let lastShownIndex = -1; // O índice na 'sequence' do último passo *mostrado*
 let canAnswer = false; // Flag booleana: true se o jogador puder responder, false se já respondeu ou o passo não exige resposta
+let stepTimer;
+let flashTimer;
+let session = 0;
+let incorrectAnswers = 0;
+let correctAnswers = 0;
+const answeredTypes = new Set();
+let stepFeedback = [];
 
 
 const grid = document.querySelectorAll('.cell');
@@ -17,6 +24,9 @@ const btnEmoji = document.getElementById('match-emoji');
 const nDisplay = document.getElementById('n-level');
 const scoreDisplay = document.getElementById('score');
 const nSelect = document.getElementById('n-back');
+const stopBtn = document.getElementById('stop-btn');
+const progressDisplay = document.getElementById('step-count');
+const feedback = document.getElementById('game-feedback');
 
 
 // =========================
@@ -46,7 +56,15 @@ function showStep(step) {
     cell.textContent = step.emoji;
 
     // 3. Permite a resposta
-    canAnswer = true;
+    answeredTypes.clear();
+    stepFeedback = [];
+    canAnswer = lastShownIndex >= n;
+    btnColor.disabled = !canAnswer;
+    btnEmoji.disabled = !canAnswer;
+    progressDisplay.textContent = `Passo ${lastShownIndex + 1} de 50`;
+    feedback.textContent = canAnswer
+        ? `Compare com ${n} passos atrás. Marque apenas o que for igual.`
+        : `Memorize: faltam ${n - lastShownIndex} passos para começar a comparar.`;
 
 }
 
@@ -54,6 +72,10 @@ const nSelector = document.getElementById("n-back");
 
 // Evento disparado quando o valor do seletor N-Back muda
 nSelector.onchange = () => {
+    if (running) {
+        nSelector.value = String(n);
+        return;
+    }
     n = parseInt(nSelector.value);// Atualiza a variável 'n' com o novo valor
     nDisplay.textContent = n;// Atualiza a exibição na interface
 };
@@ -64,7 +86,13 @@ nSelector.onchange = () => {
 // INICIAR SEQUÊNCIA
 // =========================
 async function startGame() {
+    if (running) return;
     running = true;
+    const currentSession = ++session;
+    startBtn.disabled = true;
+    startBtn.textContent = "Em andamento";
+    stopBtn.disabled = false;
+    nSelect.disabled = true;
 
     // Configuração inicial (garante que N e os displays estejam corretos)
     n = parseInt(nSelect.value);
@@ -73,6 +101,9 @@ async function startGame() {
     sequence = [];
     currentIndex = 0;
     score = 0;
+    incorrectAnswers = 0;
+    correctAnswers = 0;
+    lastShownIndex = -1;
     scoreDisplay.textContent = score;
 
     // Loop principal do jogo: gera e mostra até 50 passos
@@ -82,22 +113,44 @@ async function startGame() {
         const newStep = generateStep();
         sequence.push(newStep);
 
+        lastShownIndex = currentIndex;
         // 2. Exibição do passo
         showStep(newStep);
 
         // Animação visual (flash rápido na célula)
         const cell = grid[newStep.pos];
         cell.classList.add("showing");
-        setTimeout(() => cell.classList.remove("showing"), 200);
+        flashTimer = setTimeout(() => cell.classList.remove("showing"), 200);
 
-        lastShownIndex = currentIndex; // Registra o índice que acabou de ser mostrado
+        await new Promise(r => { stepTimer = setTimeout(r, 1600); });
 
-        await new Promise(r => setTimeout(r, 1600));
+        if (!running || currentSession !== session) return;
 
         currentIndex++; // Avança o índice (contador de passos)
 
-        if (!running) break; // Permite parar o jogo se 'running' for alterado
     }
+    stopGame(true);
+}
+
+function stopGame(completed = false) {
+    running = false;
+    canAnswer = false;
+    session++;
+    clearTimeout(stepTimer);
+    clearTimeout(flashTimer);
+    btnColor.disabled = true;
+    btnEmoji.disabled = true;
+    stopBtn.disabled = true;
+    startBtn.disabled = false;
+    startBtn.textContent = "Jogar novamente";
+    nSelect.disabled = false;
+    grid.forEach(cell => {
+        cell.classList.remove("showing");
+        cell.style.background = "#ffffff";
+        cell.textContent = "";
+    });
+    feedback.textContent = `${completed ? "Sessão concluída!" : "Sessão encerrada."} Pontuação: ${score}. ${correctAnswers} acertos (+1) e ${incorrectAnswers} marcações incorretas (-1; mínimo de 0 pontos).`;
+    startBtn.focus();
 }
 
 // =========================
@@ -105,7 +158,8 @@ async function startGame() {
 // =========================
 function checkMatch(type) {
     // 1. Guardrails (Condições para NÃO permitir resposta)
-    if (!canAnswer) return; // Sai se o jogador já respondeu neste passo (previne respostas múltiplas)
+    if (!running || !canAnswer || answeredTypes.has(type)) return;
+    if (type !== "color" && type !== "emoji") return;
     if (lastShownIndex < n) return; // Sai se não houver passos suficientes para olhar N passos atrás
 
     // 2. Determina os passos de comparação
@@ -120,11 +174,21 @@ function checkMatch(type) {
 
     // 4. Atualização da pontuação
     if (match) {
+        correctAnswers++;
         score++;
-        scoreDisplay.textContent = score;
     }
+    else {
+        incorrectAnswers++;
+        score = Math.max(0, score - 1);
+    }
+    scoreDisplay.textContent = score;
 
-    canAnswer = false; // 🔥 trava até o próximo passo
+    answeredTypes.add(type);
+    const button = type === "color" ? btnColor : btnEmoji;
+    button.disabled = true;
+    stepFeedback.push(`${type === "color" ? "Cor" : "Emoji"}: ${match ? "igual, +1 ponto" : "diferente, -1 ponto (mínimo 0)"}.`);
+    feedback.textContent = stepFeedback.join(" ");
+    canAnswer = answeredTypes.size < 2;
 }
 
 // =========================
@@ -133,4 +197,20 @@ function checkMatch(type) {
 startBtn.onclick = startGame;// Inicia o jogo ao clicar no botão "Start"
 btnColor.onclick = () => checkMatch("color"); // Verifica se a cor corresponde ao clicar
 btnEmoji.onclick = () => checkMatch("emoji"); // Verifica se o emoji corresponde ao clicar
+stopBtn.onclick = () => stopGame();
 
+btnColor.disabled = true;
+btnEmoji.disabled = true;
+nDisplay.textContent = n;
+
+document.addEventListener("keydown", event => {
+    if (event.repeat || event.ctrlKey || event.altKey || event.metaKey) return;
+    if (["INPUT", "TEXTAREA", "SELECT"].includes(event.target.tagName) || event.target.isContentEditable) return;
+    const key = event.key.toLowerCase();
+    if (key !== "c" && key !== "e") return;
+    if (!running) return;
+    event.preventDefault();
+    checkMatch(key === "c" ? "color" : "emoji");
+});
+
+window.addEventListener("pagehide", () => stopGame());

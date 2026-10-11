@@ -3,64 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IA do DevSchool Hub</title>
-    <link rel="shortcut icon" href="/imagens/IconDevSchool.png" type="image/x-icon">
+    <title>Dual N-Back - DevSchool Hub</title>
+    <link rel="shortcut icon" href="../../../imagens/IconDevSchool.png" type="image/x-icon">
     <link rel="stylesheet" href="estiloJogoDualBack.css">
+<link rel="stylesheet" href="../../../assets/hub.css">
+<link rel="stylesheet" href="../game-hub.css">
+<script defer src="../../../assets/hub.js"></script>
 </head>
-<body>
-    <div class="layout">
+<body class="game-page game--dual">
+<!-- hub-shell-extra --><a class="hub-skip-link" href="#main-content">Pular para o conteúdo</a><button type="button" class="hub-scrim" aria-label="Fechar menu"></button><!-- /hub-shell-extra -->
+
+<div class="layout">
 
         <!-- SIDEBAR MINIMALISTA -->
-        <aside class="sidebar">
-            <div class="logo"></div>
-
-            <nav class="menu">
-                <ul>
-                    <li>
-                        <a href="/index.html">
-                            <img class="icon" src="/imagens/dashboard.png" alt="Dashboard">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/Anotação.html">
-                            <img class="icon" src="/imagens/livroIMAGEM.png" alt="Anotações">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/jogos.html">
-                            <img class="icon" src="/imagens/Jogos.png" alt="Jogos">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/lettcode.html">
-                            <img class="icon" src="/imagens/lam2.png" alt="LeetCode">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/tarefas.html">
-                            <img class="icon" src="/imagens/tarefa.png" alt="Tarefas">
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="/hiperLinks/chatbot.html">
-                            <img class="icon" src="/imagens/RoboPequeno.png" alt="IA">
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+        <aside class="sidebar" id="hub-sidebar" aria-label="Menu principal">
+<a class="hub-brand" href="../../../index.html" aria-label="DevSchool Hub — início"><span data-icon="graduation" aria-hidden="true"></span><span>DevSchool <b>Hub</b></span></a>
+<button class="hub-mobile-close" type="button" aria-label="Fechar menu"><span data-icon="x" aria-hidden="true"></span></button>
+<nav aria-label="Áreas do hub"><ul class="hub-nav"><li><a href="../../../index.html"><span data-icon="home" aria-hidden="true"></span><span>Dashboard</span></a></li>
+<li><a href="../../Anotações/Anotação.html"><span data-icon="file" aria-hidden="true"></span><span>Anotações</span></a></li>
+<li><a href="../Jogos.html" aria-current="page"><span data-icon="gamepad" aria-hidden="true"></span><span>Jogos</span></a></li>
+<li><a href="../../tarefas/Tarefas.html"><span data-icon="check-square" aria-hidden="true"></span><span>Tarefas</span></a></li>
+<li><a href="../../leetCode/lettcode.html"><span data-icon="trophy" aria-hidden="true"></span><span>Desafios</span></a></li></ul></nav>
+<a class="hub-sidebar-note" href="../../tarefas/Tarefas.html"><span data-icon="crown" aria-hidden="true"></span><span><strong>Seu espaço de estudo</strong><small>Pequenos passos,<br>grandes conquistas.</small></span><span class="hub-note-arrow"><span data-icon="chevron-right" aria-hidden="true"></span></span></a>
+</aside>
 
         <div class="main-area">
-            <main class="content">
+<header class="topbar">
+<button class="hub-menu-toggle" type="button" aria-label="Abrir menu" aria-controls="hub-sidebar" aria-expanded="false"><span data-icon="menu" aria-hidden="true"></span></button>
+<form class="hub-search" role="search"><span data-icon="search" aria-hidden="true"></span><input type="search" name="q" aria-label="Buscar ferramentas" placeholder="Buscar anotações, jogos, tarefas..." autocomplete="off"><div class="hub-search-results" hidden></div></form>
+<div class="hub-account">
+<details class="hub-popover hub-notifications"><summary aria-label="Dica de estudo"><span data-icon="bell" aria-hidden="true"></span><span class="hub-tip-dot"></span></summary><div class="hub-popover-content"><strong>Um passo de cada vez</strong><p>Separe alguns minutos para revisar o que aprendeu hoje.</p><a href="../../Anotações/Anotação.html">Abrir minhas anotações</a></div></details>
+<details class="hub-popover hub-profile"><summary aria-label="Meu espaço de Dev"><span class="hub-avatar" aria-hidden="true">D</span><span class="hub-profile-name">Dev</span><span data-icon="chevron-down" aria-hidden="true"></span></summary><div class="hub-popover-content"><strong>Meu espaço</strong><p>Seu ambiente pessoal para estudar, praticar e evoluir.</p><a href="../../../index.html">Voltar ao dashboard</a></div></details>
+</div>
+</header>
+            <main class="content" id="main-content">
 
 <h1 class="tituloDoJoguin">Dual N-Back</h1>
 
 <div id="game-container">
+    <p class="game-instructions">Memorize a cor e o emoji. Se um deles repetir o de N passos atrás, marque a correspondência. Você pode marcar os dois no mesmo passo: cada acerto vale +1 ponto e cada marcação incorreta tira 1 ponto, com mínimo de 0. São 50 passos, com 1,6 segundo por passo.</p>
 
     <div id="grid">
         <div class="cell" data-pos="0"></div>
@@ -76,23 +57,26 @@
 
     <div id="controls">
         <button id="start-btn">Iniciar</button>
-        <button id="match-color">Cor Igual</button>
-        <button id="match-emoji">Emoji Igual</button>
+        <button id="stop-btn" disabled>Parar</button>
+        <button id="match-color" disabled>Cor Igual (C)</button>
+        <button id="match-emoji" disabled>Emoji Igual (E)</button>
     </div>
 
     <div id="status">
 
-        <p>
-            Nível N:
+        <div class="level-control">
+            <label for="n-back">Nível N:</label>
             <select id="n-back">
                 <option value="2">2-Back</option>
                 <option value="3">3-Back</option>
                 <option value="4">4-Back</option>
             </select>
-            <p>Nível N: <strong id="n-level"></strong></p>
-        </p>
+            <p>Nível N: <strong id="n-level">2</strong></p>
+        </div>
 
         <p>Pontos: <span id="score">0</span></p>
+        <p id="step-count">Passo 0 de 50</p>
+        <p id="game-feedback" role="status" aria-live="polite" aria-atomic="true">Escolha o nível e inicie a sessão. Atalhos: C para cor, E para emoji.</p>
 
     </div>
     

@@ -109,6 +109,8 @@ transition: 0.2s;
 /* BOTÕES */
 #controls {
 display: flex;
+flex-wrap: wrap;
+justify-content: center;
 gap: 12px;
 }
 
@@ -128,6 +130,40 @@ transition: 0.2s;
 
 #controls button:hover {
 background: #e4e4e4;
+}
+
+#controls button:disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.game--dual #stop-btn {
+    padding: 12px 18px;
+    border: 1px solid var(--hub-line, #e9edf5);
+    border-radius: 9px;
+    background: #fff;
+    color: var(--hub-primary, #4f5cf7);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.game--dual #stop-btn:focus-visible {
+    outline: 3px solid #4f5cf72b;
+    outline-offset: 3px;
+}
+
+.game-instructions,
+#game-feedback {
+    max-width: 620px;
+    text-align: center;
+    line-height: 1.7;
+}
+
+#status #game-feedback {
+    font-family: Arial, sans-serif;
+    min-height: 3em;
 }
 
 
